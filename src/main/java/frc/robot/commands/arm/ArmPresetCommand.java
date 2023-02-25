@@ -1,5 +1,7 @@
 package frc.robot.commands.arm;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 
@@ -26,15 +28,20 @@ public class ArmPresetCommand extends CommandBase {
     public static final double EXTEND_TRANSITION_POINT = 35;
     public static final double EXTEND_TOLERANCE = 5;
 
+    public static final double MININUM_MOTOR_SPEED = 0.1;
+
+
     private final ArmSubsystem arm;
     private final double targetRotation;
     private final double targetExtension;
+    private final BooleanSupplier doneSupplier;
     private boolean done;
 
-    public ArmPresetCommand(ArmSubsystem arm, double [] preset) {
+    public ArmPresetCommand(ArmSubsystem arm, double [] preset, BooleanSupplier doneSupplier) {
         this.arm = arm;
         this.targetRotation = preset[0];
         this.targetExtension = preset[1];
+        this.doneSupplier = doneSupplier;
         addRequirements(arm);
     }
 
@@ -59,21 +66,24 @@ public class ArmPresetCommand extends CommandBase {
         }
 
         arm.moveAt(percentRotate, percentExtend);
-        done = (percentRotate == 0.0 && percentExtend == 0.0);
     }
 
     @Override
     public boolean isFinished() {
-        return done;
+        return doneSupplier.getAsBoolean();
     }
 
+
+    
+
     // TODO replace me with a ratio or a PID controller?
+
     private double calculateRotationSpeed(double absoluteError) {
         if (absoluteError < ROTATE_TOLERANCE) {
             return 0.0;
         }
         if (absoluteError < ROTATE_TRANSITION_POINT) {
-            return ROTATE_SLOW;
+             return ROTATE_FAST * (absoluteError - ROTATE_TOLERANCE) / (ROTATE_TRANSITION_POINT - ROTATE_TOLERANCE) + MININUM_MOTOR_SPEED;
         }
         return ROTATE_FAST;
     }
@@ -84,8 +94,9 @@ public class ArmPresetCommand extends CommandBase {
             return 0.0;
         }
         if (absoluteError < EXTEND_TRANSITION_POINT) {
-            return EXTEND_SLOW;
+            return EXTEND_FAST * (absoluteError - EXTEND_TOLERANCE) / (EXTEND_TRANSITION_POINT - EXTEND_TOLERANCE) + MININUM_MOTOR_SPEED;
         }
         return EXTEND_FAST;
     }
+    
 }
