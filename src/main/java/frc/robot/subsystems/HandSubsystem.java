@@ -80,11 +80,11 @@ public class HandSubsystem extends SubsystemBase {
         position.set(OPEN);
     }
 
-    public void extendDuck() {
+    public void Quack() {
         duck.set(true);
     }
 
-    public void retractDuck() {
+    public void unQuack() {
         duck.set(false);
     }
 
