@@ -9,9 +9,11 @@ import frc.robot.subsystems.vision.AprilTag;
 public class AlignToAprilTagCommand extends CommandBase {
 
     public static final double TARGET_Z = 3;
-    public static final double TOLERANCE = 0.075;
-    public static final double SPEED = 0.1;
-    
+    public static final double TOLERANCE = 0.05;
+    public static final double LOW_SPEED_BREAK = 0.1;
+    public static final double HIGH_SPEED = 0.1;
+    public static final double LOW_SPEED = 0.8;
+
     private final SwerveDriveSubsystem swerveDrive;
     private final VisionSubsystem vision;
     private boolean done;
@@ -31,24 +33,24 @@ public class AlignToAprilTagCommand extends CommandBase {
 
     private double determineSpeedX(AprilTag tag) {
         double distance = tag.getForwardReverseDistance();
-        if (Math.abs(distance - TARGET_Z) < TOLERANCE) {
-            return 0.0;
-        } else if (distance < TARGET_Z) {
-            return -SPEED;
-        } else {
-            return SPEED;
-        }
+        return determineSpeed(distance);
     }
 
     private double determineSpeedY(AprilTag tag) {
         double distance = tag.getLeftRightDistance();
-        if (Math.abs(distance) < TOLERANCE) {
-            return 0;
-        } else if (distance < 0) {
-            return -SPEED;
-        } else {
-            return SPEED;
+        return determineSpeed(distance);
+    }
+
+    private double determineSpeed(double distance) {
+        double absoluteError = Math.abs(distance - TARGET_Z);
+        if (absoluteError < TOLERANCE) {
+            return 0.0;
         }
+        double val = absoluteError < LOW_SPEED_BREAK ? LOW_SPEED : HIGH_SPEED;
+        if (distance < TARGET_Z) {
+            val *= -1.0;
+        }
+        return val;
     }
 
     public void execute() {
