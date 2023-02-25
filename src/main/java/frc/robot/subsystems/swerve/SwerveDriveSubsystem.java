@@ -59,6 +59,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         maxWheelSpeed = SwerveConfig.defaultMaxWheelSpeed;
         robotRelative = false;
 
+        SmartDashboard.putData("NavX", navx);
         SmartDashboard.putData("Swerve Gyro", builder -> {
             builder.addBooleanProperty("Calibrated", navx::isMagnetometerCalibrated, null);
             builder.addDoubleProperty("Pitch", () -> getPitch(), null);
