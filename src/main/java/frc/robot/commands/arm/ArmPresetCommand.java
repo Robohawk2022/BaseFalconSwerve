@@ -35,7 +35,7 @@ public class ArmPresetCommand extends CommandBase {
     private final double targetRotation;
     private final double targetExtension;
     private final BooleanSupplier doneSupplier;
-    private boolean done;
+    // private boolean done;
 
     public ArmPresetCommand(ArmSubsystem arm, double [] preset, BooleanSupplier doneSupplier) {
         this.arm = arm;
@@ -47,7 +47,7 @@ public class ArmPresetCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        done = false;
+        // done = false;
     }
 
     @Override
