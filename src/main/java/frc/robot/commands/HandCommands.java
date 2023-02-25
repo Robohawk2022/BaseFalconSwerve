@@ -17,7 +17,7 @@ public class HandCommands {
     public static Command grab(HandSubsystem hand) {
         return new InstantCommand(hand::grabCone, hand)
                 .andThen(new WaitCommand(0.5))
-                .andThen(new InstantCommand(hand::retractDuck, hand));
+                .andThen(new InstantCommand(hand::unQuack, hand));
     }
 
     /**
@@ -36,6 +36,6 @@ public class HandCommands {
     public static Command release(HandSubsystem hand) {
         return new InstantCommand(hand::release, hand)
                 .andThen(new WaitCommand(0.5))
-                .andThen(new InstantCommand(hand::extendDuck, hand));
+                .andThen(new InstantCommand(hand::Quack, hand));
     }
 }
