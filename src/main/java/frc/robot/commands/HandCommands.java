@@ -36,6 +36,6 @@ public class HandCommands {
     public static Command release(HandSubsystem hand) {
         return new InstantCommand(hand::release, hand)
                 .andThen(new WaitCommand(0.5))
-                .andThen(new InstantCommand(hand::Quack, hand));
+                .andThen(new InstantCommand(hand::quack, hand));
     }
 }

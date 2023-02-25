@@ -23,23 +23,26 @@ public class HandSubsystem extends SubsystemBase {
     public static final int PRESSURE_REVERSE = 1;
     public static final int POSITION_FORWARD = 2;
     public static final int POSITION_REVERSE = 3;
-    public static final int DUCK = 4;
+    public static final int DUCK_QUACK = 4;
+    public static final int DUCK_UNQUACK = 5;
 
     /** Solenoid values for the different options */
     public static final Value LO = Value.kReverse;
     public static final Value HI = Value.kForward;
     public static final Value OPEN = Value.kForward;
     public static final Value CLOSED = Value.kReverse;
+    public static final Value QUACK = Value.kForward;
+    public static final Value UNQUACK = Value.kReverse;
     public static final Value OFF = Value.kOff;
 
     private final DoubleSolenoid pressure;
     private final DoubleSolenoid position;
-    private final Solenoid duck;
+    private final DoubleSolenoid duck;
 
     public HandSubsystem() {
         pressure = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, PRESSURE_FORWARD, PRESSURE_REVERSE);
         position = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, POSITION_FORWARD, POSITION_REVERSE);
-        duck = new Solenoid(PneumaticsModuleType.REVPH, DUCK);
+        duck = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, DUCK_QUACK, DUCK_UNQUACK);
         SmartDashboard.putData("Hand", builder -> {
             builder.addBooleanProperty("Closed", () -> isClosed(), null);
             builder.addStringProperty("Position", () -> getPositionString(), null);
@@ -80,12 +83,12 @@ public class HandSubsystem extends SubsystemBase {
         position.set(OPEN);
     }
 
-    public void Quack() {
-        duck.set(true);
+    public void quack() {
+        duck.set(QUACK);
     }
 
     public void unQuack() {
-        duck.set(false);
+        duck.set(UNQUACK);
     }
 
     public void turnOff() {
