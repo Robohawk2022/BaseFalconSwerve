@@ -18,8 +18,6 @@
   - Move to preset
   - Teleop
 
-- Update AlignToAprilTag to have multiple speeds
-
 - Develop autonomous programs
 
 - Shuffleboard configuration & stats
@@ -44,7 +42,7 @@
   - Test grab/release (tune timing of bumper)
 
 - Vision subsystem
-  - Test aligning to tag (tune distance from tag)
+  - Test aligning to tag (tune distance from tag and speeds)
 
 - Balance subsystem
   - Test and tune speed profile
