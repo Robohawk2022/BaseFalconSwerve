@@ -14,6 +14,7 @@ import math
 
 team = 3373
 server = False
+decimal = 2
 
 def main():
     with open('/boot/frc.json') as f:
@@ -44,6 +45,8 @@ def main():
 
     # Table for vision output information
     vision_nt = ntinst.getTable('Vision')
+    vision_closest_nt = ntinst.getTable('Closest Tag')
+
 
     # Wait for NetworkTables to start
     time.sleep(0.5)
@@ -68,7 +71,15 @@ def main():
         pose_rz_list = []
         id_list = []
         decision_list = []
-
+        distance_saved = 1000000
+        pose_tx = []        
+        pose_ty = []
+        pose_tz = []
+        pose_tx_saved = []        
+        pose_ty_saved = []
+        pose_tz_saved = []
+        id_saved = []
+        decision_saved = []
         # Notify output of error and skip iteration
         if frame_time == 0:
             output_stream.notifyError(input_stream.getError())
@@ -117,7 +128,7 @@ def main():
 
             if ((tag_id > 0) & (tag_id < 9)):
                 col_box = (0,255,0)
-                col_txt = (255,255,255)
+                col_txt = (0,0,255)
             else:
                 col_box = (0,0,255)
                 col_txt = (0,255,255)
@@ -137,19 +148,33 @@ def main():
             # cv2.putText(output_img, f"{decision_margin}", (int(center.x), int(center.y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
 
 
-            img_y_list.append(-(center.x - width / 2) / (width / 2))
-            img_z_list.append(-(center.y - height / 2) / (height / 2))
+            img_y_list.append(round(-(center.x - width / 2) / (width / 2), 2))
+            img_z_list.append(round(-(center.y - height / 2) / (height / 2), 2))
             
+            pose_tx=pose.translation().x_feet
+            pose_ty=pose.translation().y_feet
+            pose_tz=pose.translation().z_feet
+
+            distance = math.sqrt(pow(pose_tx,2)+pow(pose_ty,2)+pow(pose_tz,2))
+
+            if distance < distance_saved:
+                distance_saved = distance
+                pose_tx_saved = pose_tx
+                pose_ty_saved = pose_ty
+                pose_tz_saved = pose_tz
+                id_saved = tag_id
+                decision_saved = decision_margin
+
             # Convert Vision system coords to Robot-centric coords
             # Robot X is Vision Z
             # Robot Y is Vision -X
             # Robot Z is Vision -Y
-            pose_tx_list.append(pose.translation().z_feet)
-            pose_ty_list.append(-pose.translation().x_feet)
-            pose_tz_list.append(-pose.translation().y_feet)
-            pose_rx_list.append(pose.rotation().z_degrees)
-            pose_ry_list.append(-pose.rotation().x_degrees)
-            pose_rz_list.append(-pose.rotation().y_degrees)
+            pose_tx_list.append(round(pose.translation().z_feet, decimal))
+            pose_ty_list.append(round(-pose.translation().x_feet, decimal))
+            pose_tz_list.append(round(-pose.translation().y_feet, decimal))
+            pose_rx_list.append(round(pose.rotation().z_degrees, decimal))
+            pose_ry_list.append(round(-pose.rotation().x_degrees, decimal))
+            pose_rz_list.append(round(-pose.rotation().y_degrees, decimal))
 
 
             # Vision system coords (original code)
@@ -161,6 +186,12 @@ def main():
             # pose_rz_list.append(pose.rotation().z_degrees)
             id_list.append(tag_id)
             decision_list.append(decision_margin)
+
+
+# if code detects more than one april tag then test distances and stop detecting all of the ones exept for the closest one
+#     Do the ame when running command
+
+
 
 
         vision_nt.putNumberArray('target_img_z', img_z_list)
@@ -181,6 +212,20 @@ def main():
         # vision_nt.putNumberArray('robot_pose_ry', robot_ry)
         # vision_nt.putNumberArray('robot_pose_rz', robot_rz)
         vision_nt.putNumberArray('_tag_id', id_list)
+
+
+        vision_closest_nt.putValue('_tag_id', id_saved)
+        vision_closest_nt.putValue('distance_saved', distance_saved)
+        # vision_closest_nt.putNumberArray('target_img_z', img_z_list)
+        # vision_closest_nt.putNumberArray('target_img_y', img_y_list)
+        vision_closest_nt.putValue ('target_pose_tx', pose_tx_saved)
+        vision_closest_nt.putValue('target_pose_ty', pose_ty_saved)
+        vision_closest_nt.putValue('target_pose_tz', pose_tz_saved)
+        # vision_closest_nt.putNumberArray('target_pose_rx', pose_rx_list)
+        # vision_closest_nt.putNumberArray('target_pose_ry', pose_ry_list)
+        # vision_closest_nt.putNumberArray('target_pose_rz', pose_rz_list)
+        vision_closest_nt.putValue('decision_margin', decision_saved)
+        
 
         processing_time = start_time - prev_time
         prev_time = start_time
