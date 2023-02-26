@@ -55,7 +55,7 @@ public class RelativeTrajectoryCommand extends SequentialCommandGroup {
     public static Trajectory makeTrajectory(Translation2d... points) {
         TrajectoryConfig c = makeTrajectoryConfig();
         Pose2d s = new Pose2d(0, 0, new Rotation2d(0));
-        Pose2d e = new Pose2d(points[points.length], new Rotation2d(0));
+        Pose2d e = new Pose2d(points[points.length-1], new Rotation2d(0));
         List<Translation2d> w = Arrays.asList(points).subList(0, points.length-1);
         return TrajectoryGenerator.generateTrajectory(s, w, e, c);
     }
