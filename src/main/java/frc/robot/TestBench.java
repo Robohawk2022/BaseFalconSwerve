@@ -20,7 +20,8 @@ public class TestBench extends TimedRobot {
     @Override
     public void robotInit() {
 
-        hand = new HandSubsystem();
+        //hand = new HandSubsystem();
+        arm = new ArmSubsystem();
 
         TestBenchControlMapping.mapControls(this, new CommandXboxController(CONTROLLER_PORT));
     }

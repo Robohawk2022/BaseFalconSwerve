@@ -5,13 +5,14 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 
+
 public class ArmPresetCommand extends CommandBase {
 
     // TODO calculate preset positions
     public static final double [] TRAVEL_POSITION = { 150.0, -150.0 };
     public static final double [] PICKUP_POSITION = { 2.0, 3.0 };
-    public static final double [] HIGH_POSITION = { 2.0, 3.0 };
-    public static final double [] MIDDLE_POSITION = { 2.0, 3.0 };
+    public static final double [] HIGH_POSITION = { 10.0, 12.0 };
+    public static final double [] MIDDLE_POSITION = { -12.0, -10.0 };
     public static final double [] LOW_POSITION = { 2.0, 3.0 };
     public static final double [] BALANCE_POSITION = { 2.0, 3.0 };
     public static final double [] LOAD_POSITION = { 2.0, 3.0 };
@@ -57,6 +58,7 @@ public class ArmPresetCommand extends CommandBase {
         double percentRotate = calculateRotationSpeed(Math.abs(rotationError));
         if (rotationError > 0.0) {
             percentRotate = -percentRotate;
+            
         }
 
         double extensionError = targetExtension - arm.getExtenderPosition();
