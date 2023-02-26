@@ -49,6 +49,9 @@ public class HalfBakedSpeedController {
             return 0.0;
         }
         if (absoluteError > maxThreshold) {
+            if (error < 0){
+                return -maxSpeed;
+            }
             return maxSpeed;
         }
 
