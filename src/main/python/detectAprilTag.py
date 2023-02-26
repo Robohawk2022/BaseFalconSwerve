@@ -26,7 +26,6 @@ def main():
 
     video = CameraServer.startAutomaticCapture()
     video.setVideoMode(VideoMode.PixelFormat.kMJPEG, width, height, 30)
-    # video.setResolution(width, height)
 
     input_stream = CameraServer.getVideo()
     output_stream = CameraServer.putVideo('Processed', width, height)
@@ -68,6 +67,7 @@ def main():
         pose_ry_list = []
         pose_rz_list = []
         id_list = []
+        decision_list = []
 
         # Notify output of error and skip iteration
         if frame_time == 0:
@@ -93,7 +93,7 @@ def main():
         filter_tags = [tag for tag in tag_info if tag.getDecisionMargin() > DETECTION_MARGIN_THRESHOLD]
 
         # OPTIONAL: Ignore any tags not in the set used on the 2023 FRC field:
-        # filter_tags = [tag for tag in filter_tags if ((tag.getId() > 0) & (tag.getId() < 9))]
+        filter_tags = [tag for tag in filter_tags if ((tag.getId() > 0) & (tag.getId() < 9))]
 
         for tag in filter_tags:
 
@@ -102,16 +102,14 @@ def main():
 
             tag_id = tag.getId()
             center = tag.getCenter()
-            #hamming = tag.getHamming()
-            #decision_margin = tag.getDecisionMargin()
+            # hamming = tag.getHamming()
+            decision_margin = round(tag.getDecisionMargin())
 
             # What calculations do we want to make on the Pi?
             # Or just use Rotation Matrix to direct robot?
             # 
             # Have robot rotate to Z to 0.
-            # 
-
-
+            #
 
             print(f"{tag_id}: {pose}")
 
@@ -136,14 +134,16 @@ def main():
 
             # Label the tag with the ID:
             cv2.putText(output_img, f"{tag_id}", (int(center.x), int(center.y)), cv2.FONT_HERSHEY_SIMPLEX, 1, col_txt, 2)
+            # cv2.putText(output_img, f"{decision_margin}", (int(center.x), int(center.y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
+
 
             img_y_list.append(-(center.x - width / 2) / (width / 2))
             img_z_list.append(-(center.y - height / 2) / (height / 2))
             
             # Convert Vision system coords to Robot-centric coords
-            # Vision X is Robot -Y
-            # Vision Y is Robot -Z
-            # Vision Z is Robot X
+            # Robot X is Vision Z
+            # Robot Y is Vision -X
+            # Robot Z is Vision -Y
             pose_tx_list.append(pose.translation().z_feet)
             pose_ty_list.append(-pose.translation().x_feet)
             pose_tz_list.append(-pose.translation().y_feet)
@@ -160,6 +160,7 @@ def main():
             # pose_ry_list.append(pose.rotation().y_degrees)
             # pose_rz_list.append(pose.rotation().z_degrees)
             id_list.append(tag_id)
+            decision_list.append(decision_margin)
 
 
         vision_nt.putNumberArray('target_img_z', img_z_list)
@@ -170,6 +171,7 @@ def main():
         vision_nt.putNumberArray('target_pose_rx', pose_rx_list)
         vision_nt.putNumberArray('target_pose_ry', pose_ry_list)
         vision_nt.putNumberArray('target_pose_rz', pose_rz_list)
+        vision_nt.putNumberArray('decision_margin', decision_list)
         
         # These sends the values in Vision system coords
         # vision_nt.putNumberArray('robot_pose_tx', robot_tx)
@@ -178,14 +180,14 @@ def main():
         # vision_nt.putNumberArray('robot_pose_rx', robot_rx)
         # vision_nt.putNumberArray('robot_pose_ry', robot_ry)
         # vision_nt.putNumberArray('robot_pose_rz', robot_rz)
-        vision_nt.putNumberArray('robot_id', id_list)
+        vision_nt.putNumberArray('_tag_id', id_list)
 
         processing_time = start_time - prev_time
         prev_time = start_time
 
         fps = 1 / processing_time
-        cv2.putText(output_img, str(round(fps, 1)), (0, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
-        
+        cv2.putText(output_img, str(round(fps)), (0, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
+
         # Resize output image for improved streaming bandwidth
         output_size = [320,240]
         output_img_small = cv2.resize(output_img, (output_size), interpolation=cv2.INTER_AREA)
