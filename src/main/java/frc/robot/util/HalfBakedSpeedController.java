@@ -52,7 +52,7 @@ public class HalfBakedSpeedController {
             return maxSpeed;
         }
 
-        double n = absoluteError;
+        double n = (absoluteError - minThreshold);
         double d = maxThreshold - minThreshold;
         double p = maxSpeed - minSpeed;
         return minSpeed + p * (n/d);
