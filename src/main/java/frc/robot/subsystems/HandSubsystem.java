@@ -19,10 +19,10 @@ public class HandSubsystem extends SubsystemBase {
     public static final int REVPH_CAN_ID = 5;
 
     /** Switch IDs on the hub for the solenoids */
-    public static final int PRESSURE_FORWARD = 0;
-    public static final int PRESSURE_REVERSE = 1;
-    public static final int POSITION_FORWARD = 2;
-    public static final int POSITION_REVERSE = 3;
+    public static final int PRESSURE_FORWARD = 2;
+    public static final int PRESSURE_REVERSE = 3;
+    public static final int POSITION_FORWARD = 0;
+    public static final int POSITION_REVERSE = 1;
     public static final int DUCK_QUACK = 4;
     public static final int DUCK_UNQUACK = 5;
 
@@ -79,7 +79,7 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public void release() {
-        pressure.set(LO);
+        pressure.set(HI);
         position.set(OPEN);
     }
 
