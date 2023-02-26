@@ -30,6 +30,7 @@ public class ArmUnit {
         motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         motor.setOpenLoopRampRate(0.3);
         motor.setInverted(inverted);
+        motor.setSmartCurrentLimit(23);
 
         this.encoder = motor.getEncoder();
         encoder.setPositionConversionFactor(factor);

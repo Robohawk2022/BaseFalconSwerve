@@ -18,20 +18,18 @@ public class ArmTeleopCommand extends CommandBase {
 
     private double [] wantedPosition;
 
-    private final double EXTENDER_MAX_THRESHOLD = 2;
-    private final double EXTENDER_MIN_THRESHOLD = 0.5;
-    private final double ROTATOR_MAX_THRESHOLD = 2;
-    private final double ROTATOR_MIN_THRESHOLD = 0.5;
+    private final double EXTENDER_MAX_THRESHOLD = 4;
+    private final double EXTENDER_MIN_THRESHOLD = 1;
+    private final double ROTATOR_MAX_THRESHOLD = 7;
+    private final double ROTATOR_MIN_THRESHOLD = 2;
 
-    private final double MOTOR_MAX_SPEED = 0.5;
-    private final double MOTOR_MIN_SPEED = 0.1;
+    private static final double EXTENDER_MAX_SPEED = 0.4;
+    private static final double EXTENDER_MIN_SPEED = 0.15;
+    private static final double ROTATOR_MAX_SPEED = 0.2;
+    private static final double ROTATOR_MIN_SPEED = 0.05;
 
-    HalfBakedSpeedController ExtenderSpeed = new HalfBakedSpeedController(EXTENDER_MIN_THRESHOLD, EXTENDER_MAX_THRESHOLD, MOTOR_MIN_SPEED, MOTOR_MAX_SPEED);
-    HalfBakedSpeedController RotatorSpeed = new HalfBakedSpeedController(ROTATOR_MIN_THRESHOLD, ROTATOR_MAX_THRESHOLD, MOTOR_MIN_SPEED, MOTOR_MAX_SPEED);
-
-
-
-
+    HalfBakedSpeedController ExtenderSpeed = new HalfBakedSpeedController(EXTENDER_MIN_THRESHOLD, EXTENDER_MAX_THRESHOLD, EXTENDER_MIN_SPEED, EXTENDER_MAX_SPEED);
+    HalfBakedSpeedController RotatorSpeed = new HalfBakedSpeedController(ROTATOR_MIN_THRESHOLD, ROTATOR_MAX_THRESHOLD, ROTATOR_MIN_SPEED, ROTATOR_MAX_SPEED);
 
     public ArmTeleopCommand(ArmSubsystem arm, DoubleSupplier rotateSupplier, DoubleSupplier extendSupplier) {
         this.arm = arm;
@@ -55,33 +53,28 @@ public class ArmTeleopCommand extends CommandBase {
 
     public void execute() {
 
-     
-
-        
         if (rotateSupplier.getAsDouble() > 0.1 ||
             rotateSupplier.getAsDouble() < -0.1) {
-        rotator.setSafe(rotateSupplier.getAsDouble(), 1);
-        wantedPosition[1] = arm.getRotatorPosition();
+            double output = rotateSupplier.getAsDouble() * ROTATOR_MAX_SPEED;
+            rotator.setSafe(output, ROTATOR_MAX_SPEED);
+            wantedPosition[1] = arm.getRotatorPosition();
         }   else if (arm.getRotatorPosition() > wantedPosition[1]){
-            rotator.motor.set(RotatorSpeed.calculate(wantedPosition[1] - arm.getRotatorPosition())
-            );
+            rotator.motor.set(RotatorSpeed.calculate(wantedPosition[1] - arm.getRotatorPosition()));
         }   else if (arm.getRotatorPosition() < wantedPosition[1]){
-            rotator.motor.set(RotatorSpeed.calculate(wantedPosition[1] - arm.getRotatorPosition())
-            );
+            rotator.motor.set(RotatorSpeed.calculate(wantedPosition[1] - arm.getRotatorPosition()));
         } else {
             rotator.motor.set(0);
         }
         
         if (extendSupplier.getAsDouble() > 0.1 ||
             extendSupplier.getAsDouble() < -0.1) {
-        extender.setSafe(extendSupplier.getAsDouble(), 1);
-        wantedPosition[0] = arm.getExtenderPosition();
-        } else if (arm.getExtenderPosition() > wantedPosition[0]){
-            extender.motor.set(ExtenderSpeed.calculate(wantedPosition[0] - arm.getExtenderPosition())
-            );
-        } else if (arm.getExtenderPosition() < wantedPosition[0]){
-            extender.motor.set(ExtenderSpeed.calculate(wantedPosition[0] - arm.getExtenderPosition())
-            );
+            double output = extendSupplier.getAsDouble() * EXTENDER_MAX_SPEED;
+            extender.setSafe(output, EXTENDER_MAX_SPEED);
+            wantedPosition[0] = arm.getExtenderPosition();
+        } else if (arm.getExtenderPosition() > wantedPosition[0]) {
+            extender.motor.set(ExtenderSpeed.calculate(wantedPosition[0] - arm.getExtenderPosition()));
+        } else if (arm.getExtenderPosition() < wantedPosition[0]) {
+            extender.motor.set(ExtenderSpeed.calculate(wantedPosition[0] - arm.getExtenderPosition()));
         } else {
             extender.motor.set(0);
         }

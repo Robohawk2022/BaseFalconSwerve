@@ -1,6 +1,9 @@
 package frc.robot;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
@@ -19,7 +22,6 @@ public class TestBenchControlMapping {
     
     public static void mapControls(TestBench testBench, CommandXboxController controller) {
 
-
         /*
          * DEFAULT TELEOP
          *   - left Y is rotate
@@ -28,11 +30,17 @@ public class TestBenchControlMapping {
         testBench.arm.setDefaultCommand(new ArmTeleopCommand(
             testBench.arm,
                 () -> clean(controller.getLeftY()),
-                () -> clean(controller.getRightY())));
+                () -> -clean(controller.getRightY())));
+
+        controller.y()
+                .onTrue(new InstantCommand(() -> testBench.arm.rotator.motor.setIdleMode(IdleMode.kCoast)));
+
+        controller.x()
+                .onTrue(new InstantCommand(() -> testBench.arm.rotator.motor.setIdleMode(IdleMode.kBrake)));
 
         // controller.y().onTrue(HandCommands.grab(testBench.hand));
         // controller.rightBumper().onTrue(HandCommands.release(testBench.hand));
-        controller.a().onTrue(new ArmPresetCommand(testBench.arm, ArmPresetCommand.HIGH_POSITION, controller.a()));
-        controller.b().onTrue(new ArmPresetCommand(testBench.arm, ArmPresetCommand.MIDDLE_POSITION, controller.b()));
+        // controller.a().onTrue(new ArmPresetCommand(testBench.arm, ArmPresetCommand.HIGH_POSITION, controller.a()));
+        // controller.b().onTrue(new ArmPresetCommand(testBench.arm, ArmPresetCommand.MIDDLE_POSITION, controller.b()));
     }
 }

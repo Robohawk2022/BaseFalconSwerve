@@ -7,20 +7,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
 
-    public static final double MAX_ROTATE = 0.8;
-    public static final double MAX_EXTEND = 0.8;
+    public static final double MAX_ROTATE = 0.4;
+    public static final double MAX_EXTEND = 0.4;
 
-    public static final int ROTATION_CANID = 1; //TODO change CanID
+    public static final int ROTATION_CANID = 2; //TODO change CanID
     public static final int ROTATION_LIMIT_ID = 4;
-    public static final boolean ROTATION_INVERTED = false;
-    public static final double ROTATION_TRAVEL_LIMIT = 300;
-    public static final double ROTATION_FACTOR = 1.0;
+    public static final boolean ROTATION_INVERTED = true;
+    public static final double ROTATION_TRAVEL_LIMIT = 75;
+    public static final double ROTATION_FACTOR = 0.5694;
 
-    public static final int EXTENSION_CANID = 2; //TODO change CanID
+    public static final int EXTENSION_CANID = 1; //TODO change CanID
     public static final int EXTENSION_LIMIT_ID = 5;
     public static final boolean EXTENSION_INVERTED = false;
-    public static final double EXTENSION_TRAVEL_LIMIT = 300;
-    public static final double EXTENSION_FACTOR = 1.0;
+    public static final double EXTENSION_TRAVEL_LIMIT = 20;
+    public static final double EXTENSION_FACTOR = 0.316;
 
     public static final int SOLENOID_CHANNEL = 1;
 
