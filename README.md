@@ -4,15 +4,6 @@
 
 # Prior to delivery
 
-- Test bench
-  - Rewire "arm" motors
-  - Rewire double solenoids for hi/lo pressure release
-  - Add THE DUCK
-
-- Test hand commands
-  - Grab
-  - Release
-
 - Test arm code
   - Calibration routine to set min/max
   - Move to preset
