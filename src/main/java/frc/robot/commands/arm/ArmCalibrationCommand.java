@@ -3,10 +3,9 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 
-public class ArmCalibrationCommand extends CommandBase {
+import static frc.robot.subsystems.arm.ArmConfig.*;
 
-    public static final double ROTATE_SPEED = 0.2;
-    public static final double EXTEND_SPEED = 0.2;
+public class ArmCalibrationCommand extends CommandBase {
 
     private final ArmSubsystem arm;
     private boolean done;
@@ -24,7 +23,7 @@ public class ArmCalibrationCommand extends CommandBase {
 
     @Override
     public void execute() {
-        done = arm.calibrate(ROTATE_SPEED, EXTEND_SPEED);
+        done = arm.calibrate(ROTATOR_MIN_SPEED, EXTENDER_MIN_SPEED);
     }
 
     @Override

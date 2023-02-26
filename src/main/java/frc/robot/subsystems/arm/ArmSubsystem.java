@@ -5,24 +5,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import static frc.robot.subsystems.arm.ArmConfig.*;
+
 public class ArmSubsystem extends SubsystemBase {
-
-    public static final double MAX_ROTATE = 0.4;
-    public static final double MAX_EXTEND = 0.4;
-
-    public static final int ROTATION_CANID = 2; //TODO change CanID
-    public static final int ROTATION_LIMIT_ID = 4;
-    public static final boolean ROTATION_INVERTED = true;
-    public static final double ROTATION_TRAVEL_LIMIT = 75;
-    public static final double ROTATION_FACTOR = 0.5694;
-
-    public static final int EXTENSION_CANID = 1; //TODO change CanID
-    public static final int EXTENSION_LIMIT_ID = 5;
-    public static final boolean EXTENSION_INVERTED = false;
-    public static final double EXTENSION_TRAVEL_LIMIT = 20;
-    public static final double EXTENSION_FACTOR = 0.316;
-
-    public static final int SOLENOID_CHANNEL = 1;
 
     public final ArmUnit rotator;
     public final ArmUnit extender;
@@ -37,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem() {
         extender = new ArmUnit(EXTENSION_CANID, EXTENSION_LIMIT_ID, EXTENSION_FACTOR, EXTENSION_INVERTED);
         rotator = new ArmUnit(ROTATION_CANID, ROTATION_LIMIT_ID, ROTATION_FACTOR, ROTATION_INVERTED);
-        parkingBreak = new Solenoid(PneumaticsModuleType.REVPH, SOLENOID_CHANNEL);
+        parkingBreak = new Solenoid(PneumaticsModuleType.REVPH, EXTENSION_BRAKE_CHANNEL);
         SmartDashboard.putData("Rotator", builder -> {
             builder.addDoubleProperty("Current", () -> rotator.encoder.getPosition(), null);
             builder.addDoubleProperty("Max", () -> rotator.max, null);
@@ -85,12 +70,11 @@ public class ArmSubsystem extends SubsystemBase {
         return extender.encoder.getPosition();
     }
 
-    /**
-     * Moves safely at the specified speed
-     */
-    public void moveAt(double percentRotate, double percentExtend) {
-        rotator.setSafe(percentRotate, MAX_ROTATE);
-        extender.setSafe(percentExtend, MAX_EXTEND);
+    public void extendAt(double percentOutput) {
+        extender.setSafe(percentOutput, EXTENDER_MAX_SPEED);
     }
 
+    public void rotateAt(double percentOutput) {
+        rotator.setSafe(percentOutput, ROTATOR_MAX_SPEED);
+    }
 }

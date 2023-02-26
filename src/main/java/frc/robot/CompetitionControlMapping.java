@@ -11,7 +11,6 @@ import frc.robot.commands.modes.LoadingStationModeCommand;
 import frc.robot.commands.modes.PickupModeCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
-import edu.wpi.first.wpilibj.XboxController.Button;
 
 import static frc.robot.commands.arm.ArmPresetCommand.HIGH_POSITION;
 import static frc.robot.commands.arm.ArmPresetCommand.LOW_POSITION;
@@ -68,17 +67,17 @@ public class CompetitionControlMapping {
         controller.y()
                 .onTrue(HandCommands.release(robot.hand));
 
-        controller.rightBumper().onTrue(new BuzzAroundModeCommand(robot, controller));
-        controller.leftBumper().onTrue(new PickupModeCommand(robot, controller));
-        controller.b().onTrue(new LoadingStationModeCommand(robot, controller));
+        controller.rightBumper().onTrue(new BuzzAroundModeCommand(robot));
+        controller.leftBumper().onTrue(new PickupModeCommand(robot));
+        controller.b().onTrue(new LoadingStationModeCommand(robot));
     }
 
     public static void mapSpecialOpsJoystick(Robot robot, CommandXboxController specialOpsController) {
         
-        specialOpsController.pov(0).onTrue(new ArmPresetCommand(robot.arm, HIGH_POSITION, specialOpsController.x()));
-        specialOpsController.pov(90).onTrue(new ArmPresetCommand(robot.arm, MIDDLE_POSITION, specialOpsController.x()));
-        specialOpsController.pov(180).onTrue(new ArmPresetCommand(robot.arm, LOW_POSITION, specialOpsController.x()));
-        specialOpsController.pov(270).onTrue(new ArmPresetCommand(robot.arm, TRAVEL_POSITION, specialOpsController.x()));
+        specialOpsController.pov(0).onTrue(new ArmPresetCommand(robot.arm, HIGH_POSITION));
+        specialOpsController.pov(90).onTrue(new ArmPresetCommand(robot.arm, MIDDLE_POSITION));
+        specialOpsController.pov(180).onTrue(new ArmPresetCommand(robot.arm, LOW_POSITION));
+        specialOpsController.pov(270).onTrue(new ArmPresetCommand(robot.arm, TRAVEL_POSITION));
 
         specialOpsController.a()
                 .onTrue(new DropOffModeCommand(robot));
@@ -87,7 +86,7 @@ public class CompetitionControlMapping {
                 .onTrue(HandCommands.grab(robot.hand));
 
         specialOpsController.y()
-                 .onTrue(new HandCommands().release(robot.hand));
+                 .onTrue(HandCommands.release(robot.hand));
 
         specialOpsController.leftBumper()
                 .onTrue(SwerveCommands.hopLeft(robot.swerveDrive, 22.0));
