@@ -23,7 +23,7 @@ public class DropOffModeCommand extends SequentialCommandGroup {
         addCommands(new InstantCommand(() -> robot.swerveDrive.setRobotRelative(false)));
 
         addCommands(new AlignToWallCommand(robot, 180));
-        //the wanted direction depends on the postition of the robot?
+        //TODO is this the wanted direction?
 
         addCommands(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
     }
