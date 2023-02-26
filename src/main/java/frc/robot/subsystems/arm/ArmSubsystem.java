@@ -11,21 +11,21 @@ public class ArmSubsystem extends SubsystemBase {
     public static final double MAX_EXTEND = 0.8;
 
     public static final int ROTATION_CANID = 1; //TODO change CanID
-    public static final int ROTATION_LIMIT_ID = 1;
+    public static final int ROTATION_LIMIT_ID = 4;
     public static final boolean ROTATION_INVERTED = false;
     public static final double ROTATION_TRAVEL_LIMIT = 300;
     public static final double ROTATION_FACTOR = 1.0;
 
-    public static final int EXTENSION_CANID = 1; //TODO change CanID
-    public static final int EXTENSION_LIMIT_ID = 1;
+    public static final int EXTENSION_CANID = 2; //TODO change CanID
+    public static final int EXTENSION_LIMIT_ID = 5;
     public static final boolean EXTENSION_INVERTED = false;
     public static final double EXTENSION_TRAVEL_LIMIT = 300;
     public static final double EXTENSION_FACTOR = 1.0;
 
     public static final int SOLENOID_CHANNEL = 1;
 
-    private final ArmUnit rotator;
-    private final ArmUnit extender;
+    public final ArmUnit rotator;
+    public final ArmUnit extender;
     private final Solenoid parkingBreak;
 
     // TODO MotorControllers: 50 Amphs set current Limit
