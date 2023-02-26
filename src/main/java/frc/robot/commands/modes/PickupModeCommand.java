@@ -3,10 +3,12 @@ package frc.robot.commands.modes;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
+
 
 /**
  * Enters pickup mode for picking up from the floor:
@@ -19,10 +21,10 @@ import frc.robot.commands.swerve.AlignToWallCommand;
  */
 public class PickupModeCommand extends CommandBase {
 
-    public PickupModeCommand(Robot robot) {
+    public PickupModeCommand(Robot robot, CommandXboxController specialOpsController) {
 
         turningOffSwerveDriveModes(robot);
-        new ArmPresetCommand(robot.arm, ArmPresetCommand.PICKUP_POSITION);
+        new ArmPresetCommand(robot.arm, ArmPresetCommand.PICKUP_POSITION, specialOpsController.x());
         
     }
 

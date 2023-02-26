@@ -1,10 +1,11 @@
 package frc.robot.commands.modes;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
-
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 /**
  * Enters "buzz around mode":
  *   - robot relative is false
@@ -18,7 +19,7 @@ import frc.robot.commands.arm.ArmPresetCommand;
  */
 public class BuzzAroundModeCommand extends SequentialCommandGroup {
 
-    public BuzzAroundModeCommand(Robot robot) {
+    public BuzzAroundModeCommand(Robot robot, CommandXboxController specialOpsController) {
 
         // this is sort of cheating - we're not going to declare the
         // dependency on the swerve drive subsystem. all three of these
@@ -28,6 +29,6 @@ public class BuzzAroundModeCommand extends SequentialCommandGroup {
         addCommands(new InstantCommand(() -> robot.swerveDrive.setOrbitMode(false)));
 
         // the real work - move the arm to the travel position.
-        addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION));
+        addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION, specialOpsController.x()));
     }
 }
