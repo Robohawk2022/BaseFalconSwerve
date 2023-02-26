@@ -93,6 +93,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         if (kinematics == targetKinematics) {
             return;
         }
+        this.kinematics = targetKinematics;
 
         if (odometry == null) {
             odometry = new SwerveDriveOdometry(
@@ -107,7 +108,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
                     getModulePositions(),
                     currentPose);
         }
-        this.kinematics = targetKinematics;
     }
 
     public void setRobotRelative(boolean robotRelative) {
