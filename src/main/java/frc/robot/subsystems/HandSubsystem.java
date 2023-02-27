@@ -3,15 +3,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
- * Represents the pneumatics for the hand. There are two double solenoids that
+ * Represents the pneumatics for the hand. There are three double solenoids that
  * control its behavior:
  *   - PRESSURE (options: low, high or off)
  *   - POSITION (options: open, closed or off)
+ *   - DUCK (options: extended or quacked, retracted or unquacked, or off)
  */
 public class HandSubsystem extends SubsystemBase {
 
