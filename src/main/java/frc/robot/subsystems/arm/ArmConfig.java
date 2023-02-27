@@ -36,8 +36,8 @@ public class ArmConfig {
 
     public static HalfBakedSpeedController makeExtenderSpeedController() {
         return new HalfBakedSpeedController(
-                EXTENDER_MIN_SPEED, EXTENDER_MAX_SPEED,
-                EXTENDER_MIN_THRESHOLD, EXTENDER_MAX_THRESHOLD);
+                EXTENDER_MIN_THRESHOLD, EXTENDER_MAX_THRESHOLD,
+                EXTENDER_MIN_SPEED, EXTENDER_MAX_SPEED);
     }
 
 /*
@@ -71,7 +71,7 @@ public class ArmConfig {
 
     public static HalfBakedSpeedController makeRotatorSpeedController() {
         return new HalfBakedSpeedController(
-                ROTATOR_MIN_SPEED, ROTATOR_MAX_SPEED,
-                ROTATOR_MIN_THRESHOLD, ROTATOR_MAX_THRESHOLD);
+            ROTATOR_MIN_THRESHOLD, ROTATOR_MAX_THRESHOLD,
+            ROTATOR_MIN_SPEED, ROTATOR_MAX_SPEED);
     }
 }

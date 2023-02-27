@@ -86,8 +86,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void clearLimits() {
-        rotateMin = extendMin = Double.MIN_VALUE;
-        rotateMax = extendMax = Double.MAX_VALUE;
+        rotateMin = extendMin = Double.NEGATIVE_INFINITY;
+        rotateMax = extendMax = Double.POSITIVE_INFINITY;
     }
 
     public void retractParkingBrake(){
@@ -128,7 +128,8 @@ public class ArmSubsystem extends SubsystemBase {
         if (percentOutput < 0 && getLength() < extendMin) {
             percentOutput = 0;
         }
-        extendMotor.set(MathUtil.clamp(percentOutput, -EXTENDER_MAX_SPEED, EXTENDER_MAX_SPEED));
+        percentOutput = MathUtil.clamp(percentOutput, -EXTENDER_MAX_SPEED, EXTENDER_MAX_SPEED);
+        extendMotor.set(percentOutput);
     }
 
     public void rotateAt(double percentOutput) {
