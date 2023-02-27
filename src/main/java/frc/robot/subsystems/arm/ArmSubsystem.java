@@ -17,17 +17,20 @@ public class ArmSubsystem extends SubsystemBase {
     private final CANSparkMax rotateMotor;
     private final RelativeEncoder rotateEncoder;
     private final DigitalInput rotateLimit;
-    private boolean rotateNeedsCalibration;
+    private double rotateMin;
+    private double rotateMax;
 
     private final CANSparkMax extendMotor;
     private final RelativeEncoder extendEncoder;
     private final DigitalInput extendLimit;
     private final Solenoid extendBrake;
-    private boolean extendNeedsCalibration;
+    private double extendMin;
+    private double extendMax;
 
     public ArmSubsystem() {
 
         rotateMotor = new CANSparkMax(ROTATION_CANID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rotateMotor.restoreFactoryDefaults();
         rotateMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rotateMotor.setOpenLoopRampRate(ROTATOR_RAMP_RATE);
         rotateMotor.setClosedLoopRampRate(ROTATOR_RAMP_RATE);
@@ -38,6 +41,7 @@ public class ArmSubsystem extends SubsystemBase {
         rotateLimit = new DigitalInput(ROTATION_LIMIT_ID);
 
         extendMotor = new CANSparkMax(EXTENSION_CANID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        extendMotor.restoreFactoryDefaults();
         extendMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         extendMotor.setOpenLoopRampRate(EXTENDER_RAMP_RATE);
         extendMotor.setClosedLoopRampRate(EXTENDER_RAMP_RATE);
@@ -47,20 +51,32 @@ public class ArmSubsystem extends SubsystemBase {
         extendEncoder.setPositionConversionFactor(EXTENSION_FACTOR);
         extendLimit = new DigitalInput(EXTENSION_LIMIT_ID);
 
-        extendBrake = new Solenoid(5, PneumaticsModuleType.REVPH, EXTENSION_BRAKE_CHANNEL);
-
+        extendBrake = null; // new Solenoid(5, PneumaticsModuleType.REVPH, EXTENSION_BRAKE_CHANNEL);
+            
         clearLimits();
 
         SmartDashboard.putData("Rotator", builder -> {
             builder.addDoubleProperty("Current", this::getAngle, null);
-            builder.addBooleanProperty("NeedsCalibration", () -> rotateNeedsCalibration, null);
+            builder.addBooleanProperty("Limit", this::atRotateLimit, null);
+            builder.addDoubleProperty("Max", () -> rotateMax, null);
+            builder.addDoubleProperty("Min", () -> rotateMin, null);
         });
         SmartDashboard.putData("Extender", builder -> {
             builder.addDoubleProperty("Current", this::getLength, null);
-            builder.addBooleanProperty("NeedsCalibration", () -> extendNeedsCalibration, null);
+            builder.addBooleanProperty("Limit", this::atExtendLimit, null);
+            builder.addDoubleProperty("Max", () -> extendMax, null);
+            builder.addDoubleProperty("Min", () -> extendMin, null);
         });
     }
 
+    public boolean atExtendLimit() {
+        return extendLimit.get() == EXTENSION_LIMIT_PRESSED;
+    }
+
+    public boolean atRotateLimit() {
+        return rotateLimit.get() == ROTATION_LIMIT_PRESSED;
+    }
+    
     public double getAngle() {
         return rotateEncoder.getPosition();
     }
@@ -70,62 +86,59 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void clearLimits() {
-        rotateNeedsCalibration = true;
-        extendNeedsCalibration = true;
+        rotateMin = extendMin = Double.MIN_VALUE;
+        rotateMax = extendMax = Double.MAX_VALUE;
     }
 
     public void retractParkingBrake(){
         extendBrake.set(true);
     }
 
-    public boolean calibrate() {
+    public boolean calibrationComplete() {
 
         double rotateOutput = 0.0;
-        if (rotateNeedsCalibration) {
-            if (rotateLimit.get()) {
-                rotateEncoder.setPosition(ROTATE_PHYSICAL_MAX);
-                rotateNeedsCalibration = false;
+        if (rotateMin == Double.MIN_VALUE) {
+            if (atRotateLimit()) {
+                rotateMax = rotateEncoder.getPosition() - ROTATE_TRAVEL_BUFFER;
+                rotateMin = rotateMax - ROTATE_PHYSICAL_MAX + 2 * ROTATE_TRAVEL_BUFFER;
             } else {
                 rotateOutput = ROTATOR_MIN_SPEED;
             }
         }
-        rotateAt(rotateOutput);
+        rotateMotor.set(rotateOutput);
 
         double extendOutput = 0.0;
-        if (extendNeedsCalibration) {
-            if (extendLimit.get()) {
-                extendEncoder.setPosition(EXTENDER_PHYSICAL_MIN);
-                extendNeedsCalibration = false;
+        if (extendMin == Double.MIN_VALUE) {
+            if (atExtendLimit()) {
+                extendMin = extendEncoder.getPosition() + EXTENDER_TRAVEL_BUFFER;
+                extendMax = extendMin + EXTENDER_PHYSICAL_MAX - 2 * EXTENDER_TRAVEL_BUFFER;
             } else {
                 extendOutput = -EXTENDER_MAX_SPEED;
             }
         }
-        extendAt(extendOutput);
+        extendMotor.set(extendOutput);
 
-        return rotateNeedsCalibration || extendNeedsCalibration;
+        return rotateOutput == 0.0 && extendOutput == 0.0;
     }
 
     public void extendAt(double percentOutput) {
-        if (!extendNeedsCalibration) {
-            if (percentOutput > 0 && getLength() > EXTENDER_TRAVEL_MAX) {
-                percentOutput = 0;
-            }
-            if (percentOutput < 0 && getLength() < EXTENDER_TRAVEL_MIN) {
-                percentOutput = 0;
-            }
+        if (percentOutput > 0 && getLength() > extendMax) {
+            percentOutput = 0;
+        }
+        if (percentOutput < 0 && getLength() < extendMin) {
+            percentOutput = 0;
         }
         extendMotor.set(MathUtil.clamp(percentOutput, -EXTENDER_MAX_SPEED, EXTENDER_MAX_SPEED));
     }
 
     public void rotateAt(double percentOutput) {
-        if (!rotateNeedsCalibration) {
-            if (percentOutput > 0 && getAngle() > ROTATE_TRAVEL_MAX) {
-                percentOutput = 0;
-            }
-            if (percentOutput < 0 && getAngle() < ROTATE_TRAVEL_MIN) {
-                percentOutput = 0;
-            }
+        if (percentOutput > 0 && getAngle() > rotateMax) {
+            percentOutput = 0;
         }
-        rotateMotor.set(MathUtil.clamp(percentOutput, -ROTATOR_MAX_SPEED, ROTATOR_MAX_SPEED));
+        if (percentOutput < 0 && getAngle() < rotateMin) {
+            percentOutput = 0;
+        }
+        percentOutput = MathUtil.clamp(percentOutput, -ROTATOR_MAX_SPEED, ROTATOR_MAX_SPEED);
+        rotateMotor.set(percentOutput);
     }
 }

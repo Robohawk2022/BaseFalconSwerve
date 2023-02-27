@@ -21,7 +21,7 @@ public class ArmCalibrationCommand extends CommandBase {
 
     @Override
     public void execute() {
-        done = arm.calibrate();
+        done = arm.calibrationComplete();
     }
 
     @Override
