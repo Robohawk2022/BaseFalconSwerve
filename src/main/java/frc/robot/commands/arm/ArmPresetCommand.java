@@ -18,16 +18,16 @@ public class ArmPresetCommand extends CommandBase {
     public static final double [] LOAD_POSITION = { 2.0, 3.0 };
 
     private final ArmSubsystem arm;
-    private final double targetRotation;
-    private final double targetExtension;
+    private final double targetAngle;
+    private final double targetLength;
     private final HalfBakedSpeedController rotateSpeed;
     private final HalfBakedSpeedController extendSpeed;
     private boolean done;
 
     public ArmPresetCommand(ArmSubsystem arm, double [] preset) {
         this.arm = arm;
-        this.targetRotation = preset[0];
-        this.targetExtension = preset[1];
+        this.targetAngle = preset[0];
+        this.targetLength = preset[1];
         this.rotateSpeed = makeRotatorSpeedController();
         this.extendSpeed = makeExtenderSpeedController();
         addRequirements(arm);
@@ -41,11 +41,11 @@ public class ArmPresetCommand extends CommandBase {
     @Override
     public void execute() {
 
-        double rotationError = targetRotation - arm.getRotatorPosition();
+        double rotationError = targetAngle - arm.getAngle();
         double percentRotate = rotateSpeed.calculate(rotationError);
         arm.rotateAt(percentRotate);
 
-        double extensionError = targetExtension - arm.getExtenderPosition();
+        double extensionError = targetLength - arm.getLength();
         double percentExtend = extendSpeed.calculate(extensionError);
         arm.extendAt(percentExtend);
 

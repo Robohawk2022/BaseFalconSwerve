@@ -32,12 +32,6 @@ public class TestBenchControlMapping {
                 () -> clean(controller.getLeftY()),
                 () -> -clean(controller.getRightY())));
 
-        controller.y()
-                .onTrue(new InstantCommand(() -> testBench.arm.rotator.motor.setIdleMode(IdleMode.kCoast)));
-
-        controller.x()
-                .onTrue(new InstantCommand(() -> testBench.arm.rotator.motor.setIdleMode(IdleMode.kBrake)));
-
         // controller.y().onTrue(HandCommands.grab(testBench.hand));
         // controller.rightBumper().onTrue(HandCommands.release(testBench.hand));
         // controller.a().onTrue(new ArmPresetCommand(testBench.arm, ArmPresetCommand.HIGH_POSITION, controller.a()));

@@ -32,8 +32,8 @@ public class ArmTeleopCommand extends CommandBase {
 
     @Override
     public void initialize(){
-        wantedPosition[0] = arm.getExtenderPosition();
-        wantedPosition[1] = arm.getRotatorPosition();
+        wantedPosition[0] = arm.getLength();
+        wantedPosition[1] = arm.getAngle();
     }
 
     public void execute() {
@@ -44,9 +44,9 @@ public class ArmTeleopCommand extends CommandBase {
         if (rotateInput != 0.0) {
             rotateError = 0.0;
             rotateOutput = rotateInput * ROTATOR_MAX_SPEED;
-            wantedPosition[1] = arm.getRotatorPosition();
+            wantedPosition[1] = arm.getAngle();
         } else {
-            rotateError = wantedPosition[1] - arm.getRotatorPosition();
+            rotateError = wantedPosition[1] - arm.getAngle();
             rotateOutput = rotatorSpeed.calculate(rotateError);
         }
         arm.rotateAt(rotateOutput);
@@ -62,9 +62,9 @@ public class ArmTeleopCommand extends CommandBase {
         if (extendInput != 0.0) {
             extendError = 0.0;
             extendOutput = extendSupplier.getAsDouble() * EXTENDER_MAX_SPEED;
-            wantedPosition[0] = arm.getExtenderPosition();
+            wantedPosition[0] = arm.getLength();
         } else {
-            extendError = wantedPosition[0] - arm.getExtenderPosition();
+            extendError = wantedPosition[0] - arm.getLength();
             extendOutput = extenderSpeed.calculate(extendError);
         }
         arm.extendAt(extendOutput);
