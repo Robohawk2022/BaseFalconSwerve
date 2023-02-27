@@ -1,0 +1,115 @@
+{
+    "cameras": [
+        {
+            "brightness": 50,
+            "exposure": "auto",
+            "fps": 30,
+            "height": 240,
+            "name": "Primary",
+            "path": "/dev/video0",
+            "pixel format": "mjpeg",
+            "properties": [
+                {
+                    "name": "connect_verbose",
+                    "value": 1
+                },
+                {
+                    "name": "contrast",
+                    "value": 100
+                },
+                {
+                    "name": "saturation",
+                    "value": 0
+                },
+                {
+                    "name": "power_line_frequency",
+                    "value": 0
+                },
+                {
+                    "name": "sharpness",
+                    "value": 100
+                },
+                {
+                    "name": "backlight_compensation",
+                    "value": 5
+                },
+                {
+                    "name": "pan_absolute",
+                    "value": 0
+                },
+                {
+                    "name": "tilt_absolute",
+                    "value": 0
+                },
+                {
+                    "name": "zoom_absolute",
+                    "value": 0
+                },
+                {
+                    "name": "hue",
+                    "value": 0
+                }
+            ],
+            "stream": {
+                "properties": []
+            },
+            "white balance": "auto",
+            "width": 416
+        },
+        {
+            "brightness": 0,
+            "exposure": "auto",
+            "fps": 30,
+            "height": 240,
+            "name": "Secondary",
+            "path": "/dev/video2",
+            "pixel format": "mjpeg",
+            "properties": [
+                {
+                    "name": "connect_verbose",
+                    "value": 1
+                },
+                {
+                    "name": "contrast",
+                    "value": 40
+                },
+                {
+                    "name": "saturation",
+                    "value": 52
+                },
+                {
+                    "name": "power_line_frequency",
+                    "value": 2
+                },
+                {
+                    "name": "sharpness",
+                    "value": 50
+                },
+                {
+                    "name": "backlight_compensation",
+                    "value": 5
+                },
+                {
+                    "name": "pan_absolute",
+                    "value": 0
+                },
+                {
+                    "name": "tilt_absolute",
+                    "value": 0
+                },
+                {
+                    "name": "zoom_absolute",
+                    "value": 0
+                }
+            ],
+            "stream": {
+                "properties": []
+            },
+            "white balance": "auto",
+            "width": 320
+        }
+    ],
+    "ntmode": "client",
+    "switched cameras": [],
+    "team": 3373
+}
