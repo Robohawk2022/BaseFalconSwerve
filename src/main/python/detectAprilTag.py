@@ -21,6 +21,7 @@ def main():
         config = json.load(f)
     camera = config['cameras'][0]
 
+
     width = camera['width']
     height = camera['height']
     print("w, h from file = (%s,%s)" % (width,height))
@@ -29,8 +30,15 @@ def main():
     video.setVideoMode(VideoMode.PixelFormat.kMJPEG, width, height, 30)
 
     input_stream = CameraServer.getVideo()
+    
     output_stream = CameraServer.putVideo('Processed', width, height)
     img = np.zeros(shape=(height, width, 3), dtype=np.uint8)
+
+    if config['cameras'][1]:
+        camera_secondary = config['cameras'][1]
+        video_secondary = CameraServer.startAutomaticCapture(camera_secondary['name'], camera_secondary['path'])
+        video_secondary.setVideoMode(VideoMode.PixelFormat.kMJPEG, camera_secondary['width'], camera_secondary['height'], 30)
+   
 
     # start NetworkTables
     ntinst = NetworkTableInstance.getDefault()
@@ -69,6 +77,7 @@ def main():
         pose_rx_list = []
         pose_ry_list = []
         pose_rz_list = []
+        distance_list = []
         id_list = []
         decision_list = []
         distance_saved = 1000000
@@ -143,27 +152,30 @@ def main():
             cv2.line(output_img, corner2, corner3, color = col_box, thickness = 2)
             cv2.line(output_img, corner3, corner0, color = col_box, thickness = 2)
 
-            # Label the tag with the ID:
-            cv2.putText(output_img, f"{tag_id}", (int(center.x), int(center.y)), cv2.FONT_HERSHEY_SIMPLEX, 1, col_txt, 2)
-            # cv2.putText(output_img, f"{decision_margin}", (int(center.x), int(center.y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
-
 
             img_y_list.append(round(-(center.x - width / 2) / (width / 2), 2))
             img_z_list.append(round(-(center.y - height / 2) / (height / 2), 2))
             
-            pose_tx=pose.translation().x_feet
-            pose_ty=pose.translation().y_feet
-            pose_tz=pose.translation().z_feet
+            # Save pose translations in robot centric coordinate system
+            pose_tx=pose.translation().z_feet
+            pose_ty=-pose.translation().x_feet
+            pose_tz=-pose.translation().y_feet
 
             distance = math.sqrt(pow(pose_tx,2)+pow(pose_ty,2)+pow(pose_tz,2))
-
+            
             if distance < distance_saved:
-                distance_saved = distance
-                pose_tx_saved = pose_tx
-                pose_ty_saved = pose_ty
-                pose_tz_saved = pose_tz
+                distance_saved = round(distance, 1)
+                pose_tx_saved = round(pose_tx, decimal)
+                pose_ty_saved = round(pose_ty, decimal)
+                pose_tz_saved = round(pose_tz, decimal)
                 id_saved = tag_id
-                decision_saved = decision_margin
+                decision_saved = round(decision_margin)
+
+            # Label the tag with the ID in Blue, Decision Margin in White, and Distance value in Red
+            cv2.putText(output_img, f"{tag_id}", (int(center.x), int(center.y)), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,0,0), 2)
+            cv2.putText(output_img, f"{decision_margin}", (corner2), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255),2)
+            cv2.putText(output_img, str(round(distance, 1)), (corner0), cv2.FONT_HERSHEY_SIMPLEX, 1, col_txt, 2)
+
 
             # Convert Vision system coords to Robot-centric coords
             # Robot X is Vision Z
@@ -175,25 +187,11 @@ def main():
             pose_rx_list.append(round(pose.rotation().z_degrees, decimal))
             pose_ry_list.append(round(-pose.rotation().x_degrees, decimal))
             pose_rz_list.append(round(-pose.rotation().y_degrees, decimal))
-
-
-            # Vision system coords (original code)
-            # pose_tx_list.append(pose.translation().x_feet)
-            # pose_ty_list.append(pose.translation().y_feet)
-            # pose_tz_list.append(pose.translation().z_feet)
-            # pose_rx_list.append(pose.rotation().x_degrees)
-            # pose_ry_list.append(pose.rotation().y_degrees)
-            # pose_rz_list.append(pose.rotation().z_degrees)
+            distance_list.append(round(distance,1))
             id_list.append(tag_id)
             decision_list.append(decision_margin)
 
-
-# if code detects more than one april tag then test distances and stop detecting all of the ones exept for the closest one
-#     Do the ame when running command
-
-
-
-
+        # Send All Tag data to Network Tables
         vision_nt.putNumberArray('target_img_z', img_z_list)
         vision_nt.putNumberArray('target_img_y', img_y_list)
         vision_nt.putNumberArray('target_pose_tx', pose_tx_list)
@@ -203,28 +201,24 @@ def main():
         vision_nt.putNumberArray('target_pose_ry', pose_ry_list)
         vision_nt.putNumberArray('target_pose_rz', pose_rz_list)
         vision_nt.putNumberArray('decision_margin', decision_list)
-        
-        # These sends the values in Vision system coords
-        # vision_nt.putNumberArray('robot_pose_tx', robot_tx)
-        # vision_nt.putNumberArray('robot_pose_ty', robot_ty)
-        # vision_nt.putNumberArray('robot_pose_tz', robot_tz)
-        # vision_nt.putNumberArray('robot_pose_rx', robot_rx)
-        # vision_nt.putNumberArray('robot_pose_ry', robot_ry)
-        # vision_nt.putNumberArray('robot_pose_rz', robot_rz)
         vision_nt.putNumberArray('_tag_id', id_list)
 
-
-        vision_closest_nt.putValue('_tag_id', id_saved)
-        vision_closest_nt.putValue('distance_saved', distance_saved)
-        # vision_closest_nt.putNumberArray('target_img_z', img_z_list)
-        # vision_closest_nt.putNumberArray('target_img_y', img_y_list)
-        vision_closest_nt.putValue ('target_pose_tx', pose_tx_saved)
-        vision_closest_nt.putValue('target_pose_ty', pose_ty_saved)
-        vision_closest_nt.putValue('target_pose_tz', pose_tz_saved)
-        # vision_closest_nt.putNumberArray('target_pose_rx', pose_rx_list)
-        # vision_closest_nt.putNumberArray('target_pose_ry', pose_ry_list)
-        # vision_closest_nt.putNumberArray('target_pose_rz', pose_rz_list)
-        vision_closest_nt.putValue('decision_margin', decision_saved)
+        # Send Closest Tag data to Network Tables
+        if bool(id_saved):
+            vision_closest_nt.putValue('_tag_id', id_saved)
+            vision_closest_nt.putValue('distance_saved', distance_saved)
+            vision_closest_nt.putValue ('target_pose_tx', pose_tx_saved)
+            vision_closest_nt.putValue('target_pose_ty', pose_ty_saved)
+            vision_closest_nt.putValue('target_pose_tz', pose_tz_saved)
+            vision_closest_nt.putValue('decision_margin', decision_saved)
+        else:
+            print("Tag list is Empty")
+            vision_closest_nt.putValue('_tag_id', 0)
+            vision_closest_nt.putValue('distance_value', 0)
+            vision_closest_nt.putValue ('target_pose_tx', 0)
+            vision_closest_nt.putValue('target_pose_ty', 0)
+            vision_closest_nt.putValue('target_pose_tz', 0)
+            vision_closest_nt.putValue('decision_margin', 0)
         
 
         processing_time = start_time - prev_time
