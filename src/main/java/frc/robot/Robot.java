@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
     public ArmSubsystem arm;
     public VisionSubsystem vision;
     public AutonomousCommand autonomousCommand;
+    public RobotControlMapping mapping;
 
     @Override
     public void robotInit() {
@@ -43,8 +44,10 @@ public class Robot extends TimedRobot {
         arm = new ArmSubsystem();
 
         // do any additional control mapping that needs to be done
-        RobotControlMapping.mapSpecialOps(this, new CommandXboxController(OPS_PORT));
-        RobotControlMapping.mapDriver(this, new CommandXboxController(DRIVE_PORT));
+        mapping = new RobotControlMapping(
+                this,
+                new CommandXboxController(DRIVE_PORT),
+                new CommandXboxController(OPS_PORT));
     }
 
     @Override
