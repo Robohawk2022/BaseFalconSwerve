@@ -59,18 +59,18 @@ public class ArmSubsystem extends SubsystemBase {
         clearLimits();
 
         SmartDashboard.putData("Rotator", builder -> {
-            builder.addDoubleProperty("Angle", this::getAngleDelta, null);
-            builder.addBooleanProperty("Limit", this::rotateLimitTripped, null);
-            builder.addDoubleProperty("Max", () -> rotateMax, null);
-            builder.addDoubleProperty("Min", this::getEffectiveRotateMin, null);
+            builder.addDoubleProperty("Calculated Angle", this::getAngleDelta, null);
+            builder.addBooleanProperty("Limit Tripped", this::rotateLimitTripped, null);
+            builder.addDoubleProperty("Effective Max", () -> rotateMax, null);
+            builder.addDoubleProperty("Effective Min", this::getEffectiveRotateMin, null);
             builder.addDoubleProperty("Raw Min", () -> rotateMin, null);
             builder.addDoubleProperty("Raw Angle", this::getAngle, null);
         });
         SmartDashboard.putData("Extender", builder -> {
-            builder.addDoubleProperty("Length", this::getLengthDelta, null);
-            builder.addBooleanProperty("Limit", this::extendLimitTripped, null);
-            builder.addDoubleProperty("Max", this::getEffectiveExtendMax, null);
-            builder.addDoubleProperty("Min", () -> extendMin, null);
+            builder.addDoubleProperty("Calculated Length", this::getLengthDelta, null);
+            builder.addBooleanProperty("Limit Tripped", this::extendLimitTripped, null);
+            builder.addDoubleProperty("Effective Max", this::getEffectiveExtendMax, null);
+            builder.addDoubleProperty("Effective Min", () -> extendMin, null);
             builder.addDoubleProperty("Raw Max", () -> extendMax, null);
             builder.addDoubleProperty("Raw Length", this::getLength, null);
         });
