@@ -56,16 +56,18 @@ public class ArmSubsystem extends SubsystemBase {
         clearLimits();
 
         SmartDashboard.putData("Rotator", builder -> {
-            builder.addDoubleProperty("Current", this::getAngle, null);
+            builder.addDoubleProperty("Current", this::getAngleDelta, null);
             builder.addBooleanProperty("Limit", this::atRotateLimit, null);
             builder.addDoubleProperty("Max", () -> rotateMax, null);
             builder.addDoubleProperty("Min", () -> rotateMin, null);
+            builder.addDoubleProperty("Raw", this::getAngle, null);
         });
         SmartDashboard.putData("Extender", builder -> {
-            builder.addDoubleProperty("Current", this::getLength, null);
+            builder.addDoubleProperty("Current", this::getLengthDelta, null);
             builder.addBooleanProperty("Limit", this::atExtendLimit, null);
             builder.addDoubleProperty("Max", () -> extendMax, null);
             builder.addDoubleProperty("Min", () -> extendMin, null);
+            builder.addDoubleProperty("Raw", this::getLength, null);
         });
     }
 
@@ -81,13 +83,27 @@ public class ArmSubsystem extends SubsystemBase {
         return rotateEncoder.getPosition();
     }
 
+    public double getAngleDelta() {
+        return rotateMin == Double.NEGATIVE_INFINITY
+            ? 0.0
+            : rotateEncoder.getPosition() - rotateMin;
+    }
+
     public double getLength() {
         return extendEncoder.getPosition();
     }
 
+    public double getLengthDelta() {
+        return extendMin == Double.NEGATIVE_INFINITY
+            ? 0.0
+            : extendEncoder.getPosition() - extendMin;
+    }
+
     public void clearLimits() {
-        rotateMin = extendMin = Double.NEGATIVE_INFINITY;
-        rotateMax = extendMax = Double.POSITIVE_INFINITY;
+        rotateMin = Double.NEGATIVE_INFINITY;
+        extendMin = Double.NEGATIVE_INFINITY;
+        rotateMax = Double.POSITIVE_INFINITY;
+        extendMax = Double.POSITIVE_INFINITY;
     }
 
     public void retractParkingBrake(){
@@ -97,23 +113,23 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean calibrationComplete() {
 
         double rotateOutput = 0.0;
-        if (rotateMin == Double.MIN_VALUE) {
+        if (rotateMin == Double.NEGATIVE_INFINITY) {
             if (atRotateLimit()) {
                 rotateMax = rotateEncoder.getPosition() - ROTATE_TRAVEL_BUFFER;
-                rotateMin = rotateMax - ROTATE_PHYSICAL_MAX + 2 * ROTATE_TRAVEL_BUFFER;
+                rotateMin = rotateMax - ROTATE_TRAVEL_MAX;
             } else {
-                rotateOutput = ROTATOR_MIN_SPEED;
+                rotateOutput = ROTATOR_CALIBRATE_SPEED;
             }
         }
         rotateMotor.set(rotateOutput);
 
         double extendOutput = 0.0;
-        if (extendMin == Double.MIN_VALUE) {
+        if (extendMin == Double.NEGATIVE_INFINITY) {
             if (atExtendLimit()) {
                 extendMin = extendEncoder.getPosition() + EXTENDER_TRAVEL_BUFFER;
-                extendMax = extendMin + EXTENDER_PHYSICAL_MAX - 2 * EXTENDER_TRAVEL_BUFFER;
+                extendMax = extendMin + EXTENDER_TRAVEL_MAX;
             } else {
-                extendOutput = -EXTENDER_MAX_SPEED;
+                extendOutput = -EXTEND_CALIBRATE_SPEED;
             }
         }
         extendMotor.set(extendOutput);
@@ -134,9 +150,11 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void rotateAt(double percentOutput) {
         if (percentOutput > 0 && getAngle() > rotateMax) {
+            System.err.println("rotate max");
             percentOutput = 0;
         }
         if (percentOutput < 0 && getAngle() < rotateMin) {
+            System.err.println("rotate min");
             percentOutput = 0;
         }
         percentOutput = MathUtil.clamp(percentOutput, -ROTATOR_MAX_SPEED, ROTATOR_MAX_SPEED);

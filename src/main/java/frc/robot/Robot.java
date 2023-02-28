@@ -24,6 +24,7 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 public class Robot extends TimedRobot {
 
     public static final int DRIVE_PORT = 0;
+    public static final int OPS_PORT = 1;
 
     public SwerveDriveSubsystem swerveDrive;
     public HandSubsystem hand;
@@ -38,9 +39,12 @@ public class Robot extends TimedRobot {
         // for driving in teleop mode
         swerveDrive = new SwerveDriveSubsystem();
         vision = new VisionSubsystem(true);
+        hand = new HandSubsystem();
+        arm = new ArmSubsystem();
 
         // do any additional control mapping that needs to be done
-        RobotControlMapping.mapDriverControls(this, new CommandXboxController(DRIVE_PORT));
+        RobotControlMapping.mapSpecialOps(this, new CommandXboxController(OPS_PORT));
+        RobotControlMapping.mapDriver(this, new CommandXboxController(DRIVE_PORT));
     }
 
     @Override

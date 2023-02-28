@@ -6,6 +6,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.HandCommands;
+import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.arm.ArmTeleopCommand;
 
@@ -22,6 +23,8 @@ public class TestBenchControlMapping {
     
     public static void mapControls(TestBench testBench, CommandXboxController controller) {
 
+        double [] testingPreset = { 36.7, -3.5 };
+
         /*
          * DEFAULT TELEOP
          *   - left Y is rotate
@@ -29,9 +32,17 @@ public class TestBenchControlMapping {
          */
         testBench.arm.setDefaultCommand(new ArmTeleopCommand(
             testBench.arm,
+            // rotate
                 () -> clean(controller.getLeftY()),
+            // extend
                 () -> -clean(controller.getRightY())));
 
+        controller.y()
+                .onTrue(new ArmPresetCommand(testBench.arm, testingPreset));
+
+        controller.x()
+                .onTrue(new ArmCalibrationCommand(testBench.arm));
+        
         // controller.y().onTrue(HandCommands.grab(testBench.hand));
         // controller.rightBumper().onTrue(HandCommands.release(testBench.hand));
         // controller.a().onTrue(new ArmPresetCommand(testBench.arm, ArmPresetCommand.HIGH_POSITION, controller.a()));

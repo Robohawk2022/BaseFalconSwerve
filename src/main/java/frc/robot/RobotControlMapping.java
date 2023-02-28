@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveFixedSpeedCommand;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
+import frc.robot.commands.HandCommands;
+import frc.robot.commands.arm.ArmCalibrationCommand;
+import frc.robot.commands.arm.ArmTeleopCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.ExampleTrajectoryCommand;
 
@@ -19,6 +22,14 @@ public class RobotControlMapping {
         return MathUtil.applyDeadband(input * Math.abs(input), DEADBAND);
     }
 
+    public static void mapDriver(Robot robot, CommandXboxController controller) {
+        robot.swerveDrive.setDefaultCommand(new SwerveTeleopCommand(
+                robot.swerveDrive,
+                () -> clean(-controller.getLeftY()),
+                () -> clean(-controller.getLeftX()),
+                () -> clean(-controller.getRightX())));
+    }
+
     /**
      * Maps additional controls on the driver's joystick
      *    - X will trigger Kyle & Christopher's command
@@ -27,44 +38,55 @@ public class RobotControlMapping {
      * 
      * Add additional button/axis mappings here.
      */
-    public static void mapDriverControls(Robot robot, CommandXboxController driverController) {
+    public static void mapSpecialOps(Robot robot, CommandXboxController controller) {
 
-        /*
-         *   - left Y is drive forward/backwards
-         *   - left X is strafe left/right
-         *   - right X is rotate left/right
-         */
-        robot.swerveDrive.setDefaultCommand(new SwerveTeleopCommand(
-                robot.swerveDrive,
-                () -> clean(-driverController.getLeftY()),
-                () -> clean(-driverController.getLeftX()),
-                () -> clean(-driverController.getRightX())));
+        robot.arm.setDefaultCommand(new ArmTeleopCommand(
+                robot.arm,
+                // rotate
+                    () -> clean(controller.getLeftY()),
+                // extend
+                    () -> -clean(controller.getRightY())));
 
-        driverController.y()
-                .onTrue(SwerveFixedSpeedCommand.buildMultiStepProgram(robot.swerveDrive));
+        controller.y().onTrue(HandCommands.grab(robot.hand));
+        controller.rightBumper().onTrue(HandCommands.release(robot.hand));
+        controller.x().onTrue(new ArmCalibrationCommand(robot.arm));
 
-        driverController.start()
-                .onTrue(SwerveCommands.zeroGyro(robot.swerveDrive));
+        // /*
+        //  *   - left Y is drive forward/backwards
+        //  *   - left X is strafe left/right
+        //  *   - right X is rotate left/right
+        //  */
+        // robot.swerveDrive.setDefaultCommand(new SwerveTeleopCommand(
+        //         robot.swerveDrive,
+        //         () -> clean(-driverController.getLeftY()),
+        //         () -> clean(-driverController.getLeftX()),
+        //         () -> clean(-driverController.getRightX())));
 
-        driverController.b()
-                .onTrue(new ExampleTrajectoryCommand(robot.swerveDrive));
+        // driverController.y()
+        //         .onTrue(SwerveFixedSpeedCommand.buildMultiStepProgram(robot.swerveDrive));
 
-        driverController.x()
-                .onTrue(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
+        // driverController.start()
+        //         .onTrue(SwerveCommands.zeroGyro(robot.swerveDrive));
 
-        driverController.leftStick()
-                .onTrue(SwerveCommands.turnWheels(robot.swerveDrive, 90));
+        // driverController.b()
+        //         .onTrue(new ExampleTrajectoryCommand(robot.swerveDrive));
 
-        driverController.leftBumper()
-                .onTrue(SwerveCommands.setRobotRelative(robot.swerveDrive, true))
-                .onFalse(SwerveCommands.setRobotRelative(robot.swerveDrive, false));
+        // driverController.x()
+        //         .onTrue(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
 
-        driverController.rightBumper()
-                .onTrue(SwerveCommands.setTurboMode(robot.swerveDrive, true))
-                .onFalse(SwerveCommands.setTurboMode(robot.swerveDrive, false));
+        // driverController.leftStick()
+        //         .onTrue(SwerveCommands.turnWheels(robot.swerveDrive, 90));
 
-        driverController.rightTrigger(0.5)
-                .onTrue(SwerveCommands.setOrbitMode(robot.swerveDrive, true))
-                .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
+        // driverController.leftBumper()
+        //         .onTrue(SwerveCommands.setRobotRelative(robot.swerveDrive, true))
+        //         .onFalse(SwerveCommands.setRobotRelative(robot.swerveDrive, false));
+
+        // driverController.rightBumper()
+        //         .onTrue(SwerveCommands.setTurboMode(robot.swerveDrive, true))
+        //         .onFalse(SwerveCommands.setTurboMode(robot.swerveDrive, false));
+
+        // driverController.rightTrigger(0.5)
+        //         .onTrue(SwerveCommands.setOrbitMode(robot.swerveDrive, true))
+        //         .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
     }
 }
