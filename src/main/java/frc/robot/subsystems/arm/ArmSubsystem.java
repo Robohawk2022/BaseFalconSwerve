@@ -150,11 +150,9 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void rotateAt(double percentOutput) {
         if (percentOutput > 0 && getAngle() > rotateMax) {
-            System.err.println("rotate max");
             percentOutput = 0;
         }
         if (percentOutput < 0 && getAngle() < rotateMin) {
-            System.err.println("rotate min");
             percentOutput = 0;
         }
         percentOutput = MathUtil.clamp(percentOutput, -ROTATOR_MAX_SPEED, ROTATOR_MAX_SPEED);

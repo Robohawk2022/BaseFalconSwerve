@@ -31,9 +31,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     public SwerveDriveSubsystem() {
 
-        navx = new AHRS(Port.kUSB);
-        zeroGyro();
-
         field = new Field2d();
         SmartDashboard.putData("field", field);
 
@@ -43,6 +40,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             new SwerveModule(2, SwerveConfig.backLeft),
             new SwerveModule(3, SwerveConfig.backRight)
         };
+
+        navx = new AHRS(Port.kUSB);
+        zeroGyro();
 
         /* By pausing init for a second before setting module offsets, we avoid a bug with
          * inverting motors. See https://github.com/Team364/BaseFalconSwerve/issues/8 for
