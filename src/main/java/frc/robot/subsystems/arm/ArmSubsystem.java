@@ -14,6 +14,9 @@ import static frc.robot.subsystems.arm.ArmConfig.*;
 
 public class ArmSubsystem extends SubsystemBase {
 
+    public static final double LIMIT_CRITICAL_ANGLE = 35;
+    public static final double LIMIT_CRITICAL_LENGTH = 10;
+
     private final CANSparkMax rotateMotor;
     private final RelativeEncoder rotateEncoder;
     private final DigitalInput rotateLimit;
@@ -51,34 +54,52 @@ public class ArmSubsystem extends SubsystemBase {
         extendEncoder.setPositionConversionFactor(EXTENSION_FACTOR);
         extendLimit = new DigitalInput(EXTENSION_LIMIT_ID);
 
-        extendBrake = null; // new Solenoid(5, PneumaticsModuleType.REVPH, EXTENSION_BRAKE_CHANNEL);
+        extendBrake = new Solenoid(5, PneumaticsModuleType.REVPH, EXTENSION_BRAKE_CHANNEL);
             
         clearLimits();
 
         SmartDashboard.putData("Rotator", builder -> {
             builder.addDoubleProperty("Current", this::getAngleDelta, null);
-            builder.addBooleanProperty("Limit", this::atRotateLimit, null);
+            builder.addBooleanProperty("Limit", this::rotateLimitTripped, null);
             builder.addDoubleProperty("Max", () -> rotateMax, null);
-            builder.addDoubleProperty("Min", () -> rotateMin, null);
-            builder.addDoubleProperty("Raw", this::getAngle, null);
+            builder.addDoubleProperty("Min", this::getEffectiveRotateMin, null);
+            builder.addDoubleProperty("Raw Min", () -> rotateMin, null);
+            builder.addDoubleProperty("Raw Value", this::getAngle, null);
         });
         SmartDashboard.putData("Extender", builder -> {
             builder.addDoubleProperty("Current", this::getLengthDelta, null);
-            builder.addBooleanProperty("Limit", this::atExtendLimit, null);
-            builder.addDoubleProperty("Max", () -> extendMax, null);
+            builder.addBooleanProperty("Limit", this::extendLimitTripped, null);
+            builder.addDoubleProperty("Max", this::getEffectiveExtendMax, null);
             builder.addDoubleProperty("Min", () -> extendMin, null);
+            builder.addDoubleProperty("Raw Max", () -> extendMax, null);
             builder.addDoubleProperty("Raw", this::getLength, null);
         });
     }
 
-    public boolean atExtendLimit() {
+    public boolean extendLimitTripped() {
         return extendLimit.get() == EXTENSION_LIMIT_PRESSED;
     }
 
-    public boolean atRotateLimit() {
+    public boolean rotateLimitTripped() {
         return rotateLimit.get() == ROTATION_LIMIT_PRESSED;
     }
-    
+
+    // If we're extended beyond the critical length, we can't rotate below the critical angle
+    public double getEffectiveRotateMin() {
+        if (getLengthDelta() > LIMIT_CRITICAL_LENGTH) {
+            return rotateMin + LIMIT_CRITICAL_ANGLE;
+        }
+        return rotateMin;
+    }
+
+    // If we're below the critical angle, we can't extend beyond the critical length
+    public double getEffectiveExtendMax() {
+        if (getAngleDelta() < LIMIT_CRITICAL_ANGLE) {
+            return extendMax - LIMIT_CRITICAL_LENGTH;
+        }
+        return extendMax;
+    }
+
     public double getAngle() {
         return rotateEncoder.getPosition();
     }
@@ -106,15 +127,19 @@ public class ArmSubsystem extends SubsystemBase {
         extendMax = Double.POSITIVE_INFINITY;
     }
 
-    public void retractParkingBrake(){
+    public void retractParkingBrake() {
         extendBrake.set(true);
+    }
+
+    public void extendParkingBrake() {
+        extendBrake.set(false);
     }
 
     public boolean calibrationComplete() {
 
         double rotateOutput = 0.0;
         if (rotateMin == Double.NEGATIVE_INFINITY) {
-            if (atRotateLimit()) {
+            if (rotateLimitTripped()) {
                 rotateMax = rotateEncoder.getPosition() - ROTATE_TRAVEL_BUFFER;
                 rotateMin = rotateMax - ROTATE_TRAVEL_MAX;
             } else {
@@ -125,7 +150,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         double extendOutput = 0.0;
         if (extendMin == Double.NEGATIVE_INFINITY) {
-            if (atExtendLimit()) {
+            if (extendLimitTripped()) {
                 extendMin = extendEncoder.getPosition() + EXTENDER_TRAVEL_BUFFER;
                 extendMax = extendMin + EXTENDER_TRAVEL_MAX;
             } else {
@@ -138,7 +163,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void extendAt(double percentOutput) {
-        if (percentOutput > 0 && getLength() > extendMax) {
+        if (percentOutput > 0 && getLength() > getEffectiveExtendMax()) {
             percentOutput = 0;
         }
         if (percentOutput < 0 && getLength() < extendMin) {
@@ -152,7 +177,7 @@ public class ArmSubsystem extends SubsystemBase {
         if (percentOutput > 0 && getAngle() > rotateMax) {
             percentOutput = 0;
         }
-        if (percentOutput < 0 && getAngle() < rotateMin) {
+        if (percentOutput < 0 && getAngle() < getEffectiveRotateMin()) {
             percentOutput = 0;
         }
         percentOutput = MathUtil.clamp(percentOutput, -ROTATOR_MAX_SPEED, ROTATOR_MAX_SPEED);

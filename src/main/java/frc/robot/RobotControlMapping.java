@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
@@ -105,7 +106,9 @@ public class RobotControlMapping {
 
         // buttons
         ops.b().onTrue(HandCommands.grab(hand));
-        ops.y().onTrue(HandCommands.release(hand));
+        ops.a().onTrue(HandCommands.release(hand));
+        ops.x().onTrue(ArmCommands.extendBrake(arm));
+        ops.y().onTrue(ArmCommands.retractBrake(arm));
         ops.start().onTrue(new ArmCalibrationCommand(arm));
 
         // bumpers
