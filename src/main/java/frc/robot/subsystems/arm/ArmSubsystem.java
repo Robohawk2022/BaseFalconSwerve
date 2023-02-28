@@ -59,20 +59,20 @@ public class ArmSubsystem extends SubsystemBase {
         clearLimits();
 
         SmartDashboard.putData("Rotator", builder -> {
-            builder.addDoubleProperty("Current", this::getAngleDelta, null);
+            builder.addDoubleProperty("Angle", this::getAngleDelta, null);
             builder.addBooleanProperty("Limit", this::rotateLimitTripped, null);
             builder.addDoubleProperty("Max", () -> rotateMax, null);
             builder.addDoubleProperty("Min", this::getEffectiveRotateMin, null);
             builder.addDoubleProperty("Raw Min", () -> rotateMin, null);
-            builder.addDoubleProperty("Raw Value", this::getAngle, null);
+            builder.addDoubleProperty("Raw Angle", this::getAngle, null);
         });
         SmartDashboard.putData("Extender", builder -> {
-            builder.addDoubleProperty("Current", this::getLengthDelta, null);
+            builder.addDoubleProperty("Length", this::getLengthDelta, null);
             builder.addBooleanProperty("Limit", this::extendLimitTripped, null);
             builder.addDoubleProperty("Max", this::getEffectiveExtendMax, null);
             builder.addDoubleProperty("Min", () -> extendMin, null);
             builder.addDoubleProperty("Raw Max", () -> extendMax, null);
-            builder.addDoubleProperty("Raw", this::getLength, null);
+            builder.addDoubleProperty("Raw Length", this::getLength, null);
         });
     }
 
@@ -86,7 +86,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // If we're extended beyond the critical length, we can't rotate below the critical angle
     public double getEffectiveRotateMin() {
-        if (getLengthDelta() > LIMIT_CRITICAL_LENGTH) {
+        if (rotateMin != Double.NEGATIVE_INFINITY && getLengthDelta() > LIMIT_CRITICAL_LENGTH) {
             return rotateMin + LIMIT_CRITICAL_ANGLE;
         }
         return rotateMin;
@@ -94,7 +94,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // If we're below the critical angle, we can't extend beyond the critical length
     public double getEffectiveExtendMax() {
-        if (getAngleDelta() < LIMIT_CRITICAL_ANGLE) {
+        if (extendMax != Double.POSITIVE_INFINITY && getAngleDelta() < LIMIT_CRITICAL_ANGLE) {
             return extendMax - LIMIT_CRITICAL_LENGTH;
         }
         return extendMax;
