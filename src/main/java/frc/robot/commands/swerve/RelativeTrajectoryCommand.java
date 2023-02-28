@@ -29,27 +29,16 @@ import static edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
  * someone wants to use a trajectory. This command lets you create a relative
  * trajectory command.
  */
-public class TrajectoryCommand {
-
-    // speed controls
-    public static final double MAX_SPEED_METERS_PER_SECOND = 3;
-    public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
-    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
-    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
+public class RelativeTrajectoryCommand {
 
     // PID constants
     public static final double PX_CONTROLLER = 1;
     public static final double PY_CONTROLLER = 1;
-    public static final double PTHETA_CONTROLLER = 1;
 
     // creates a controller for the rotation of the robot
     // (this is really irrelevant b/c we don't rotate)
     public static ProfiledPIDController makeThetaController() {
-
-        Constraints constraints = new TrapezoidProfile.Constraints(
-                    MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                    MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
-
+        Constraints constraints = new TrapezoidProfile.Constraints(Math.PI, Math.PI);
         ProfiledPIDController c = new ProfiledPIDController(1, 0, 0, constraints);
         c.enableContinuousInput(-Math.PI, Math.PI);
         return c;
@@ -64,11 +53,11 @@ public class TrajectoryCommand {
 
         Rotation2d rot = start.getRotation();
         Translation2d curr = start.getTranslation();
-        for (int i=0; i<points.length; i++) {
 
-            // at each step we apply the next translation. BUT we have to rotate it
-            // to take into account the robot's heading.
-            curr = curr.plus(points[i].rotateBy(rot));
+        // at each step we apply the next translation. BUT we have to rotate it
+        // to take into account the robot's heading.
+        for (Translation2d next : points) {
+            curr = curr.plus(next.rotateBy(rot));
             list.add(curr);
         }
 
@@ -78,11 +67,9 @@ public class TrajectoryCommand {
     // turns the current position of the supplied drive, and some relative waypoints,
     // into a command that navigates those specific absolute points. DON'T bind this
     // to a button; it won't be reusable as the robot moves around the field.
-    private static Command makeAbsoluteCommand(SwerveDriveSubsystem drive, Translation2d... points) {
+    private static Command makeAbsoluteCommand(SwerveDriveSubsystem drive, double maxSpeed, Translation2d... points) {
 
-        TrajectoryConfig config = new TrajectoryConfig(
-                MAX_SPEED_METERS_PER_SECOND,
-                MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
+        TrajectoryConfig config = new TrajectoryConfig(maxSpeed, maxSpeed)
                 .setKinematics(SwerveConfig.defaultKinematics);
 
         Pose2d start = drive.getPose();
@@ -108,8 +95,8 @@ public class TrajectoryCommand {
 
     // creates a command that will, when it runs, move the supplied drive through
     // the supplied set of relative translations.
-    public static Command makeRelativeCommand(SwerveDriveSubsystem drive, Translation2d... waypoints) {
-        ProxyCommand p = new ProxyCommand(() -> makeAbsoluteCommand(drive, waypoints));
+    public static Command makeCommand(SwerveDriveSubsystem drive, double maxSpeed, Translation2d... waypoints) {
+        ProxyCommand p = new ProxyCommand(() -> makeAbsoluteCommand(drive, maxSpeed, waypoints));
         p.addRequirements(drive);
         return p;
     }

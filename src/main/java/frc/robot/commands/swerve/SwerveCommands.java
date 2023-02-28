@@ -10,6 +10,8 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 public class SwerveCommands {
 
+    public static final double HOP_SPEED_MPS = Units.feetToMeters(1.5);
+
     public static Command setTurboMode(SwerveDriveSubsystem drive, boolean turbo) {
         return new InstantCommand(() -> drive.setTurboMode(turbo), drive);
     }
@@ -38,11 +40,11 @@ public class SwerveCommands {
 
     public static Command hopLeft(SwerveDriveSubsystem drive, double inches) {
         Translation2d waypoint = new Translation2d(0, Units.inchesToMeters(inches));
-        return TrajectoryCommand.makeRelativeCommand(drive, waypoint);
+        return RelativeTrajectoryCommand.makeCommand(drive, HOP_SPEED_MPS, waypoint);
     }
 
     public static Command hopRight(SwerveDriveSubsystem drive, double inches) {
         Translation2d waypoint = new Translation2d(0, -Units.inchesToMeters(inches));
-        return TrajectoryCommand.makeRelativeCommand(drive, waypoint);
+        return RelativeTrajectoryCommand.makeCommand(drive, HOP_SPEED_MPS, waypoint);
     }
 }
