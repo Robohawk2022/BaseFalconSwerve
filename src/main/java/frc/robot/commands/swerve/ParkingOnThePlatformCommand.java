@@ -1,77 +1,62 @@
 package frc.robot.commands.swerve;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 
+public class ParkingOnThePlatformCommand extends CommandBase {
 
-public class ParkingOnThePlatformCommand extends CommandBase{
+    public static final double FORWARD_SPEED_FPS = Units.feetToMeters(2.0);
+    public static final double PITCH_THRESHOLD = -0.8;
+    public static final double PITCH_COUNT = 10;
 
     private final SwerveDriveSubsystem swerveDrive;
     private double thenPitch;
-    private double nowPitch;
     private boolean done;
     private double retentionCounter;
-    private final XboxController inputController;
+    private final XboxController controller;
     
-
-    
-    public ParkingOnThePlatformCommand(Robot robot, XboxController inputController){
+    public ParkingOnThePlatformCommand(Robot robot, XboxController controller) {
 
         this.swerveDrive = robot.swerveDrive;
-        this.inputController = inputController;
-        addRequirements(robot.swerveDrive);
+        this.controller = controller;
 
+        addRequirements(robot.swerveDrive);
     }
 
-    public void initialize(){
-
+    public void initialize() {
         thenPitch = Math.abs(swerveDrive.getPitch());
         done = false;
-        retentionCounter = 10;
-        // Tuening : increase the retention counter
-
+        retentionCounter = PITCH_COUNT;
     }
 
-    public void execute(){
+    public void execute() {
 
-        nowPitch = Math.abs(swerveDrive.getPitch());
+        double nowPitch = Math.abs(swerveDrive.getPitch());
 
-        if(inputController.getBackButtonPressed()){
-
+        if (controller != null && controller.getBackButtonPressed()) {
             done = true;
-
         }
 
-        //System.err.println(nowPitch - thenPitch);
-
-        if (nowPitch - thenPitch < -0.8){
-
-            //Tuening: decrease the threashold
-
-            swerveDrive.drive(0, 0, 0);
+        if (nowPitch - thenPitch < PITCH_THRESHOLD) {
+            swerveDrive.stop();
             retentionCounter -= 1;
-
         } else {
-
-            swerveDrive.drive(0.65, 0, 0);
+            swerveDrive.drive(new ChassisSpeeds(FORWARD_SPEED_FPS, 0, 0));
             thenPitch = Math.abs(swerveDrive.getPitch());
-            
         }
 
-        if (retentionCounter == 0){
-
+        if (retentionCounter == 0) {
             done = true;
-
         }
     }
 
-    public boolean isFinished(){
-
+    public boolean isFinished() {
         return done;
-
     }
 
 }
