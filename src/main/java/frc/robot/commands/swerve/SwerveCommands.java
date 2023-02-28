@@ -38,11 +38,11 @@ public class SwerveCommands {
 
     public static Command hopLeft(SwerveDriveSubsystem drive, double inches) {
         Translation2d waypoint = new Translation2d(0, Units.inchesToMeters(inches));
-        return RelativeTrajectoryCommand.makeCommand(drive, waypoint);
+        return TrajectoryCommand.makeRelativeCommand(drive, waypoint);
     }
 
     public static Command hopRight(SwerveDriveSubsystem drive, double inches) {
         Translation2d waypoint = new Translation2d(0, -Units.inchesToMeters(inches));
-        return RelativeTrajectoryCommand.makeCommand(drive, waypoint);
+        return TrajectoryCommand.makeRelativeCommand(drive, waypoint);
     }
 }

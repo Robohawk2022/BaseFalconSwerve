@@ -83,6 +83,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         });
     }
 
+
+    /*
+██████╗ ██████╗ ██╗██╗   ██╗███████╗
+██╔══██╗██╔══██╗██║██║   ██║██╔════╝
+██║  ██║██████╔╝██║██║   ██║█████╗
+██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝
+██████╔╝██║  ██║██║ ╚████╔╝ ███████╗
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝
+     */
+
     public SwerveModulePosition [] getModulePositions() {
         SwerveModulePosition [] positions = new SwerveModulePosition[4];
         for (int i=0; i<4; i++) {
@@ -155,6 +165,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         }
     }    
 
+    /*
+ ██████╗██╗   ██╗██████╗  ██████╗
+██╔════╝╚██╗ ██╔╝██╔══██╗██╔═══██╗
+██║  ███╗╚████╔╝ ██████╔╝██║   ██║
+██║   ██║ ╚██╔╝  ██╔══██╗██║   ██║
+╚██████╔╝  ██║   ██║  ██║╚██████╔╝
+ ╚═════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝
+     */
+
     public void zeroGyro() {
         navx.zeroYaw();
     }
@@ -169,6 +188,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         }
         return Rotation2d.fromDegrees(-(navx.getYaw())+0);
     }
+
+    /*
+ ██████╗ ██████╗  ██████╗ ███╗   ███╗███████╗████████╗██████╗ ██╗   ██╗
+██╔═══██╗██╔══██╗██╔═══██╗████╗ ████║██╔════╝╚══██╔══╝██╔══██╗╚██╗ ██╔╝
+██║   ██║██║  ██║██║   ██║██╔████╔██║█████╗     ██║   ██████╔╝ ╚████╔╝
+██║   ██║██║  ██║██║   ██║██║╚██╔╝██║██╔══╝     ██║   ██╔══██╗  ╚██╔╝
+╚██████╔╝██████╔╝╚██████╔╝██║ ╚═╝ ██║███████╗   ██║   ██║  ██║   ██║
+ ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝
+     */
 
     public Pose2d getPose() {
         return odometry.getPoseMeters();
