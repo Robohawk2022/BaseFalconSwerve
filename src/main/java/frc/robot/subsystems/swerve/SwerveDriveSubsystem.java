@@ -52,8 +52,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         for (SwerveModule module : swerveModules){
             module.resetToAbsolute();
         }
+
+        // odometry is always based on default kinematics
+        odometry = new SwerveDriveOdometry(
+                SwerveConfig.defaultKinematics,
+                getYaw(),
+                getModulePositions());
         
-        setOrbitMode(false);
+        kinematics = SwerveConfig.defaultKinematics;
         maxLinearSpeed = SwerveConfig.defaultMaxLinearSpeed;
         maxAngularSpeed = SwerveConfig.defaultMaxAngularSpeed;
         maxWheelSpeed = SwerveConfig.defaultMaxWheelSpeed;
@@ -85,29 +91,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return positions;
     }
 
+    // cheap trick: when we go into "orbit mode", we'll temporarily replace
+    // the kinematics used to calculate wheel states
     public void setOrbitMode(boolean orbit) {
-
-        SwerveDriveKinematics targetKinematics = orbit
+        kinematics = orbit
             ? SwerveConfig.orbitKinematics
             : SwerveConfig.defaultKinematics;
-        if (kinematics == targetKinematics) {
-            return;
-        }
-        this.kinematics = targetKinematics;
-
-        if (odometry == null) {
-            odometry = new SwerveDriveOdometry(
-                    kinematics,
-                    getYaw(),
-                    getModulePositions());
-        } else {
-            Pose2d currentPose = odometry.getPoseMeters();
-            odometry = new SwerveDriveOdometry(
-                    kinematics,
-                    getYaw(),
-                    getModulePositions(),
-                    currentPose);
-        }
     }
 
     public void setRobotRelative(boolean robotRelative) {
