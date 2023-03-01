@@ -47,7 +47,7 @@ public class ArmConfig {
     // speed parameters
     public static final double EXTEND_CALIBRATE_SPEED = 0.2;
     public static final double EXTENDER_RAMP_RATE = 0.3;
-    public static final double EXTENDER_MIN_SPEED = 0.15;
+    public static final double EXTENDER_MIN_SPEED = 0.1;
     public static final double EXTENDER_MAX_SPEED = 0.4;
     public static final double EXTENDER_MIN_THRESHOLD = 0.25;
     public static final double EXTENDER_MAX_THRESHOLD = 4;
