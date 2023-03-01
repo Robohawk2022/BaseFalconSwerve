@@ -14,9 +14,6 @@ import static frc.robot.subsystems.arm.ArmConfig.*;
 
 public class ArmSubsystem extends SubsystemBase {
 
-    public static final double LIMIT_CRITICAL_ANGLE = 35;
-    public static final double LIMIT_CRITICAL_LENGTH = 10;
-
     private final CANSparkMax rotateMotor;
     private final RelativeEncoder rotateEncoder;
     private final DigitalInput rotateLimit;
@@ -86,16 +83,16 @@ public class ArmSubsystem extends SubsystemBase {
 
     // If we're extended beyond the critical length, we can't rotate below the critical angle
     public double getEffectiveRotateMin() {
-        if (rotateMin != Double.NEGATIVE_INFINITY && getLengthDelta() > LIMIT_CRITICAL_LENGTH) {
-            return rotateMin + LIMIT_CRITICAL_ANGLE;
+        if (rotateMin != Double.NEGATIVE_INFINITY && getLengthDelta() > ArmConfig.LIMIT_CRITICAL_LENGTH) {
+            return rotateMin + ArmConfig.LIMIT_CRITICAL_ANGLE;
         }
         return rotateMin;
     }
 
     // If we're below the critical angle, we can't extend beyond the critical length
     public double getEffectiveExtendMax() {
-        if (extendMax != Double.POSITIVE_INFINITY && getAngleDelta() < LIMIT_CRITICAL_ANGLE) {
-            return extendMax - LIMIT_CRITICAL_LENGTH;
+        if (extendMax != Double.POSITIVE_INFINITY && getAngleDelta() < ArmConfig.LIMIT_CRITICAL_ANGLE) {
+            return extendMax - ArmConfig.LIMIT_CRITICAL_LENGTH;
         }
         return extendMax;
     }

@@ -4,6 +4,26 @@ import frc.robot.util.HalfBakedSpeedController;
 
 public class ArmConfig {
 
+    // when the arm is at its lowest level, how far can it extend
+    // before it violates the rules?
+    public static final double LIMIT_CRITICAL_LENGTH = 10;
+
+    // when the arm is at its maximum extend, how far down can it
+    // rotate before it violates the rules?
+    public static final double LIMIT_CRITICAL_ANGLE = 35;
+    
+    // how far (in degrees) before it hits the physical stop should
+    // the arm stop rotating? and how far can it rotate down from
+    // that point before it hits bottom?
+    public static final double ROTATE_TRAVEL_BUFFER = 5;
+    public static final double ROTATE_TRAVEL_MAX = 68;
+
+    // how far (in inches) before it hits the physical stop should
+    // the arm stop retracting? and how far can it rotate down from
+    // that point before it's gone too far?
+    public static final double EXTENDER_TRAVEL_MAX = 25;
+    public static final double EXTENDER_TRAVEL_BUFFER = 1;
+
     /*
 ███████╗██╗  ██╗████████╗███████╗███╗   ██╗██████╗ ███████╗██████╗
 ██╔════╝╚██╗██╔╝╚══██╔══╝██╔════╝████╗  ██║██╔══██╗██╔════╝██╔══██╗
@@ -20,11 +40,9 @@ public class ArmConfig {
 
     // properties of the physical robot
     public static final boolean EXTENSION_INVERTED = false;
-    public static final double EXTENSION_TRAVEL_LIMIT = 20;
     public static final double EXTENSION_FACTOR = 0.316;
     public static final int EXTENSION_MAX_CURRENT = 35;
     public static final boolean EXTENSION_LIMIT_PRESSED = false;
-    public static final double EXTENDER_TRAVEL_MAX = 25;
 
     // speed parameters
     public static final double EXTEND_CALIBRATE_SPEED = 0.2;
@@ -33,7 +51,6 @@ public class ArmConfig {
     public static final double EXTENDER_MAX_SPEED = 0.4;
     public static final double EXTENDER_MIN_THRESHOLD = 1;
     public static final double EXTENDER_MAX_THRESHOLD = 4;
-    public static final double EXTENDER_TRAVEL_BUFFER = 1;
 
     public static HalfBakedSpeedController makeExtenderSpeedController() {
         return new HalfBakedSpeedController(
@@ -56,11 +73,9 @@ public class ArmConfig {
 
     // properties of the physical robot
     public static final boolean ROTATION_INVERTED = true;
-    public static final double ROTATION_TRAVEL_LIMIT = 20;
     public static final double ROTATION_FACTOR = 0.5694;
     public static final int ROTATION_MAX_CURRENT = 23;
     public static final boolean ROTATION_LIMIT_PRESSED = false;
-    public static final double ROTATE_TRAVEL_MAX = 68;
 
     // speed parameters
     public static final double ROTATOR_CALIBRATE_SPEED = 0.15;
@@ -69,11 +84,11 @@ public class ArmConfig {
     public static final double ROTATOR_MAX_SPEED = 0.2;
     public static final double ROTATOR_MIN_THRESHOLD = 2;
     public static final double ROTATOR_MAX_THRESHOLD = 7;
-    public static final double ROTATE_TRAVEL_BUFFER = 5;
 
     public static HalfBakedSpeedController makeRotatorSpeedController() {
         return new HalfBakedSpeedController(
             ROTATOR_MIN_THRESHOLD, ROTATOR_MAX_THRESHOLD,
             ROTATOR_MIN_SPEED, ROTATOR_MAX_SPEED);
     }
+
 }
