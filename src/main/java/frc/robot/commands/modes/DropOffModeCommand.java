@@ -21,7 +21,7 @@ public class DropOffModeCommand extends SequentialCommandGroup {
     public DropOffModeCommand(Robot robot) {
         addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
         addCommands(new AlignToWallCommand(robot, 0));
-        // addCommands(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
+        addCommands(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
     }
     
     public void init(SwerveDriveSubsystem drive) {

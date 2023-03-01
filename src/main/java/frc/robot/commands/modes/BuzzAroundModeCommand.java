@@ -27,7 +27,7 @@ public class BuzzAroundModeCommand extends SequentialCommandGroup {
         addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
         
         // the real work - move the arm to the travel position.
-        // addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION));
+         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION));
     }
 
     public void init(SwerveDriveSubsystem drive) {

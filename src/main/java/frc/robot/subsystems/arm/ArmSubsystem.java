@@ -103,7 +103,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public double getAngleDelta() {
         return rotateMin == Double.NEGATIVE_INFINITY
-            ? 0.0
+            ? Double.NEGATIVE_INFINITY
             : rotateEncoder.getPosition() - rotateMin;
     }
 
@@ -113,7 +113,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public double getLengthDelta() {
         return extendMin == Double.NEGATIVE_INFINITY
-            ? 0.0
+            ? Double.NEGATIVE_INFINITY
             : extendEncoder.getPosition() - extendMin;
     }
 

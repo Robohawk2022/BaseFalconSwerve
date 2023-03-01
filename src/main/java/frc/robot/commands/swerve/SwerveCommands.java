@@ -39,6 +39,16 @@ public class SwerveCommands {
         return new InstantCommand(() -> drive.setModuleStates(states), drive);
     }
 
+    public static Command hopForward(SwerveDriveSubsystem drive, double inches) {
+        ChassisSpeeds speeds = new ChassisSpeeds(Units.feetToMeters(inches), 0,0);
+        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
+    }
+
+    public static Command hopBackward(SwerveDriveSubsystem drive, double inches) {
+        ChassisSpeeds speeds = new ChassisSpeeds(-Units.feetToMeters(inches), 0,0);
+        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
+    }
+
     public static Command hopLeft(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(0, Units.inchesToMeters(inches), 0);
         return new SwerveFixedSpeedCommand(drive, speeds, 1.0);

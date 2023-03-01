@@ -4,18 +4,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.util.HalfBakedSpeedController;
 
-import static frc.robot.subsystems.arm.ArmConfig.*;
+import static frc.robot.subsystems.arm.ArmConfig.makeRotatorSpeedController;
+import static frc.robot.subsystems.arm.ArmConfig.makeExtenderSpeedController;
 
 public class ArmPresetCommand extends CommandBase {
 
-    // TODO calculate preset positions
-    public static final double [] TRAVEL_POSITION = { 150.0, -150.0 };
-    public static final double [] PICKUP_POSITION = { 2.0, 3.0 };
-    public static final double [] HIGH_POSITION = { 10.0, 12.0 };
-    public static final double [] MIDDLE_POSITION = { -12.0, -10.0 };
-    public static final double [] LOW_POSITION = { 2.0, 3.0 };
-    public static final double [] BALANCE_POSITION = { 2.0, 3.0 };
-    public static final double [] LOAD_POSITION = { 2.0, 3.0 };
+    // TODO calculate preset positions (degrees, inches)
+    public static final double [] TRAVEL_POSITION = { 35.0, 10.0 };
+    public static final double [] PICKUP_POSITION = { 35.0, 10.0 };
+    public static final double [] HIGH_POSITION = { 35.0, 10.0 };
+    public static final double [] MIDDLE_POSITION = { 35.0, 10.0 };
+    public static final double [] LOW_POSITION = { 35.0, 10.0 };
+    public static final double [] BALANCE_POSITION = { 35.0, 10.0 };
+    public static final double [] LOAD_POSITION = { 35.0, 10.0 };
 
     private final ArmSubsystem arm;
     private final double targetAngle;
@@ -41,11 +42,19 @@ public class ArmPresetCommand extends CommandBase {
     @Override
     public void execute() {
 
-        double rotationError = targetAngle - arm.getAngle();
+        // only move to a preset if the arm has been calibrated
+        double currentAngle = arm.getAngleDelta();
+        double currentLength = arm.getLengthDelta();
+        if (currentAngle == Double.NEGATIVE_INFINITY) {
+            done = true;
+            return;
+        }
+
+        double rotationError = targetAngle - currentAngle;
         double percentRotate = rotateSpeed.calculate(rotationError);
         arm.rotateAt(percentRotate);
 
-        double extensionError = targetLength - arm.getLength();
+        double extensionError = targetLength - currentLength;
         double percentExtend = extendSpeed.calculate(extensionError);
         arm.extendAt(percentExtend);
 
