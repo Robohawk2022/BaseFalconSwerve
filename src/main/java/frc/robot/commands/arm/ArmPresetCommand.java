@@ -10,12 +10,11 @@ import static frc.robot.subsystems.arm.ArmConfig.makeExtenderSpeedController;
 public class ArmPresetCommand extends CommandBase {
 
     // TODO calculate preset positions (degrees, inches)
-    public static final double [] TRAVEL_POSITION = { 35.0, 10.0 };
-    public static final double [] PICKUP_POSITION = { 35.0, 10.0 };
-    public static final double [] HIGH_POSITION = { 35.0, 10.0 };
+    public static final double [] TRAVEL_POSITION = { 60.0, 2.0 };
+    public static final double [] PICKUP_POSITION = { 5.0, 2.0 };
+    public static final double [] HIGH_POSITION = { 35.0, 15.0 };
     public static final double [] MIDDLE_POSITION = { 35.0, 10.0 };
-    public static final double [] LOW_POSITION = { 35.0, 10.0 };
-    public static final double [] BALANCE_POSITION = { 35.0, 10.0 };
+    public static final double [] BALANCE_POSITION = { 60.0, 2.0 };
     public static final double [] LOAD_POSITION = { 35.0, 10.0 };
 
     private final ArmSubsystem arm;
