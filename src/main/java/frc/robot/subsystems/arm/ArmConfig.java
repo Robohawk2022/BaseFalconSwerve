@@ -80,7 +80,7 @@ public class ArmConfig {
     // speed parameters
     public static final double ROTATOR_CALIBRATE_SPEED = 0.15;
     public static final double ROTATOR_RAMP_RATE = 0.3;
-    public static final double ROTATOR_MIN_SPEED = 0.05;
+    public static final double ROTATOR_MIN_SPEED = 0.075;
     public static final double ROTATOR_MAX_SPEED = 0.2;
     public static final double ROTATOR_MIN_THRESHOLD = 2;
     public static final double ROTATOR_MAX_THRESHOLD = 7;
