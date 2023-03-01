@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
@@ -18,13 +19,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class DropOffModeCommand extends SequentialCommandGroup {
 
     public DropOffModeCommand(Robot robot) {
-        addCommands(new InstantCommand(() -> robot.swerveDrive.setOrbitMode(false)));
-        addCommands(new InstantCommand(() -> robot.swerveDrive.setTurboMode(false)));
-        addCommands(new InstantCommand(() -> robot.swerveDrive.setRobotRelative(false)));
-
-        addCommands(new AlignToWallCommand(robot, 180));
-        //TODO is this the wanted direction?
-
-        addCommands(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
+        addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
+        addCommands(new AlignToWallCommand(robot, 0));
+        // addCommands(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
+    }
+    
+    public void init(SwerveDriveSubsystem drive) {
+        drive.setRobotRelative(false);
+        drive.setTurboMode(false);
+        drive.setOrbitMode(false);
     }
 }

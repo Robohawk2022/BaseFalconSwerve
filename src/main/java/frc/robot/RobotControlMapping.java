@@ -8,6 +8,10 @@ import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmTeleopCommand;
+import frc.robot.commands.modes.BuzzAroundModeCommand;
+import frc.robot.commands.modes.DropOffModeCommand;
+import frc.robot.commands.modes.LoadingStationModeCommand;
+import frc.robot.commands.modes.PickupModeCommand;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
@@ -75,17 +79,12 @@ public class RobotControlMapping {
     private void mapDriver() {
 
         // buttons
-        driver.x().onTrue(new AlignToAprilTagCommand(drive, vision));
+        driver.x().onTrue(new BuzzAroundModeCommand(robot));
+        driver.y().onTrue(new PickupModeCommand(robot));
+        driver.a().onTrue(new LoadingStationModeCommand(robot));
+        driver.b().onTrue(new DropOffModeCommand(robot));
         driver.start().onTrue(SwerveCommands.zeroGyro(drive));
         driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
-
-        // bumpers
-        driver.leftBumper()
-            .onTrue(SwerveCommands.setRobotRelative(drive, true))
-            .onFalse(SwerveCommands.setRobotRelative(drive, false));
-        driver.rightBumper()
-            .onTrue(SwerveCommands.setTurboMode(drive, true))
-            .onFalse(SwerveCommands.setTurboMode(drive, false));
 
         // triggers
         driver.rightTrigger(0.5)

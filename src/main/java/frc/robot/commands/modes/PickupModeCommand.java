@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
+import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 /**
  * Enters pickup mode for picking up from the floor:
@@ -17,11 +18,14 @@ import frc.robot.commands.arm.ArmPresetCommand;
 public class PickupModeCommand extends SequentialCommandGroup {
 
     public PickupModeCommand(Robot robot) {
-        addCommands(
-            new InstantCommand(() -> robot.swerveDrive.setTurboMode(false)),
-            new InstantCommand(() -> robot.swerveDrive.setOrbitMode(false)),
-            new InstantCommand(() -> robot.swerveDrive.setRobotRelative(false)),
-            new ArmPresetCommand(robot.arm, ArmPresetCommand.PICKUP_POSITION));
+        addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
+        addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.PICKUP_POSITION));
+    }
+    
+    public void init(SwerveDriveSubsystem drive) {
+        drive.setRobotRelative(true);
+        drive.setTurboMode(false);
+        drive.setOrbitMode(false);
     }
 }
 

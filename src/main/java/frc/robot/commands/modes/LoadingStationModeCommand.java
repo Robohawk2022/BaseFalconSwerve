@@ -1,11 +1,13 @@
 package frc.robot.commands.modes;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 /**
  * Enters "loading" mode for grabbing from the loading station
@@ -22,19 +24,16 @@ import frc.robot.commands.swerve.AlignToWallCommand;
 public class LoadingStationModeCommand extends ParallelCommandGroup {
 
     public LoadingStationModeCommand(Robot robot) {
-        addSwerveDriveCommands(robot);
-        addArmCommands(robot);
-    }
-
-    private void addSwerveDriveCommands(Robot robot) {
-        addCommands(new InstantCommand(() -> robot.swerveDrive.setTurboMode(false)));
-        addCommands(new InstantCommand(() -> robot.swerveDrive.setOrbitMode(false)));
-        addCommands(new InstantCommand(() -> robot.swerveDrive.setRobotRelative(false)));
-        addCommands(new AlignToWallCommand(robot, 180));
-        addCommands(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
-    }
-
-    private void addArmCommands(Robot robot) {
+        addCommands(Commands.sequence(
+            new InstantCommand(() -> init(robot.swerveDrive)),
+            new AlignToWallCommand(robot, 180),
+            new AlignToAprilTagCommand(robot.swerveDrive, robot.vision)));
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.LOAD_POSITION));
+    }
+    
+    public void init(SwerveDriveSubsystem drive) {
+        drive.setRobotRelative(false);
+        drive.setTurboMode(false);
+        drive.setOrbitMode(false);
     }
 }
