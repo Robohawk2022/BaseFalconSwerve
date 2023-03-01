@@ -49,7 +49,7 @@ public class ArmConfig {
     public static final double EXTENDER_RAMP_RATE = 0.3;
     public static final double EXTENDER_MIN_SPEED = 0.15;
     public static final double EXTENDER_MAX_SPEED = 0.4;
-    public static final double EXTENDER_MIN_THRESHOLD = 1;
+    public static final double EXTENDER_MIN_THRESHOLD = 0.25;
     public static final double EXTENDER_MAX_THRESHOLD = 4;
 
     public static HalfBakedSpeedController makeExtenderSpeedController() {
