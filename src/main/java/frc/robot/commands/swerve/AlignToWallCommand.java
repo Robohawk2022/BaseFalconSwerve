@@ -1,10 +1,17 @@
 package frc.robot.commands.swerve;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AlignToWallCommand extends CommandBase {
+
+    public static final double SPEED = Units.feetToMeters(1.0);
+    public static final ChassisSpeeds POS = new ChassisSpeeds(0, 0, SPEED);
+    public static final ChassisSpeeds NEG = new ChassisSpeeds(0, 0, -SPEED);
+
     private double currentDirection;
     private final Robot robot;
     private double directionInitial;
@@ -45,16 +52,16 @@ public class AlignToWallCommand extends CommandBase {
 
         if (currentDirection < toleration + wantedDirection && currentDirection > wantedDirection - toleration){
             
-            robot.swerveDrive.drive(0, 0, 0);
+            robot.swerveDrive.stop();
             done = true;
 
         } else if (directionDisposition < -180 || (directionDisposition < 180 && directionDisposition > 0)){
 
-            robot.swerveDrive.drive(0, 0, 0.3);
+            robot.swerveDrive.drive(POS);
 
         } else {
 
-            robot.swerveDrive.drive(0, 0, -0.3);
+            robot.swerveDrive.drive(NEG);
         }
    
         // REPLACE ME with real logic that actually does something

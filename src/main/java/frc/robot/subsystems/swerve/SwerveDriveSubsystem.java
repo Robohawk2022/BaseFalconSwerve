@@ -25,9 +25,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private SwerveDriveKinematics kinematics;
     private SwerveDriveOdometry odometry;
     private boolean robotRelative;
-    private double maxLinearSpeed;
-    private double maxAngularSpeed;
-    private double maxWheelSpeed;
+    private boolean turbo;
 
     public SwerveDriveSubsystem() {
 
@@ -60,21 +58,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
                 getModulePositions());
         
         kinematics = SwerveConfig.defaultKinematics;
-        maxLinearSpeed = SwerveConfig.defaultMaxLinearSpeed;
-        maxAngularSpeed = SwerveConfig.defaultMaxAngularSpeed;
-        maxWheelSpeed = SwerveConfig.defaultMaxWheelSpeed;
         robotRelative = false;
+        turbo = false;
 
         SmartDashboard.putData("NavX", navx);
         SmartDashboard.putData("Swerve Gyro", builder -> {
             builder.addBooleanProperty("Calibrated", navx::isMagnetometerCalibrated, null);
             builder.addDoubleProperty("Pitch", () -> getPitch(), null);
             builder.addDoubleProperty("Yaw", () -> getYaw().getDegrees(), null);
-        });
-        SmartDashboard.putData("Swerve Max Speeds", builder -> {
-            builder.addDoubleProperty("Angular", () -> maxAngularSpeed, val -> maxAngularSpeed = val);
-            builder.addDoubleProperty("Linear", () -> maxLinearSpeed, val -> maxLinearSpeed = val);
-            builder.addDoubleProperty("Wheel", () -> maxWheelSpeed, val -> maxWheelSpeed = val);
         });
         SmartDashboard.putData("Swerve Odometry", builder -> {
             builder.addDoubleProperty("Heading", () -> odometry.getPoseMeters().getRotation().getDegrees(), null);
@@ -114,15 +105,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void setTurboMode(boolean turbo) {
-        if (turbo) {
-            maxLinearSpeed = SwerveConfig.defaultMaxLinearSpeed * SwerveConfig.turboFactor;
-            maxAngularSpeed = SwerveConfig.defaultMaxAngularSpeed * SwerveConfig.turboFactor;
-            maxWheelSpeed = SwerveConfig.defaultMaxWheelSpeed * SwerveConfig.turboFactor;
-        } else {
-            maxLinearSpeed = SwerveConfig.defaultMaxLinearSpeed;
-            maxAngularSpeed = SwerveConfig.defaultMaxAngularSpeed;
-            maxWheelSpeed = SwerveConfig.defaultMaxWheelSpeed;
-        }
+        this.turbo = turbo;
     }
 
     /**
@@ -137,9 +120,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
      */
     public void drive(double percentX, double percentY, double percentOmega) {
 
-        double vx = percentX * maxLinearSpeed;
-        double vy = percentY * maxLinearSpeed;
-        double vomega = percentOmega * maxAngularSpeed;
+        double vx = percentX * SwerveConfig.maxLinearSpeed;
+        double vy = percentY * SwerveConfig.maxLinearSpeed;
+        double vomega = percentOmega * SwerveConfig.maxAngularSpeed;
+
+        if (turbo) {
+            vx *= SwerveConfig.turboFactor;
+            vy *= SwerveConfig.turboFactor;
+            vomega *= SwerveConfig.turboFactor;
+        }
 
         ChassisSpeeds speeds = robotRelative
                 ? new ChassisSpeeds(vx, vy, vomega)
@@ -159,7 +148,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
      * Directly sets module state for each wheel
      */
     public void setModuleStates(SwerveModuleState [] desiredStates) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, maxWheelSpeed);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConfig.maxWheelSpeed);
         for (SwerveModule module : swerveModules) {
             module.setDesiredState(desiredStates[module.moduleNumber], false);
         }

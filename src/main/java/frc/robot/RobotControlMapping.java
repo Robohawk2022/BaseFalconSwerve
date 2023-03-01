@@ -1,15 +1,17 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.arm.ArmCommands;
-import frc.robot.commands.swerve.AlignToAprilTagCommand;
+import frc.robot.commands.arm.ArmPresetCommand;
+import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmTeleopCommand;
 import frc.robot.commands.modes.BuzzAroundModeCommand;
-import frc.robot.commands.modes.DropOffModeCommand;
+import frc.robot.commands.modes.ScoreModeCommand;
 import frc.robot.commands.modes.LoadingStationModeCommand;
 import frc.robot.commands.modes.PickupModeCommand;
 import frc.robot.subsystems.HandSubsystem;
@@ -79,17 +81,28 @@ public class RobotControlMapping {
     private void mapDriver() {
 
         // buttons
-        driver.x().onTrue(new BuzzAroundModeCommand(robot));
-        driver.y().onTrue(new PickupModeCommand(robot));
-        driver.a().onTrue(new LoadingStationModeCommand(robot));
-        driver.b().onTrue(new DropOffModeCommand(robot));
         driver.start().onTrue(SwerveCommands.zeroGyro(drive));
         driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
+        driver.x().onTrue(new AlignToWallCommand(robot, 0));
+        driver.b().onTrue(HandCommands.grab(hand));
+        driver.a().onTrue(HandCommands.release(hand));
+        driver.back().onTrue(new ParkingOnThePlatformCommand(drive));
+        driver.leftBumper()
+                .onTrue(SwerveCommands.setRobotRelative(drive, true))
+                .onFalse(SwerveCommands.setRobotRelative(robot.swerveDrive, false));
 
         // triggers
         driver.rightTrigger(0.5)
             .onTrue(SwerveCommands.setOrbitMode(drive, true))
             .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
+        driver.leftTrigger(0.5)
+                .onTrue(SwerveCommands.setTurboMode(drive, true))
+                .onFalse(SwerveCommands.setTurboMode(robot.swerveDrive, false));
+
+        driver.povUp().onTrue(new BuzzAroundModeCommand(robot));
+        driver.povRight().onTrue(new PickupModeCommand(robot));
+        driver.povLeft().onTrue(new LoadingStationModeCommand(robot));
+        driver.povDown().onTrue(new ScoreModeCommand(robot));
     }
 
     /*
@@ -106,13 +119,18 @@ public class RobotControlMapping {
         // buttons
         ops.b().onTrue(HandCommands.grab(hand));
         ops.a().onTrue(HandCommands.release(hand));
-        ops.x().onTrue(ArmCommands.extendBrake(arm));
-        ops.y().onTrue(ArmCommands.retractBrake(arm));
+        ops.x().onTrue(new AlignToWallCommand(robot, 0));
+        ops.y().onTrue(SwerveCommands.scootForward(drive, 6.0));
         ops.start().onTrue(new ArmCalibrationCommand(arm));
 
         // bumpers
-        ops.leftBumper().onTrue(SwerveCommands.hopLeft(drive, 22.0));
-        ops.rightBumper().onTrue(SwerveCommands.hopRight(drive, 22.0));
+        ops.leftBumper().onTrue(SwerveCommands.scootLeft(drive, 22.0));
+        ops.rightBumper().onTrue(SwerveCommands.scootRight(drive, 22.0));
 
+        // dpad
+        ops.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.HIGH_POSITION));
+        ops.povLeft().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.MIDDLE_POSITION));
+        ops.povRight().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.MIDDLE_POSITION));
+        ops.povDown().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.PICKUP_POSITION));
     }
 }

@@ -3,10 +3,8 @@ package frc.robot.commands.swerve;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
 
 public class ParkingOnThePlatformCommand extends CommandBase {
 
@@ -18,14 +16,12 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     private double thenPitch;
     private boolean done;
     private double retentionCounter;
-    private final XboxController controller;
-    
-    public ParkingOnThePlatformCommand(Robot robot, XboxController controller) {
 
-        this.swerveDrive = robot.swerveDrive;
-        this.controller = controller;
+    public ParkingOnThePlatformCommand(SwerveDriveSubsystem swerveDrive) {
 
-        addRequirements(robot.swerveDrive);
+        this.swerveDrive = swerveDrive;
+
+        addRequirements(swerveDrive);
     }
 
     public void initialize() {
@@ -37,10 +33,6 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     public void execute() {
 
         double nowPitch = Math.abs(swerveDrive.getPitch());
-
-        if (controller != null && controller.getBackButtonPressed()) {
-            done = true;
-        }
 
         if (nowPitch - thenPitch < PITCH_THRESHOLD) {
             swerveDrive.stop();

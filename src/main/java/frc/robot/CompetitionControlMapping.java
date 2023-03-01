@@ -6,7 +6,7 @@ import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.arm.ArmTeleopCommand;
 import frc.robot.commands.modes.BuzzAroundModeCommand;
-import frc.robot.commands.modes.DropOffModeCommand;
+import frc.robot.commands.modes.ScoreModeCommand;
 import frc.robot.commands.modes.LoadingStationModeCommand;
 import frc.robot.commands.modes.PickupModeCommand;
 import frc.robot.commands.swerve.SwerveCommands;
@@ -80,7 +80,7 @@ public class CompetitionControlMapping {
         specialOpsController.pov(270).onTrue(new ArmPresetCommand(robot.arm, TRAVEL_POSITION));
 
         specialOpsController.a()
-                .onTrue(new DropOffModeCommand(robot));
+                .onTrue(new ScoreModeCommand(robot));
 
         specialOpsController.x()
                 .onTrue(HandCommands.grab(robot.hand));
@@ -89,9 +89,9 @@ public class CompetitionControlMapping {
                  .onTrue(HandCommands.release(robot.hand));
 
         specialOpsController.leftBumper()
-                .onTrue(SwerveCommands.hopLeft(robot.swerveDrive, 22.0));
+                .onTrue(SwerveCommands.scootLeft(robot.swerveDrive, 22.0));
 
         specialOpsController.rightBumper()
-                .onTrue(SwerveCommands.hopRight(robot.swerveDrive, 22.0));
+                .onTrue(SwerveCommands.scootRight(robot.swerveDrive, 22.0));
     }
 }

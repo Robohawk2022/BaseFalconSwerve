@@ -20,14 +20,8 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 public class BuzzAroundModeCommand extends SequentialCommandGroup {
 
     public BuzzAroundModeCommand(Robot robot) {
-
-        // this is sort of cheating - we're not going to declare the
-        // dependency on the swerve drive subsystem. all three of these
-        // these will execute very quickly and then we'll move on
         addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
-        
-        // the real work - move the arm to the travel position.
-        // addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION));
+        addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION));
     }
 
     public void init(SwerveDriveSubsystem drive) {

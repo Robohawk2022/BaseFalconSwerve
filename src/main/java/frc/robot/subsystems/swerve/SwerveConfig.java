@@ -22,9 +22,9 @@ import edu.wpi.first.math.util.Units;
 public class SwerveConfig {
 
     // max speeds
-    public static final double defaultMaxLinearSpeed = Units.feetToMeters(3);
-    public static final double defaultMaxAngularSpeed = Units.degreesToRadians(120);
-    public static final double defaultMaxWheelSpeed = Units.feetToMeters(6);
+    public static final double maxLinearSpeed = Units.feetToMeters(3);
+    public static final double maxAngularSpeed = Units.degreesToRadians(75);
+    public static final double maxWheelSpeed = Units.feetToMeters(6);
     public static final double turboFactor = 2.0;
 
     // physical properties of chassis
@@ -56,7 +56,7 @@ public class SwerveConfig {
         new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
     // orbit kinematics (same order as above)
-    public static final double orbitDistance = Units.feetToMeters(1.5);
+    public static final double orbitDistance = Units.inchesToMeters(45);
     public static final SwerveDriveKinematics orbitKinematics = new SwerveDriveKinematics(
         new Translation2d(-orbitDistance, trackWidth / 2.0),
         new Translation2d(-orbitDistance, -trackWidth / 2.0),

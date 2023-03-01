@@ -1,7 +1,10 @@
 package frc.robot.commands.modes;
 
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
+import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
@@ -16,12 +19,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  *   - align to april tag
  * This command isn't over until all those actions have completed.
  */
-public class DropOffModeCommand extends SequentialCommandGroup {
+public class ScoreModeCommand extends ParallelCommandGroup {
 
-    public DropOffModeCommand(Robot robot) {
-        addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
-        addCommands(new AlignToWallCommand(robot, 0));
-        // addCommands(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
+    public ScoreModeCommand(Robot robot) {
+        addCommands(Commands.sequence(
+                new InstantCommand(() -> init(robot.swerveDrive)),
+                new AlignToWallCommand(robot, 0),
+                new AlignToAprilTagCommand(robot.swerveDrive, robot.vision)));
+        addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.MIDDLE_POSITION));
     }
     
     public void init(SwerveDriveSubsystem drive) {
