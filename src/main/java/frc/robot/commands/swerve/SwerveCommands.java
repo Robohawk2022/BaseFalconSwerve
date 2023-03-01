@@ -2,6 +2,7 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,12 +40,12 @@ public class SwerveCommands {
     }
 
     public static Command hopLeft(SwerveDriveSubsystem drive, double inches) {
-        Translation2d waypoint = new Translation2d(0, Units.inchesToMeters(inches));
-        return RelativeTrajectoryCommand.makeCommand(drive, HOP_SPEED_MPS, waypoint);
+        ChassisSpeeds speeds = new ChassisSpeeds(0, Units.inchesToMeters(inches), 0);
+        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
     }
 
     public static Command hopRight(SwerveDriveSubsystem drive, double inches) {
-        Translation2d waypoint = new Translation2d(0, -Units.inchesToMeters(inches));
-        return RelativeTrajectoryCommand.makeCommand(drive, HOP_SPEED_MPS, waypoint);
+        ChassisSpeeds speeds = new ChassisSpeeds(0, -Units.inchesToMeters(inches), 0);
+        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
     }
 }
