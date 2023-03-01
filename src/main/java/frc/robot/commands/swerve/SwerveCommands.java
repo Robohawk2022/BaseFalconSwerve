@@ -1,7 +1,6 @@
 package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -39,22 +38,22 @@ public class SwerveCommands {
         return new InstantCommand(() -> drive.setModuleStates(states), drive);
     }
 
-    public static Command hopForward(SwerveDriveSubsystem drive, double inches) {
+    public static Command scootForward(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(Units.feetToMeters(inches), 0,0);
         return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
     }
 
-    public static Command hopBackward(SwerveDriveSubsystem drive, double inches) {
+    public static Command scootBackward(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(-Units.feetToMeters(inches), 0,0);
         return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
     }
 
-    public static Command hopLeft(SwerveDriveSubsystem drive, double inches) {
+    public static Command scootLeft(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(0, Units.inchesToMeters(inches), 0);
         return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
     }
 
-    public static Command hopRight(SwerveDriveSubsystem drive, double inches) {
+    public static Command scootRight(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(0, -Units.inchesToMeters(inches), 0);
         return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
     }
