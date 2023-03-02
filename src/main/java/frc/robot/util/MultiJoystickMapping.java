@@ -66,7 +66,7 @@ public class MultiJoystickMapping {
      */
 
     public double getArmRotate() {
-        return getArmAxis(XboxController.Axis.kLeftY.value);
+        return -getArmAxis(XboxController.Axis.kLeftY.value);
     }
 
     public double getArmExtend() {
