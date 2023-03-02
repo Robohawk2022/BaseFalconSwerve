@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AlignToWallCommand extends CommandBase {
 
-    public static final double SPEED = Units.feetToMeters(1.0);
+    public static final double SPEED = Units.degreesToRadians(120);
     public static final ChassisSpeeds POS = new ChassisSpeeds(0, 0, SPEED);
     public static final ChassisSpeeds NEG = new ChassisSpeeds(0, 0, -SPEED);
 
