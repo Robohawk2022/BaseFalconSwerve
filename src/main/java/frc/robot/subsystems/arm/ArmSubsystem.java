@@ -55,21 +55,21 @@ public class ArmSubsystem extends SubsystemBase {
             
         clearLimits();
 
-        SmartDashboard.putData("Rotator", builder -> {
-            builder.addDoubleProperty("Calculated Angle", this::getAngleDelta, null);
-            builder.addBooleanProperty("Limit Tripped", this::rotateLimitTripped, null);
-            builder.addDoubleProperty("Effective Max", () -> rotateMax, null);
-            builder.addDoubleProperty("Effective Min", this::getEffectiveRotateMin, null);
-            builder.addDoubleProperty("Raw Min", () -> rotateMin, null);
-            builder.addDoubleProperty("Raw Angle", this::getAngle, null);
+        SmartDashboard.putData("ArmRotator", builder -> {
+            builder.addDoubleProperty("Angle", this::getAngleDelta, null);
+            builder.addBooleanProperty("LimitTripped", this::rotateLimitTripped, null);
+            builder.addDoubleProperty("EffectiveMax", () -> rotateMax, null);
+            builder.addDoubleProperty("EffectiveMin", this::getEffectiveRotateMin, null);
+            builder.addDoubleProperty("EncoderMin", () -> rotateMin, null);
+            builder.addDoubleProperty("EncoderPosition", this::getAngle, null);
         });
-        SmartDashboard.putData("Extender", builder -> {
-            builder.addDoubleProperty("Calculated Length", this::getLengthDelta, null);
-            builder.addBooleanProperty("Limit Tripped", this::extendLimitTripped, null);
-            builder.addDoubleProperty("Effective Max", this::getEffectiveExtendMax, null);
-            builder.addDoubleProperty("Effective Min", () -> extendMin, null);
-            builder.addDoubleProperty("Raw Max", () -> extendMax, null);
-            builder.addDoubleProperty("Raw Length", this::getLength, null);
+        SmartDashboard.putData("ArmExtender", builder -> {
+            builder.addDoubleProperty("Length", this::getLengthDelta, null);
+            builder.addBooleanProperty("LimitTripped", this::extendLimitTripped, null);
+            builder.addDoubleProperty("EffectiveMax", this::getEffectiveExtendMax, null);
+            builder.addDoubleProperty("EffectiveMin", () -> extendMin, null);
+            builder.addDoubleProperty("EncoderMax", () -> extendMax, null);
+            builder.addDoubleProperty("EncoderPosition", this::getLength, null);
         });
     }
 
