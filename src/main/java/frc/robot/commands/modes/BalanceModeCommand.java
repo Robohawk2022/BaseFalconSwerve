@@ -1,19 +1,21 @@
 package frc.robot.commands.modes;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
-import edu.wpi.first.wpilibj.XboxController; 
 import frc.robot.Robot;
+import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 
-public class BalanceModeCommand extends SequentialCommandGroup {
+public class BalanceModeCommand extends ParallelCommandGroup {
 
-    public BalanceModeCommand(Robot robot, XboxController inputController){
-        addCommands(new AlignToWallCommand(robot, 0));
-        addCommands(new ParkingOnThePlatformCommand(robot, inputController));
-        addCommands(SwerveCommands.turnWheels(robot.swerveDrive, 90));
-        addRequirements(robot.swerveDrive);
+    public BalanceModeCommand(Robot robot) {
+        addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.BALANCE_POSITION));
+        addCommands(Commands.sequence(
+                new AlignToWallCommand(robot, 0),
+                new ParkingOnThePlatformCommand(robot.swerveDrive),
+                SwerveCommands.turnWheels(robot.swerveDrive, 90)));
     }
 }

@@ -8,14 +8,14 @@ import static frc.robot.subsystems.arm.ArmConfig.*;
 
 public class ArmPresetCommand extends CommandBase {
 
-    // TODO calculate preset positions
-    public static final double [] TRAVEL_POSITION = { 150.0, -150.0 };
+    // target position in (degrees, inches)
+    public static final double [] TRAVEL_POSITION = { 70.0, 3.0 };
     public static final double [] PICKUP_POSITION = { 2.0, 3.0 };
-    public static final double [] HIGH_POSITION = { 10.0, 12.0 };
-    public static final double [] MIDDLE_POSITION = { -12.0, -10.0 };
+    public static final double [] HIGH_POSITION = { 40.0, 18.0 };
+    public static final double [] MIDDLE_POSITION = { 35.0, 9.0 };
     public static final double [] LOW_POSITION = { 2.0, 3.0 };
-    public static final double [] BALANCE_POSITION = { 2.0, 3.0 };
-    public static final double [] LOAD_POSITION = { 2.0, 3.0 };
+    public static final double [] BALANCE_POSITION = { 70.0, 3.0 };
+    public static final double [] LOAD_POSITION = { 35.0, 9.0 };
 
     private final ArmSubsystem arm;
     private final double targetAngle;
@@ -41,11 +41,11 @@ public class ArmPresetCommand extends CommandBase {
     @Override
     public void execute() {
 
-        double rotationError = targetAngle - arm.getAngle();
+        double rotationError = targetAngle - arm.getAngleDelta();
         double percentRotate = rotateSpeed.calculate(rotationError);
         arm.rotateAt(percentRotate);
 
-        double extensionError = targetLength - arm.getLength();
+        double extensionError = targetLength - arm.getLengthDelta();
         double percentExtend = extendSpeed.calculate(extensionError);
         arm.extendAt(percentExtend);
 
