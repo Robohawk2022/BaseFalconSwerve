@@ -64,6 +64,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        if (!arm.isCalibrated()) {
+            new ArmCalibrationCommand(arm).schedule();
+        }
         autonomousCommand = new AutonomousCommand(this);
         autonomousCommand.schedule();
     }
