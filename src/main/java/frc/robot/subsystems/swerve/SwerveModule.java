@@ -90,7 +90,8 @@ public class SwerveModule {
      * Resets the angle motor based on the absolute position reported by the CANCoder
      */
     public void resetToAbsolute() {
-        double absolutePosition = SwerveUtils.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), angleGearRatio);
+        double degrees = (getCanCoder().getDegrees() - angleOffset.getDegrees()) % 360.0;
+        double absolutePosition = SwerveUtils.degreesToFalcon(degrees, angleGearRatio);
         angleMotor.setSelectedSensorPosition(absolutePosition);
     }
 
