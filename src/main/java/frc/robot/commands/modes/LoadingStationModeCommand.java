@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
-import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.commands.swerve.AlignToDegreesCommand;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 /**
@@ -26,7 +26,7 @@ public class LoadingStationModeCommand extends ParallelCommandGroup {
     public LoadingStationModeCommand(Robot robot) {
         addCommands(Commands.sequence(
             new InstantCommand(() -> init(robot.swerveDrive)),
-            AlignToWallCommand.loadingStation(robot.swerveDrive),
+            new AlignToDegreesCommand(robot.swerveDrive, 180),
             new AlignToAprilTagCommand(robot.swerveDrive, robot.vision)));
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.LOAD_POSITION));
     }

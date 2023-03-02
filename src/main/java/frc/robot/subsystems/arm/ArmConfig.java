@@ -36,7 +36,7 @@ public class ArmConfig {
     // ID assignments
     public static final int EXTENSION_CANID = 1;
     public static final int EXTENSION_LIMIT_ID = 1;
-    public static final int EXTENSION_BRAKE_CHANNEL = 9;
+    public static final int EXTENSION_BRAKE_CHANNEL = 6;
 
     // properties of the physical robot
     public static final boolean EXTENSION_INVERTED = false;
@@ -78,7 +78,7 @@ public class ArmConfig {
     public static final boolean ROTATION_LIMIT_PRESSED = false;
 
     // speed parameters
-    public static final double ROTATOR_CALIBRATE_SPEED = 0.15;
+    public static final double ROTATOR_CALIBRATE_SPEED = 0.3;
     public static final double ROTATOR_RAMP_RATE = 0.3;
     public static final double ROTATOR_MIN_SPEED = 0.075;
     public static final double ROTATOR_MAX_SPEED = 0.2;

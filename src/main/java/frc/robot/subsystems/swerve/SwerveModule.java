@@ -35,8 +35,6 @@ public class SwerveModule {
         this.angleEncoder = createAngleEncoder(moduleConstants.cancoderID);
         this.angleMotor = createAngleMotor(moduleConstants.angleMotorID);
         this.driveMotor = createDriveMotor(moduleConstants.driveMotorID);
-        resetToAbsolute();
-
         this.lastAngle = getState().angle;
     }
 
@@ -90,8 +88,10 @@ public class SwerveModule {
      * Resets the angle motor based on the absolute position reported by the CANCoder
      */
     public void resetToAbsolute() {
-        double degrees = (getCanCoder().getDegrees() - angleOffset.getDegrees()) % 360.0;
-        double absolutePosition = SwerveUtils.degreesToFalcon(degrees, angleGearRatio);
+        double d1 = getCanCoder().getDegrees() - angleOffset.getDegrees();
+        double d2 = d1 % 360.0;
+        System.err.println(String.format("resetting with d1 %.3f, d2 %.3f", d1, d2));
+        double absolutePosition = SwerveUtils.degreesToFalcon(d2, angleGearRatio);
         angleMotor.setSelectedSensorPosition(absolutePosition);
     }
 

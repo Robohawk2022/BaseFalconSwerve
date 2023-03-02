@@ -38,7 +38,7 @@ public class MultiJoystickMapping {
 
     // left Y = forward/reverse
     public double getForwardReverse() {
-        return -getDriveAxis(XboxController.Axis.kLeftY.value);
+        return getDriveAxis(XboxController.Axis.kLeftY.value);
     }
 
     // left X = strafe left/right

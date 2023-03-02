@@ -10,7 +10,7 @@ public class AlignToWallCommand extends CommandBase {
 
     public static final double MAX_SPEED = Units.degreesToRadians(90);
     public static final double MIN_SPEED = Units.degreesToRadians(10);
-    public static final double MIN_THRESHOLD = 1;
+    public static final double MIN_THRESHOLD = 2;
     public static final double MAX_THRESHOLD = 30;
 
     public enum Wall {
@@ -18,9 +18,9 @@ public class AlignToWallCommand extends CommandBase {
         LOAD;
         public double calculateError(double current) {
             if (this == LOAD) {
-                return current;
+                return -current;
             } else {
-                return current < 0 ? 180 - current : 180 + current;
+                return current > 0 ? -current : 180 + current;
             }
         }
     }
@@ -48,7 +48,14 @@ public class AlignToWallCommand extends CommandBase {
         double current = drive.getYaw().getDegrees();
         double error = wall.calculateError(current);
         double output = controller.calculate(error);
-        drive.drive(new ChassisSpeeds(0, 0, output));
+        if (output != 0.0) {
+            System.err.println(String.format("%s: curr %.3f, err %.3f, out %.3f", wall, current, error, output));
+            drive.drive(new ChassisSpeeds(0, 0, output));
+        } else {
+            System.err.println("done");
+            drive.stop();
+            done = true;
+        }
     }
 
     @Override
