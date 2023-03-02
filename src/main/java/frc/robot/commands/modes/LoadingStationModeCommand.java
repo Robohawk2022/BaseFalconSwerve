@@ -7,6 +7,7 @@ import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToDegreesCommand;
+import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 /**
@@ -26,7 +27,7 @@ public class LoadingStationModeCommand extends ParallelCommandGroup {
     public LoadingStationModeCommand(Robot robot) {
         addCommands(Commands.sequence(
             new InstantCommand(() -> init(robot.swerveDrive)),
-            new AlignToDegreesCommand(robot.swerveDrive, 180),
+            AlignToWallCommand.loadingStation(robot.swerveDrive),
             new AlignToAprilTagCommand(robot.swerveDrive, robot.vision)));
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.LOAD_POSITION));
     }

@@ -2,6 +2,7 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 import frc.robot.util.HalfBakedSpeedController;
@@ -16,13 +17,6 @@ public class AlignToWallCommand extends CommandBase {
     public enum Wall {
         GRID,
         LOAD;
-        public double calculateError(double current) {
-            if (this == LOAD) {
-                return -current;
-            } else {
-                return current > 0 ? -current : 180 + current;
-            }
-        }
     }
 
     private final SwerveDriveSubsystem drive;
@@ -45,17 +39,33 @@ public class AlignToWallCommand extends CommandBase {
 
     @Override
     public void execute() {
+
         double current = drive.getYaw().getDegrees();
-        double error = wall.calculateError(current);
+        double error = wall == Wall.GRID
+                ? calculateGridError(current)
+                : calculateLoadingStationError(current);
         double output = controller.calculate(error);
+
+        SmartDashboard.putNumber("AlignToWall/Current", current);
+        SmartDashboard.putNumber("AlignToWall/Error", error);
+        SmartDashboard.putNumber("AlignToWall/Output", output);
+
         if (output != 0.0) {
-            System.err.println(String.format("%s: curr %.3f, err %.3f, out %.3f", wall, current, error, output));
             drive.drive(new ChassisSpeeds(0, 0, output));
         } else {
-            System.err.println("done");
             drive.stop();
             done = true;
         }
+    }
+
+    private static double calculateLoadingStationError(double current) {
+        return current > 0
+                ? 180 - current
+                : 180 + current;
+    }
+
+    private static double calculateGridError(double current) {
+        return -current;
     }
 
     @Override

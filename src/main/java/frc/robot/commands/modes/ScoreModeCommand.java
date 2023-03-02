@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
-import frc.robot.commands.swerve.AlignToDegreesCommand;
+import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
@@ -23,7 +23,7 @@ public class ScoreModeCommand extends ParallelCommandGroup {
     public ScoreModeCommand(Robot robot) {
         addCommands(Commands.sequence(
                 new InstantCommand(() -> init(robot.swerveDrive)),
-                new AlignToDegreesCommand(robot.swerveDrive, 0),
+                AlignToWallCommand.grid(robot.swerveDrive),
                 new AlignToAprilTagCommand(robot.swerveDrive, robot.vision)));
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.MIDDLE_POSITION));
     }
