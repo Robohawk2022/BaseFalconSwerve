@@ -61,7 +61,7 @@ public class AlignToWallCommand extends CommandBase {
     private static double calculateLoadingStationError(double current) {
         return current > 0
                 ? 180 - current
-                : 180 + current;
+                : -180 - current;
     }
 
     private static double calculateGridError(double current) {

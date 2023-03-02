@@ -1,10 +1,13 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.commands.swerve.RelativeTrajectoryCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
@@ -95,6 +98,14 @@ public class RobotControlMapping {
         driver.leftTrigger(0.5)
                 .onTrue(SwerveCommands.setTurboMode(drive, true))
                 .onFalse(SwerveCommands.setTurboMode(robot.swerveDrive, false));
+
+driver.rightBumper()
+.onTrue(RelativeTrajectoryCommand.makeCommand(
+    drive,
+    Units.feetToMeters(4.0),
+    new Translation2d(1.0, 1.0),
+    new Translation2d(0.0, -2.0),
+    new Translation2d(-1.0, -1.0)));
 
         driver.povUp().onTrue(new BuzzAroundModeCommand(robot));
         driver.povRight().onTrue(new PickupModeCommand(robot));

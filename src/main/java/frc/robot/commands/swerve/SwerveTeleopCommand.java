@@ -47,7 +47,7 @@ public class SwerveTeleopCommand extends CommandBase {
 
         if (flipSign == FlipSign.DONT_CARE) {
             Rotation2d heading = swerveDrive.getYaw();
-            if (Math.abs(heading.getDegrees()) > 90) {
+            if (Math.abs(heading.getDegrees()) < 90) {
                 flipSign = FlipSign.YES;
             } else {
                 flipSign = FlipSign.NO;

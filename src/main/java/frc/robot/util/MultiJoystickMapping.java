@@ -43,7 +43,7 @@ public class MultiJoystickMapping {
 
     // left X = strafe left/right
     public double getStrafeLeftRight() {
-        return -getDriveAxis(XboxController.Axis.kLeftX.value);
+        return getDriveAxis(XboxController.Axis.kLeftX.value);
     }
 
     // right X = rotate left/right
