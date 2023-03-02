@@ -23,7 +23,7 @@ public class PickupModeCommand extends SequentialCommandGroup {
     }
     
     public void init(SwerveDriveSubsystem drive) {
-        drive.setRobotRelative(true);
+        drive.setRobotRelative(false);
         drive.setTurboMode(false);
         drive.setOrbitMode(false);
     }

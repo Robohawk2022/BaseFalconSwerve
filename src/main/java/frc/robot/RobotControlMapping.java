@@ -87,9 +87,6 @@ public class RobotControlMapping {
         driver.b().onTrue(HandCommands.grab(hand));
         driver.a().onTrue(HandCommands.release(hand));
         driver.back().onTrue(new ParkingOnThePlatformCommand(drive));
-        driver.leftBumper()
-                .onTrue(SwerveCommands.setRobotRelative(drive, true))
-                .onFalse(SwerveCommands.setRobotRelative(robot.swerveDrive, false));
 
         // triggers
         driver.rightTrigger(0.5)
