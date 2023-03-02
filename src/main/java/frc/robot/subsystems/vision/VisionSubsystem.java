@@ -42,7 +42,6 @@ public class VisionSubsystem extends SubsystemBase {
         double [] id = idArray.get();
 
         if (!hasAtLeastOne(ptx, pty, ptz, prx, pry, prz, id)) {
-            System.err.println("no tag in view");
             return null;
         }
 

@@ -69,14 +69,12 @@ public class AlignToAprilTagCommand extends CommandBase {
         double vy = determineSpeedY(tag);
 
         if (vx == 0 && vy == 0) {
-            System.err.println("close enough; stopping");
             swerveDrive.stop();
             done = true;
             return;
         }
 
         ChassisSpeeds speeds = new ChassisSpeeds(vx, vy, 0.0);    
-        System.err.println("got tag "+tag+"; applying speed = "+speeds);
         swerveDrive.drive(speeds);
         done = false;
     }

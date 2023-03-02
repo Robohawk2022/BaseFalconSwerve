@@ -44,27 +44,23 @@ public class AlignToWallCommand extends CommandBase {
     }
 
     @Override
-    public void execute(){
+    public void execute() {
+
         currentDirection = robot.swerveDrive.getYaw().getDegrees();
-        //System.err.println("StartingCommand");
-        //System.err.println(currentDirection);
+        System.err.println(String.format("want %.3f, have %.3f, diff %.3f",
+                wantedDirection,
+                currentDirection,
+                wantedDirection - currentDirection));
         SmartDashboard.putNumber("getYaw", currentDirection);
 
         if (currentDirection < toleration + wantedDirection && currentDirection > wantedDirection - toleration){
-            
             robot.swerveDrive.stop();
             done = true;
-
         } else if (directionDisposition < -180 || (directionDisposition < 180 && directionDisposition > 0)){
-
             robot.swerveDrive.drive(POS);
-
         } else {
-
             robot.swerveDrive.drive(NEG);
         }
-   
-        // REPLACE ME with real logic that actually does something
     }
 
     @Override
