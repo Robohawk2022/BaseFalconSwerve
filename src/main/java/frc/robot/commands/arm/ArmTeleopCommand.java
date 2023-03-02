@@ -17,6 +17,7 @@ public class ArmTeleopCommand extends CommandBase {
     private final HalfBakedSpeedController extenderSpeed;
     private final HalfBakedSpeedController rotatorSpeed;
     private final double [] wantedPosition;
+    private boolean alreadyAppliedSpeedTweak;
 
     public ArmTeleopCommand(ArmSubsystem arm, DoubleSupplier rotateSupplier, DoubleSupplier extendSupplier) {
         this.arm = arm;
@@ -25,6 +26,7 @@ public class ArmTeleopCommand extends CommandBase {
         this.extenderSpeed = makeExtenderSpeedController();
         this.rotatorSpeed = makeRotatorSpeedController();
         this.wantedPosition = new double [2];
+        this.alreadyAppliedSpeedTweak = false;
 
         addRequirements(arm);
         
@@ -39,15 +41,29 @@ public class ArmTeleopCommand extends CommandBase {
     public void execute() {
 
         double rotateInput = rotateSupplier.getAsDouble();
+        double extendInput = extendSupplier.getAsDouble();
+
+        // if the user is extending, but not rotating, the arm might bind up
+        // and the cable unravel. to fight this, we will add in some rotation.
+        if (extendInput > 0.0 && rotateInput == 0.0) {
+            if (!alreadyAppliedSpeedTweak) {
+                rotateInput = 0.1;
+                alreadyAppliedSpeedTweak = true;
+            }
+        }
+        if (extendInput == 0.0) {
+            alreadyAppliedSpeedTweak = false;
+        }
+
         double rotateError = 0;
         double rotateOutput = 0;
-        if (rotateInput != 0.0) {
+        if (rotateInput == 0.0) {
+            rotateError = wantedPosition[1] - arm.getAngle();
+            rotateOutput = rotatorSpeed.calculate(rotateError);
+        } else {
             rotateError = 0.0;
             rotateOutput = rotateInput * ROTATOR_MAX_SPEED;
             wantedPosition[1] = arm.getAngle();
-        } else {
-            rotateError = wantedPosition[1] - arm.getAngle();
-            rotateOutput = rotatorSpeed.calculate(rotateError);
         }
          arm.rotateAt(rotateOutput);
 
@@ -56,16 +72,15 @@ public class ArmTeleopCommand extends CommandBase {
         SmartDashboard.putNumber("RotateError", rotateError);
         SmartDashboard.putNumber("RotateOutput", rotateOutput);
 
-        double extendInput = extendSupplier.getAsDouble();
         double extendError = 0;
         double extendOutput = 0;
-        if (extendInput != 0.0) {
+        if (extendInput == 0.0) {
+            extendError = wantedPosition[0] - arm.getLength();
+            extendOutput = extenderSpeed.calculate(extendError);
+        } else {
             extendError = 0.0;
             extendOutput = extendSupplier.getAsDouble() * EXTENDER_MAX_SPEED;
             wantedPosition[0] = arm.getLength();
-        } else {
-            extendError = wantedPosition[0] - arm.getLength();
-            extendOutput = extenderSpeed.calculate(extendError);
         }
         arm.extendAt(extendOutput);
 
