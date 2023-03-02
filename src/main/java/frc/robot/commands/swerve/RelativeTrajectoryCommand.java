@@ -9,6 +9,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -31,6 +32,11 @@ import static edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
  */
 public class RelativeTrajectoryCommand {
 
+    // speed controls
+    public static final double TOP_SPEED_SECS = 0.25;
+    public static final double MAX_ROT_SPEED = Units.degreesToRadians(180);
+    public static final double MAX_ROT_ACCEL = MAX_ROT_SPEED / TOP_SPEED_SECS;
+
     // PID constants
     public static final double PX_CONTROLLER = 1;
     public static final double PY_CONTROLLER = 1;
@@ -38,7 +44,7 @@ public class RelativeTrajectoryCommand {
     // creates a controller for the rotation of the robot
     // (this is really irrelevant b/c we don't rotate)
     public static ProfiledPIDController makeThetaController() {
-        Constraints constraints = new TrapezoidProfile.Constraints(Math.PI, Math.PI);
+        Constraints constraints = new TrapezoidProfile.Constraints(MAX_ROT_SPEED, MAX_ROT_ACCEL);
         ProfiledPIDController c = new ProfiledPIDController(1, 0, 0, constraints);
         c.enableContinuousInput(-Math.PI, Math.PI);
         return c;
@@ -69,7 +75,8 @@ public class RelativeTrajectoryCommand {
     // to a button; it won't be reusable as the robot moves around the field.
     private static Command makeAbsoluteCommand(SwerveDriveSubsystem drive, double maxSpeed, Translation2d... points) {
 
-        TrajectoryConfig config = new TrajectoryConfig(maxSpeed, maxSpeed)
+        double maxAccel = maxSpeed / TOP_SPEED_SECS;
+        TrajectoryConfig config = new TrajectoryConfig(maxSpeed, maxAccel)
                 .setKinematics(SwerveConfig.defaultKinematics);
 
         Pose2d start = drive.getPose();

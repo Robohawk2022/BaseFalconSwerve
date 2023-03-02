@@ -96,21 +96,22 @@ public class RobotControlMapping {
             .onTrue(SwerveCommands.setOrbitMode(drive, true))
             .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
         driver.leftTrigger(0.5)
-                .onTrue(SwerveCommands.setTurboMode(drive, true))
-                .onFalse(SwerveCommands.setTurboMode(robot.swerveDrive, false));
+            .onTrue(SwerveCommands.setTurboMode(drive, true))
+            .onFalse(SwerveCommands.setTurboMode(robot.swerveDrive, false));
 
-driver.rightBumper()
-.onTrue(RelativeTrajectoryCommand.makeCommand(
-    drive,
-    Units.feetToMeters(4.0),
-    new Translation2d(1.0, 1.0),
-    new Translation2d(0.0, -2.0),
-    new Translation2d(-1.0, -1.0)));
-
+        // POV mapping
         driver.povUp().onTrue(new BuzzAroundModeCommand(robot));
         driver.povRight().onTrue(new PickupModeCommand(robot));
         driver.povLeft().onTrue(new LoadingStationModeCommand(robot));
         driver.povDown().onTrue(new ScoreModeCommand(robot));
+
+        // testing out a trajectory
+        driver.rightBumper()
+            .onTrue(RelativeTrajectoryCommand.makeCommand(drive,
+                Units.feetToMeters(4.0),
+                new Translation2d(1.0, 1.0),
+                new Translation2d(0.0, -2.0),
+                new Translation2d(-1.0, -1.0)));
     }
 
     /*

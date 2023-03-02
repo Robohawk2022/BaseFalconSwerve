@@ -166,3 +166,7 @@ bin/
 *.ipr
 *.iml
 *.iws
+
+# random working files
+out
+*.swp

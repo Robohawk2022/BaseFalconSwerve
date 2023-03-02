@@ -41,28 +41,28 @@
               "_children": [
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Rotator/Current",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/Angle",
                   "_title": "Current Angle",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Rotator/Max",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/EffectiveMax",
                   "_title": "Max Position",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Rotator/Min",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/EffectiveMin",
                   "_title": "Min Position",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Rotator/Limit",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/LimitTripped",
                   "_title": "Limit Tripped?",
                   "_glyph": 148,
                   "_showGlyph": false,
@@ -86,28 +86,28 @@
               "_children": [
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Extender/Current",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/Length",
                   "_title": "Current Length",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Extender/Max",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/EffectiveMax",
                   "_title": "Max Position",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Extender/Min",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/EffectiveMin",
                   "_title": "Min Position",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Extender/Limit",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/LimitTripped",
                   "_title": "Limit Tripped?",
                   "_glyph": 148,
                   "_showGlyph": false,
@@ -142,28 +142,28 @@
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve Gyro/Pitch",
+                  "_source0": "network_table:///SmartDashboard/SwerveGyro/Pitch",
                   "_title": "NavX Pitch",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve Odometry/X",
+                  "_source0": "network_table:///SmartDashboard/SwerveOdometry/X",
                   "_title": "Odometry X",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve Odometry/Y",
+                  "_source0": "network_table:///SmartDashboard/SwerveOdometry/Y",
                   "_title": "Odometry Y",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Swerve Gyro/Calibrated",
+                  "_source0": "network_table:///SmartDashboard/SwerveGyro/Calibrated",
                   "_title": "NavX Calibrated?",
                   "_glyph": 148,
                   "_showGlyph": false,
@@ -187,26 +187,17 @@
               "_children": [
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Hand/Position",
-                  "_title": "Position",
+                  "_source0": "network_table:///SmartDashboard/Hand/Claw",
+                  "_title": "Claw Position",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Hand/Pressure",
-                  "_title": "Pressure",
+                  "_source0": "network_table:///SmartDashboard/Hand/Duck",
+                  "_title": "Duck Position",
                   "_glyph": 148,
                   "_showGlyph": false
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Hand/Closed",
-                  "_title": "Closed?",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
                 }
               ]
             }

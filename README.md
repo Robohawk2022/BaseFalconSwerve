@@ -2,38 +2,36 @@
 
 # TODO
 
-# Prior to delivery
+Agenda for tonight:
+* Test balancing on the platform
+* Clean up the Dashboard to display meaningful info
+* Check swerve drive calibration
+* Consult on flipping controls for arm
 
-- Test arm code
-  - Calibration routine to set min/max
-  - Move to preset
-  - Teleop
+When/if cameras get mounted:
+* Test aligning to AprilTags
+* Add camera output to Dashboard
+  * Test picking up using Dashboard cam
 
-- Develop autonomous programs
+Depending on results:
+* Map out and test at least one autonomous program
 
-- Shuffleboard configuration & stats
+* Dashboard stats
+  * Drive
+    * Heading
+    * Pitch
+    * Is the gyro calibrated?
+  * Arm
+    * Extension length, min, max, limit tripped?
+    * Rotation angle, min, max, limit tripped?
+  * Claw (this is optional)
+    * Open or closed?
+  * Cameras
+    * AI
+    * Arm
+  * Commands
+    * Cancel everything (currently back on both joysticks)
 
-# Post delivery
-
-- General wiring
-  - Connect to all motors and
-    - Update firmware
-    - Validate CAN bus ID
-    - Validate position (inverted or not)
-
-- Arm subsystem
-  - Measurements
-    - Arm extension (rate & travel range)
-    - Arm rotation (rate & travel range)
-  - Test
-    - Teleop (use this to establish presets - x8)
-    - Presets (tune these to be as fast/accurate as possible)
-  
-- Hand subsystem
-  - Test grab/release (tune timing of bumper)
-
-- Vision subsystem
-  - Test aligning to tag (tune distance from tag and speeds)
-
-- Balance subsystem
-  - Test and tune speed profile
+* Calibrate the swerve drive
+  * Comment out strafing and see if it drives straight
+  * Re-measure the angle offsets for the wheels (requires Phoenix Tuner)

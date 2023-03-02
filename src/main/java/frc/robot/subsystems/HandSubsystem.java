@@ -44,20 +44,19 @@ public class HandSubsystem extends SubsystemBase {
         position = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, POSITION_FORWARD, POSITION_REVERSE);
         duck = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, DUCK_QUACK, DUCK_UNQUACK);
         SmartDashboard.putData("Hand", builder -> {
-            builder.addBooleanProperty("Closed", () -> isClosed(), null);
-            builder.addStringProperty("Position", () -> getPositionString(), null);
-            builder.addStringProperty("Pressure", () -> getPressureString(), null);
+            builder.addStringProperty("Claw", this::getClawPositionString, null);
+            builder.addStringProperty("Duck", this::getDuckPositionString, null);
         });
     }
 
-    private String getPressureString() {
-        Value val = pressure.get();
-        if (val == LO) return "Low";
-        if (val == HI) return "High";
+    private String getDuckPositionString() {
+        Value val = duck.get();
+        if (val == QUACK) return "Extended";
+        if (val == UNQUACK) return "Retracted";
         return "Off";
     }
 
-    private String getPositionString() {
+    private String getClawPositionString() {
         Value val = position.get();
         if (val == OPEN) return "Open";
         if (val == CLOSED) return "Closed";

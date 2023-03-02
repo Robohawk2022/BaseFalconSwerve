@@ -61,13 +61,20 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         robotRelative = false;
         turbo = false;
 
-        SmartDashboard.putData("NavX", navx);
-        SmartDashboard.putData("Swerve Gyro", builder -> {
+        SmartDashboard.putData("SwerveNavX", navx);
+        SmartDashboard.putData("SwerveGyro", builder -> {
             builder.addBooleanProperty("Calibrated", navx::isMagnetometerCalibrated, null);
             builder.addDoubleProperty("Pitch", () -> getPitch(), null);
             builder.addDoubleProperty("Yaw", () -> getYaw().getDegrees(), null);
+            builder.addDoubleProperty("X", () -> Units.metersToFeet(navx.getDisplacementX()), null);
+            builder.addDoubleProperty("Y", () -> Units.metersToFeet(navx.getDisplacementY()), null);
         });
-        SmartDashboard.putData("Swerve Odometry", builder -> {
+        SmartDashboard.putData("SwerveOdometry", builder -> {
+            builder.addDoubleProperty("Heading", () -> odometry.getPoseMeters().getRotation().getDegrees(), null);
+            builder.addDoubleProperty("X", () -> Units.metersToFeet(odometry.getPoseMeters().getX()), null);
+            builder.addDoubleProperty("Y", () -> Units.metersToFeet(odometry.getPoseMeters().getY()), null);
+        });
+        SmartDashboard.putData("SwerveDrift", builder -> {
             builder.addDoubleProperty("Heading", () -> odometry.getPoseMeters().getRotation().getDegrees(), null);
             builder.addDoubleProperty("X", () -> Units.metersToFeet(odometry.getPoseMeters().getX()), null);
             builder.addDoubleProperty("Y", () -> Units.metersToFeet(odometry.getPoseMeters().getY()), null);

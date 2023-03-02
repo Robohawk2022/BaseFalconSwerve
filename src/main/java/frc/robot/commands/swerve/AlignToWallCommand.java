@@ -22,33 +22,45 @@ public class AlignToWallCommand extends CommandBase {
     private final SwerveDriveSubsystem drive;
     private final Wall wall;
     private final HalfBakedSpeedController controller;
+    private double current;
+    private double error;
+    private double output;
     private boolean done;
 
     public AlignToWallCommand(SwerveDriveSubsystem drive, Wall wall) {
+
         this.drive = drive;
         this.wall = wall;
         this.controller = new HalfBakedSpeedController(
                 MIN_THRESHOLD, MAX_THRESHOLD,
                 MIN_SPEED, MAX_SPEED);
+
+        addRequirements(drive);
+
+        SmartDashboard.putData("AlignToWallCommand-"+wall.name(), builder -> {
+            builder.addBooleanProperty("Done", () -> done, null);
+            builder.addDoubleProperty("Current", () -> current, null);
+            builder.addDoubleProperty("Error", () -> error, null);
+            builder.addDoubleProperty("Output", () -> output, null);
+        });
     }
 
     @Override
     public void initialize() {
         done = false;
+        current = 0;
+        error = 0;
+        output = 0;
     }
 
     @Override
     public void execute() {
 
-        double current = drive.getYaw().getDegrees();
-        double error = wall == Wall.GRID
+        current = drive.getYaw().getDegrees();
+        error = wall == Wall.GRID
                 ? calculateGridError(current)
                 : calculateLoadingStationError(current);
-        double output = controller.calculate(error);
-
-        SmartDashboard.putNumber("AlignToWall/Current", current);
-        SmartDashboard.putNumber("AlignToWall/Error", error);
-        SmartDashboard.putNumber("AlignToWall/Output", output);
+        output = controller.calculate(error);
 
         if (output != 0.0) {
             drive.drive(new ChassisSpeeds(0, 0, output));

@@ -14,9 +14,9 @@ public class SwerveTeleopCommand extends CommandBase {
         DONT_CARE
     }
 
-    private final SwerveDriveSubsystem swerveDrive;
-    private final DoubleSupplier pxSupplier;
-    private final DoubleSupplier pySupplier;
+    protected final SwerveDriveSubsystem swerveDrive;
+    protected final DoubleSupplier pxSupplier;
+    protected final DoubleSupplier pySupplier;
     private final DoubleSupplier pomegaSupplier;
     private FlipSign flipSign;
 
@@ -39,8 +39,18 @@ public class SwerveTeleopCommand extends CommandBase {
 
         double px = pxSupplier.getAsDouble();
         double py = pySupplier.getAsDouble();
-        double pomega = pomegaSupplier.getAsDouble();
+        double pomega = calculateRotation();
 
+        swerveDrive.drive(px, py, pomega);
+    }
+
+    /**
+     * Calculates the correct value to use for the rotation speed. This is negated if the
+     * robot is facing the player, because it's more natural in "field relative" movement.
+     */
+    protected double calculateRotation() {
+
+        double pomega = pomegaSupplier.getAsDouble();
         if (pomega == 0.0) {
             flipSign = FlipSign.DONT_CARE;
         }
@@ -58,6 +68,6 @@ public class SwerveTeleopCommand extends CommandBase {
             pomega = -pomega;
         }
 
-        swerveDrive.drive(px, py, pomega);
+        return pomega;
     }
 }
