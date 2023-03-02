@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ArmPresetCommand;
@@ -86,7 +87,7 @@ public class RobotControlMapping {
         driver.x().onTrue(new AlignToWallCommand(robot, 0));
         driver.b().onTrue(HandCommands.grab(hand));
         driver.a().onTrue(HandCommands.release(hand));
-        driver.back().onTrue(new ParkingOnThePlatformCommand(drive));
+        driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
         // triggers
         driver.rightTrigger(0.5)
@@ -119,6 +120,7 @@ public class RobotControlMapping {
         ops.x().onTrue(new AlignToWallCommand(robot, 0));
         ops.y().onTrue(SwerveCommands.scootForward(drive, 6.0));
         ops.start().onTrue(new ArmCalibrationCommand(arm));
+        driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
         // bumpers (left and right are reversed b/c robot is facing driver)
         ops.leftBumper().onTrue(SwerveCommands.scootRight(drive, 22.0));
