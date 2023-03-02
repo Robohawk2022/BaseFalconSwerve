@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
@@ -75,6 +76,9 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
             autonomousCommand = null;
+        }
+        if (!arm.isCalibrated()) {
+            new ArmCalibrationCommand(arm).schedule();
         }
         swerveDrive.zeroGyro();
     }

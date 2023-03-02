@@ -73,6 +73,10 @@ public class ArmSubsystem extends SubsystemBase {
         });
     }
 
+    public boolean isCalibrated() {
+        return rotateMin != Double.NEGATIVE_INFINITY;
+    }
+
     public boolean extendLimitTripped() {
         return extendLimit.get() == EXTENSION_LIMIT_PRESSED;
     }
@@ -83,7 +87,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // If we're extended beyond the critical length, we can't rotate below the critical angle
     public double getEffectiveRotateMin() {
-        if (rotateMin != Double.NEGATIVE_INFINITY && getLengthDelta() > ArmConfig.LIMIT_CRITICAL_LENGTH) {
+        if (isCalibrated() && getLengthDelta() > ArmConfig.LIMIT_CRITICAL_LENGTH) {
             return rotateMin + ArmConfig.LIMIT_CRITICAL_ANGLE;
         }
         return rotateMin;
@@ -91,8 +95,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     // If we're below the critical angle, we can't extend beyond the critical length
     public double getEffectiveExtendMax() {
-        if (extendMax != Double.POSITIVE_INFINITY && getAngleDelta() < ArmConfig.LIMIT_CRITICAL_ANGLE) {
-            return extendMax - ArmConfig.LIMIT_CRITICAL_LENGTH;
+        if (isCalibrated() && getAngleDelta() < ArmConfig.LIMIT_CRITICAL_ANGLE) {
+            return extendMin + ArmConfig.LIMIT_CRITICAL_LENGTH;
         }
         return extendMax;
     }
@@ -102,9 +106,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getAngleDelta() {
-        return rotateMin == Double.NEGATIVE_INFINITY
-            ? Double.NEGATIVE_INFINITY
-            : rotateEncoder.getPosition() - rotateMin;
+        return isCalibrated()
+            ? rotateEncoder.getPosition() - rotateMin
+            : Double.NEGATIVE_INFINITY;
     }
 
     public double getLength() {
@@ -112,9 +116,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getLengthDelta() {
-        return extendMin == Double.NEGATIVE_INFINITY
-            ? Double.NEGATIVE_INFINITY
-            : extendEncoder.getPosition() - extendMin;
+        return isCalibrated()
+            ? extendEncoder.getPosition() - extendMin
+            : Double.NEGATIVE_INFINITY;
     }
 
     public void clearLimits() {
