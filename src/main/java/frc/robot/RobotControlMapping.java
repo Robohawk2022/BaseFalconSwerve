@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
-import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
@@ -84,7 +83,7 @@ public class RobotControlMapping {
         // buttons
         driver.start().onTrue(SwerveCommands.zeroGyro(drive));
         driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
-        driver.x().onTrue(new AlignToWallCommand(robot, 0));
+        driver.x().onTrue(SwerveCommands.scootForward(drive, 6.0));
         driver.b().onTrue(HandCommands.grab(hand));
         driver.a().onTrue(HandCommands.release(hand));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
@@ -117,7 +116,7 @@ public class RobotControlMapping {
         // buttons
         ops.b().onTrue(HandCommands.grab(hand));
         ops.a().onTrue(HandCommands.release(hand));
-        ops.x().onTrue(new AlignToWallCommand(robot, 0));
+        ops.x().onTrue(new AlignToWallCommand(drive, AlignToWallCommand.Wall.GRID));
         ops.y().onTrue(SwerveCommands.scootForward(drive, 6.0));
         ops.start().onTrue(new ArmCalibrationCommand(arm));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));

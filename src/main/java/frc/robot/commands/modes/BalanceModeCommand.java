@@ -14,7 +14,7 @@ public class BalanceModeCommand extends ParallelCommandGroup {
     public BalanceModeCommand(Robot robot) {
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.BALANCE_POSITION));
         addCommands(Commands.sequence(
-                new AlignToWallCommand(robot, 0),
+                AlignToWallCommand.loadingStation(robot.swerveDrive),
                 new ParkingOnThePlatformCommand(robot.swerveDrive),
                 SwerveCommands.turnWheels(robot.swerveDrive, 90)));
     }
