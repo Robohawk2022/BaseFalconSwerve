@@ -34,21 +34,21 @@ public class SwerveCommands {
 
     public static Command scootForward(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(Units.feetToMeters(inches), 0,0);
-        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
+        return new SwerveFixedSpeedCommand(drive, speeds, false, 1.0);
     }
 
     public static Command scootBackward(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(-Units.feetToMeters(inches), 0,0);
-        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
+        return new SwerveFixedSpeedCommand(drive, speeds, false, 1.0);
     }
 
     public static Command scootLeft(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(0, Units.inchesToMeters(inches), 0);
-        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
+        return new SwerveFixedSpeedCommand(drive, speeds, true, 1.0);
     }
 
     public static Command scootRight(SwerveDriveSubsystem drive, double inches) {
         ChassisSpeeds speeds = new ChassisSpeeds(0, -Units.inchesToMeters(inches), 0);
-        return new SwerveFixedSpeedCommand(drive, speeds, 1.0);
+        return new SwerveFixedSpeedCommand(drive, speeds, true, 1.0);
     }
 }
