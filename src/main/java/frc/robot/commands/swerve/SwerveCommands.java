@@ -10,14 +10,8 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 public class SwerveCommands {
 
-    public static final double HOP_SPEED_MPS = Units.feetToMeters(1.5);
-
     public static Command setTurboMode(SwerveDriveSubsystem drive, boolean turbo) {
         return new InstantCommand(() -> drive.setTurboMode(turbo), drive);
-    }
-
-    public static Command setRobotRelative(SwerveDriveSubsystem drive, boolean robotRelative) {
-        return new InstantCommand(() -> drive.setRobotRelative(robotRelative), drive);
     }
 
     public static Command setOrbitMode(SwerveDriveSubsystem drive, boolean orbit) {
