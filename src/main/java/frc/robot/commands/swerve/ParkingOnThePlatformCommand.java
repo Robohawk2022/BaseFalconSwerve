@@ -8,7 +8,7 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 public class ParkingOnThePlatformCommand extends CommandBase {
 
-    public static final double FORWARD_SPEED_FPS = Units.feetToMeters(2.0);
+    public static final double FORWARD_SPEED_FPS = Units.feetToMeters(2.2);
     public static final double PITCH_THRESHOLD = -0.8;
     public static final double PITCH_COUNT = 10;
 
