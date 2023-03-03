@@ -26,15 +26,8 @@ public class LoadingStationModeCommand extends ParallelCommandGroup {
 
     public LoadingStationModeCommand(Robot robot) {
         addCommands(Commands.sequence(
-            new InstantCommand(() -> init(robot.swerveDrive)),
             AlignToWallCommand.loadingStation(robot.swerveDrive),
             new AlignToAprilTagCommand(robot.swerveDrive, robot.vision)));
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.LOAD_POSITION));
-    }
-    
-    public void init(SwerveDriveSubsystem drive) {
-        drive.setRobotRelative(false);
-        drive.setTurboMode(false);
-        drive.setOrbitMode(false);
     }
 }

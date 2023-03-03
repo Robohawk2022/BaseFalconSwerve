@@ -24,8 +24,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private final Field2d field;
     private SwerveDriveKinematics kinematics;
     private SwerveDriveOdometry odometry;
-    private boolean robotRelative;
-    private boolean turbo;
     private ChassisSpeeds lastSpeed;
 
     public SwerveDriveSubsystem() {
@@ -59,8 +57,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
                 getModulePositions());
         
         kinematics = SwerveConfig.defaultKinematics;
-        robotRelative = false;
-        turbo = false;
         lastSpeed = new ChassisSpeeds(0, 0, 0);
 
         SmartDashboard.putData("SwerveNavX", navx);
@@ -114,14 +110,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             : SwerveConfig.defaultKinematics;
     }
 
-    public void setRobotRelative(boolean robotRelative) {
-        this.robotRelative = robotRelative;
-    }
-
-    public void setTurboMode(boolean turbo) {
-        this.turbo = turbo;
-    }
-
     /**
      * Stops the drive entirely
      */
@@ -138,15 +126,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         double vy = percentY * SwerveConfig.maxLinearSpeed;
         double vomega = percentOmega * SwerveConfig.maxAngularSpeed;
 
-        if (turbo) {
-            vx *= SwerveConfig.turboFactor;
-            vy *= SwerveConfig.turboFactor;
-            vomega *= SwerveConfig.turboFactor;
-        }
-
-        ChassisSpeeds speeds = robotRelative
-                ? new ChassisSpeeds(vx, vy, vomega)
-                : ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, vomega, getYaw());
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, vomega, getYaw());
         drive(speeds);
     }
 

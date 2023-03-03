@@ -29,8 +29,6 @@ public class ScoreModeCommand extends ParallelCommandGroup {
     }
     
     public void init(SwerveDriveSubsystem drive) {
-        drive.setRobotRelative(false);
-        drive.setTurboMode(false);
         drive.setOrbitMode(false);
     }
 }

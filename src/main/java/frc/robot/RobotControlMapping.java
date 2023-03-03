@@ -93,9 +93,6 @@ public class RobotControlMapping {
         driver.rightTrigger(0.5)
             .onTrue(SwerveCommands.setOrbitMode(drive, true))
             .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
-        driver.leftTrigger(0.5)
-            .onTrue(SwerveCommands.setTurboMode(drive, true))
-            .onFalse(SwerveCommands.setTurboMode(robot.swerveDrive, false));
 
         // POV mapping
         driver.povUp().onTrue(new BuzzAroundModeCommand(robot));

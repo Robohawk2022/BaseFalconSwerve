@@ -20,13 +20,6 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 public class BuzzAroundModeCommand extends SequentialCommandGroup {
 
     public BuzzAroundModeCommand(Robot robot) {
-        addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION));
-    }
-
-    public void init(SwerveDriveSubsystem drive) {
-        drive.setRobotRelative(false);
-        drive.setTurboMode(true);
-        drive.setOrbitMode(false);
     }
 }

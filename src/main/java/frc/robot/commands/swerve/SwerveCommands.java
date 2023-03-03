@@ -10,10 +10,6 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 public class SwerveCommands {
 
-    public static Command setTurboMode(SwerveDriveSubsystem drive, boolean turbo) {
-        return new InstantCommand(() -> drive.setTurboMode(turbo), drive);
-    }
-
     public static Command setOrbitMode(SwerveDriveSubsystem drive, boolean orbit) {
         return new InstantCommand(() -> drive.setOrbitMode(orbit), drive);
     }

@@ -18,14 +18,7 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 public class PickupModeCommand extends SequentialCommandGroup {
 
     public PickupModeCommand(Robot robot) {
-        addCommands(new InstantCommand(() -> init(robot.swerveDrive)));
         addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.PICKUP_POSITION));
-    }
-    
-    public void init(SwerveDriveSubsystem drive) {
-        drive.setRobotRelative(false);
-        drive.setTurboMode(false);
-        drive.setOrbitMode(false);
     }
 }
 
