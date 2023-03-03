@@ -65,6 +65,7 @@ public class AlignToAprilTagCommand extends CommandBase {
         // if there's no tag in view, we'll increment a counter; once we haven't seen it
         // for the specified number of frames, we'll assume we're done
         AprilTag tag = vision.getAprilTag();
+        System.err.println("tag = "+tag);
         if (tag == null) {
             roundsWithoutTag += 1;
             if (roundsWithoutTag == MAX_ROUND_MISSES) {
@@ -74,23 +75,25 @@ public class AlignToAprilTagCommand extends CommandBase {
             }
         }
 
-        roundsWithoutTag = 0;
-
-        distanceY = tag.getLeftRightDistance();
-        outputY = controller.calculate(distanceY);
-
-        distanceX = tag.getForwardReverseDistance();
-        errorX = distanceX - TARGET_Z;
-        outputX = controller.calculate(errorX);
-
-        if (outputX == 0 && outputY == 0) {
-            swerveDrive.stop();
-            done = true;
-            return;
-        }
-
-        swerveDrive.drive(new ChassisSpeeds(outputX, outputY, 0.0));
-        done = false;
+        return;
+//
+//        roundsWithoutTag = 0;
+//
+//        distanceY = tag.getLeftRightDistance();
+//        outputY = controller.calculate(distanceY);
+//
+//        distanceX = tag.getForwardReverseDistance();
+//        errorX = distanceX - TARGET_Z;
+//        outputX = controller.calculate(errorX);
+//
+//        if (outputX == 0 && outputY == 0) {
+//            swerveDrive.stop();
+//            done = true;
+//            return;
+//        }
+//
+//        swerveDrive.drive(new ChassisSpeeds(outputX, outputY, 0.0));
+//        done = false;
     }
 
     public boolean isFinished() {

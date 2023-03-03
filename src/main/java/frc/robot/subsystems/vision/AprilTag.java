@@ -6,17 +6,20 @@ public class AprilTag {
 
     public final double id;
     public final Transform3d pose;
+    public final double distance;
 
-    public AprilTag(double id, Transform3d pose) {
+    public AprilTag(double id, Transform3d pose, double distance) {
         this.id = id;
         this.pose = pose;
+        this.distance = distance;
     }
 
     // the vision system uses "z" as the forward/reverse distance to the tag.
     // the robot will drive in its x dimension to close this distance. this
     // will hopefully limit confusion when writing the commands.
     public double getForwardReverseDistance() {
-        return pose.getX();
+//        return pose.getX();
+        return distance;
     }
 
     // the vision system uses "X" as the left/right position of the tag.
@@ -27,6 +30,6 @@ public class AprilTag {
     }
 
     public String toString() {
-        return String.format("AprilTag(id=%s,  pose=%s)", id, pose);
+        return String.format("AprilTag(id=%s,  pose=%s, distance=%s)", id, pose, distance);
     }
 }

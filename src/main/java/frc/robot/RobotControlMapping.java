@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.arm.ArmPresetCommand;
+import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
@@ -97,7 +98,7 @@ public class RobotControlMapping {
 
         // POV mapping
         driver.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.TRAVEL_POSITION));
-        driver.povLeft().onTrue(new ProxyCommand(() -> AutonomousCommand.generateProgram(robot, robot.program.getSelected())));
+        driver.povLeft().onTrue(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
     }
 
     private void mapOps() {
