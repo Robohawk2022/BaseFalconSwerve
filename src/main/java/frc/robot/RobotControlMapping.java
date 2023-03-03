@@ -1,19 +1,12 @@
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ArmPresetCommand;
-import frc.robot.commands.swerve.AlignToDegreesCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
-import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
-import frc.robot.commands.swerve.RelativeTrajectoryCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
-import frc.robot.commands.swerve.AlignToWallCommand.Wall;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmTeleopCommand;
@@ -90,17 +83,8 @@ public class RobotControlMapping {
         // buttons
         driver.start().onTrue(SwerveCommands.zeroGyro(drive));
         driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
-        // driver.x().onTrue(SwerveCommands.scootForward(drive, 6.0));
-
-
-
-        driver.x().onTrue(Commands.sequence(
-            new AlignToDegreesCommand(drive, 0), 
-            new ParkingOnThePlatformCommand(drive),
-            SwerveCommands.turnWheels(drive, 90)
-        ));
-
-
+        driver.x().onTrue(AlignToWallCommand.grid(drive));
+        driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
         driver.b().onTrue(HandCommands.grab(hand));
         driver.a().onTrue(HandCommands.release(hand));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
@@ -118,14 +102,6 @@ public class RobotControlMapping {
         driver.povRight().onTrue(new PickupModeCommand(robot));
         driver.povLeft().onTrue(new LoadingStationModeCommand(robot));
         driver.povDown().onTrue(new ScoreModeCommand(robot));
-
-        // testing out a trajectory
-        driver.rightBumper()
-            .onTrue(RelativeTrajectoryCommand.makeCommand(drive,
-                Units.feetToMeters(4.0),
-                new Translation2d(1.0, 1.0),
-                new Translation2d(0.0, -2.0),
-                new Translation2d(-1.0, -1.0)));
     }
 
     /*
@@ -142,7 +118,8 @@ public class RobotControlMapping {
         // buttons
         ops.b().onTrue(HandCommands.grab(hand));
         ops.a().onTrue(HandCommands.release(hand));
-        ops.x().onTrue(new AlignToWallCommand(drive, AlignToWallCommand.Wall.GRID));
+        driver.x().onTrue(AlignToWallCommand.grid(drive));
+        driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
         ops.y().onTrue(SwerveCommands.scootForward(drive, 6.0));
         ops.start().onTrue(new ArmCalibrationCommand(arm));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
