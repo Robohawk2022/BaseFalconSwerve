@@ -77,7 +77,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             builder.addDoubleProperty("X", () -> Units.metersToFeet(odometry.getPoseMeters().getX()), null);
             builder.addDoubleProperty("Y", () -> Units.metersToFeet(odometry.getPoseMeters().getY()), null);
         });
-        SmartDashboard.putData("SwerveSpeeds", builder -> {
+        SmartDashboard.putData("SwerveSpeed", builder -> {
             builder.addDoubleProperty("vx", () -> lastSpeed.vxMetersPerSecond, null);
             builder.addDoubleProperty("vy", () -> lastSpeed.vyMetersPerSecond, null);
             builder.addDoubleProperty("vomega", () -> lastSpeed.omegaRadiansPerSecond, null);
@@ -118,14 +118,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     /**
-     * Runs the drive at a percentage of max speed
+     * Runs the drive at a percentage of max speed (note that percentages
+     * can be higher than 100 for "turbo" mode)
      */
     public void drive(double percentX, double percentY, double percentOmega) {
-
         double vx = percentX * SwerveConfig.maxLinearSpeed;
         double vy = percentY * SwerveConfig.maxLinearSpeed;
         double vomega = percentOmega * SwerveConfig.maxAngularSpeed;
-
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, vomega, getYaw());
         drive(speeds);
     }

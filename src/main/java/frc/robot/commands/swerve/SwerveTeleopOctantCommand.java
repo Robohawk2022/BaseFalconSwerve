@@ -3,6 +3,7 @@ package frc.robot.commands.swerve;
 import edu.wpi.first.math.util.Units;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 /**
@@ -27,11 +28,13 @@ public class SwerveTeleopOctantCommand extends SwerveTeleopCommand {
             { -1.0, 1.0 }
     };
 
-    public SwerveTeleopOctantCommand(SwerveDriveSubsystem drive,
+    public SwerveTeleopOctantCommand(SwerveDriveSubsystem swerveDrive,
                                      DoubleSupplier pxSupplier,
                                      DoubleSupplier pySupplier,
-                                     DoubleSupplier pomegaSupplier) {
-        super(drive, pxSupplier, pySupplier, pomegaSupplier);
+                                     DoubleSupplier pomegaSupplier,
+                                     BooleanSupplier turboSupplier,
+                                     BooleanSupplier sniperSupplier) {
+        super(swerveDrive, pxSupplier, pySupplier, pomegaSupplier, turboSupplier, sniperSupplier);
     }
 
     @Override

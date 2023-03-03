@@ -20,6 +20,8 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.util.MultiJoystickMapping;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * All of the mapping of controls to commands for the production robot happens here.
  */
@@ -51,17 +53,27 @@ public class RobotControlMapping {
 
     private void mapSharedSticks() {
 
-        // ops switches to driving if they pull their left trigger
+        // ops switches to driving if they pull their right trigger
         MultiJoystickMapping sticks = new MultiJoystickMapping(
                 driver,
                 ops,
                 () -> ops.getRightTriggerAxis() > 0.5);
 
+        // turbo if the driver wants it
+        BooleanSupplier turboSupplier = () -> driver.getLeftTriggerAxis() > 0.5;
+
+        // sniper if the driver wants it OR ops has taken over
+        BooleanSupplier sniperSupplier = ()
+                -> driver.getHID().getLeftBumper()
+                || ops.getRightTriggerAxis() > 0.5;
+
         drive.setDefaultCommand(new SwerveTeleopCommand(
                 drive,
                 sticks::getForwardReverse,
                 sticks::getStrafeLeftRight,
-                sticks::getRotateLeftRight));
+                sticks::getRotateLeftRight,
+                turboSupplier,
+                sniperSupplier));
 
         arm.setDefaultCommand(new ArmTeleopCommand(
                 arm,
