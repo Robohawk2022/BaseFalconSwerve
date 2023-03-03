@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -42,17 +43,18 @@ public class Robot extends TimedRobot {
     public RobotControlMapping mapping;
     public boolean initRun;
 
-    public SendableChooser<AutonomousCommand.Program> program;
+    public SendableChooser<String> program;
 
     @Override
     public void robotInit() {
 
         program = new SendableChooser<>();
-        program.setDefaultOption("None", AutonomousCommand.Program.NONE);
-        program.addOption("Drop Only", AutonomousCommand.Program.DROP_ONLY);
-        program.addOption("Drop & Exit", AutonomousCommand.Program.DROP_EXIT);
-        program.addOption("Drop & Mount (L)", AutonomousCommand.Program.DROP_EXIT_MOUNT_L);
-        program.addOption("Drop & Mount (R)", AutonomousCommand.Program.DROP_EXIT_MOUNT_R);
+        program.setDefaultOption(AutonomousCommand.NONE, AutonomousCommand.NONE);
+        program.addOption(AutonomousCommand.DROP, AutonomousCommand.DROP);
+        program.addOption(AutonomousCommand.EXIT, AutonomousCommand.EXIT);
+        program.addOption(AutonomousCommand.MOUNT_L, AutonomousCommand.MOUNT_L);
+        program.addOption(AutonomousCommand.MOUNT_R, AutonomousCommand.MOUNT_R);
+        SmartDashboard.putData("AutoProgram", program);
 
         // create the swerve drive and establish the default control mapping
         // for driving in teleop mode
