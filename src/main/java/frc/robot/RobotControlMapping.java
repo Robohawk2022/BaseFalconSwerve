@@ -81,15 +81,6 @@ public class RobotControlMapping {
                 sticks::getArmExtend));
     }
 
-    /*
-██████╗ ██████╗ ██╗██╗   ██╗███████╗██████╗
-██╔══██╗██╔══██╗██║██║   ██║██╔════╝██╔══██╗
-██║  ██║██████╔╝██║██║   ██║█████╗  ██████╔╝
-██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██╔══██╗
-██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██║  ██║
-╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝
-     */
-
     private void mapDriver() {
 
         // buttons
@@ -112,15 +103,6 @@ public class RobotControlMapping {
         driver.povLeft().onTrue(new LoadingStationModeCommand(robot));
         driver.povDown().onTrue(new ScoreModeCommand(robot));
     }
-
-    /*
- ██████╗ ██████╗ ███████╗
-██╔═══██╗██╔══██╗██╔════╝
-██║   ██║██████╔╝███████╗
-██║   ██║██╔═══╝ ╚════██║
-╚██████╔╝██║     ███████║
- ╚═════╝ ╚═╝     ╚══════╝
-     */
 
     private void mapOps() {
 

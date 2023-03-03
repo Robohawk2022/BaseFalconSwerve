@@ -24,15 +24,6 @@ public class ArmConfig {
     public static final double EXTENDER_TRAVEL_MAX = 25;
     public static final double EXTENDER_TRAVEL_BUFFER = 1;
 
-    /*
-███████╗██╗  ██╗████████╗███████╗███╗   ██╗██████╗ ███████╗██████╗
-██╔════╝╚██╗██╔╝╚══██╔══╝██╔════╝████╗  ██║██╔══██╗██╔════╝██╔══██╗
-█████╗   ╚███╔╝    ██║   █████╗  ██╔██╗ ██║██║  ██║█████╗  ██████╔╝
-██╔══╝   ██╔██╗    ██║   ██╔══╝  ██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗
-███████╗██╔╝ ██╗   ██║   ███████╗██║ ╚████║██████╔╝███████╗██║  ██║
-╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝
-     */
-
     // ID assignments
     public static final int EXTENSION_CANID = 1;
     public static final int EXTENSION_LIMIT_ID = 1;
@@ -57,15 +48,6 @@ public class ArmConfig {
                 EXTENDER_MIN_THRESHOLD, EXTENDER_MAX_THRESHOLD,
                 EXTENDER_MIN_SPEED, EXTENDER_MAX_SPEED);
     }
-
-/*
-██████╗  ██████╗ ████████╗ █████╗ ████████╗ ██████╗ ██████╗
-██╔══██╗██╔═══██╗╚══██╔══╝██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗
-██████╔╝██║   ██║   ██║   ███████║   ██║   ██║   ██║██████╔╝
-██╔══██╗██║   ██║   ██║   ██╔══██║   ██║   ██║   ██║██╔══██╗
-██║  ██║╚██████╔╝   ██║   ██║  ██║   ██║   ╚██████╔╝██║  ██║
-╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
- */
 
     // ID assignments
     public static final int ROTATION_CANID = 2;
