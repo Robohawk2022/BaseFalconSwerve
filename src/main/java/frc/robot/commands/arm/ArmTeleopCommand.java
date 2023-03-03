@@ -17,9 +17,15 @@ public class ArmTeleopCommand extends CommandBase {
     private final HalfBakedSpeedController extenderSpeed;
     private final HalfBakedSpeedController rotatorSpeed;
     private final double [] wantedPosition;
-    private double rotatorError;
+    private double rotateInput;
+    private double rotateOutput;
+    private double rotateError;
+    private double extendInput;
+    private double extendOutput;
+    private double extendError;
 
     public ArmTeleopCommand(ArmSubsystem arm, DoubleSupplier rotateSupplier, DoubleSupplier extendSupplier) {
+
         this.arm = arm;
         this.rotateSupplier = rotateSupplier;
         this.extendSupplier = extendSupplier;
@@ -28,7 +34,17 @@ public class ArmTeleopCommand extends CommandBase {
         this.wantedPosition = new double [2];
 
         addRequirements(arm);
-        
+
+        SmartDashboard.putData("ArmTeleop", builder -> {
+            builder.addDoubleProperty("RotateTarget", () -> wantedPosition[1], null);
+            builder.addDoubleProperty("RotateInput", () -> rotateInput, null);
+            builder.addDoubleProperty("RotateError", () -> rotateError, null);
+            builder.addDoubleProperty("RotateOutput", () -> rotateOutput, null);
+            builder.addDoubleProperty("ExtendTarget", () -> wantedPosition[0], null);
+            builder.addDoubleProperty("ExtendInput", () -> extendInput, null);
+            builder.addDoubleProperty("ExtendError", () -> extendError, null);
+            builder.addDoubleProperty("ExtendOutput", () -> extendOutput, null);
+        });
     }
 
     @Override
@@ -39,9 +55,9 @@ public class ArmTeleopCommand extends CommandBase {
 
     public void execute() {
 
-        double rotateInput = rotateSupplier.getAsDouble();
-        double rotateError = 0;
-        double rotateOutput = 0;
+        rotateInput = rotateSupplier.getAsDouble();
+        rotateError = 0;
+        rotateOutput = 0;
         if (rotateInput == 0.0) {
             rotateError = wantedPosition[1] - arm.getAngle();
             rotateOutput = rotatorSpeed.calculate(rotateError);
@@ -52,14 +68,9 @@ public class ArmTeleopCommand extends CommandBase {
         }
          arm.rotateAt(rotateOutput);
 
-        SmartDashboard.putNumber("ArmTeleop/RotateTarget", wantedPosition[1]);
-        SmartDashboard.putNumber("ArmTeleop/RotateInput", rotateInput);
-        SmartDashboard.putNumber("ArmTeleop/RotateError", rotateError);
-        SmartDashboard.putNumber("ArmTeleop/RotateOutput", rotateOutput);
-
-        double extendInput = extendSupplier.getAsDouble();
-        double extendError = 0;
-        double extendOutput = 0;
+        extendInput = extendSupplier.getAsDouble();
+        extendError = 0;
+        extendOutput = 0;
         if (extendInput == 0.0) {
             extendError = wantedPosition[0] - arm.getLength();
             extendOutput = extenderSpeed.calculate(extendError);
@@ -70,9 +81,5 @@ public class ArmTeleopCommand extends CommandBase {
         }
         arm.extendAt(extendOutput);
 
-        SmartDashboard.putNumber("ArmTeleop/ExtendTarget", wantedPosition[0]);
-        SmartDashboard.putNumber("ArmTeleop/ExtendInput", extendInput);
-        SmartDashboard.putNumber("ArmTeleop/ExtendError", extendError);
-        SmartDashboard.putNumber("ArmTeleop/ExtendOutput", extendOutput);
     }
 }
