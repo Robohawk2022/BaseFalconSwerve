@@ -3,6 +3,7 @@ package frc.robot.commands.swerve;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -10,7 +11,7 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 public class SwerveTeleopCommand extends CommandBase {
 
-    public static final double TURBO_FACTOR = 2.5;
+    public static final double TURBO_FACTOR = 2.7;
     public static final double SNIPER_FACTOR = 0.4;
 
     public static final int YES = 0;
@@ -66,7 +67,7 @@ public class SwerveTeleopCommand extends CommandBase {
         } else if (turboSupplier.getAsBoolean()) {
             px *= TURBO_FACTOR;
             py *= TURBO_FACTOR;
-            pomega *= (TURBO_FACTOR * 0.7);
+            pomega *= MathUtil.clamp(TURBO_FACTOR, 0.0, 2.0);
         }
 
         swerveDrive.drive(px, py, pomega);
