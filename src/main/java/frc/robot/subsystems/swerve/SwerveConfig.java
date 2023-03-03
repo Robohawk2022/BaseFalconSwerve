@@ -24,7 +24,7 @@ public class SwerveConfig {
     // max speeds
     public static final double maxLinearSpeed = Units.feetToMeters(3);
     public static final double maxAngularSpeed = Units.degreesToRadians(75);
-    public static final double maxWheelSpeed = Units.feetToMeters(6);
+    public static final double maxWheelSpeed = Units.feetToMeters(25);
     public static final double turboFactor = 1.8;
 
     // physical properties of chassis

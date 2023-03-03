@@ -96,7 +96,7 @@ public class RobotControlMapping {
 
         // POV mapping
         driver.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.TRAVEL_POSITION));
-        driver.povDown().onTrue(new AutonomousCommand(robot));
+        driver.povLeft().onTrue(new AutonomousCommand(robot));
     }
 
     private void mapOps() {

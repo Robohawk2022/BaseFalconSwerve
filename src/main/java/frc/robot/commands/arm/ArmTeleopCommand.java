@@ -17,6 +17,7 @@ public class ArmTeleopCommand extends CommandBase {
     private final HalfBakedSpeedController extenderSpeed;
     private final HalfBakedSpeedController rotatorSpeed;
     private final double [] wantedPosition;
+    private double rotatorError;
 
     public ArmTeleopCommand(ArmSubsystem arm, DoubleSupplier rotateSupplier, DoubleSupplier extendSupplier) {
         this.arm = arm;

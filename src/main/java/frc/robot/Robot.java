@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
                 new CommandXboxController(DRIVE_PORT),
                 new CommandXboxController(OPS_PORT));
 
-        CameraServer.startAutomaticCapture();
+        // CameraServer.startAutomaticCapture();
     }
 
     @Override

@@ -27,15 +27,6 @@ public class MultiJoystickMapping {
         return value;
     }
 
-    /*
-██████╗ ██████╗ ██╗██╗   ██╗██╗███╗   ██╗ ██████╗
-██╔══██╗██╔══██╗██║██║   ██║██║████╗  ██║██╔════╝
-██║  ██║██████╔╝██║██║   ██║██║██╔██╗ ██║██║  ███╗
-██║  ██║██╔══██╗██║╚██╗ ██╔╝██║██║╚██╗██║██║   ██║
-██████╔╝██║  ██║██║ ╚████╔╝ ██║██║ ╚████║╚██████╔╝
-╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝
-    */
-
     // left Y = forward/reverse
     public double getForwardReverse() {
         return -getDriveAxis(XboxController.Axis.kLeftY.value);
@@ -55,15 +46,6 @@ public class MultiJoystickMapping {
         double value = override.getAsBoolean() ? ops.getRawAxis(axis) : driver.getRawAxis(axis);
         return clean(value);
     }
-
-    /*
- █████╗ ██████╗ ███╗   ███╗
-██╔══██╗██╔══██╗████╗ ████║
-███████║██████╔╝██╔████╔██║
-██╔══██║██╔══██╗██║╚██╔╝██║
-██║  ██║██║  ██║██║ ╚═╝ ██║
-╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝
-     */
 
     public double getArmRotate() {
         return -getArmAxis(XboxController.Axis.kLeftY.value);
