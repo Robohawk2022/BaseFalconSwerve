@@ -19,11 +19,4 @@ public class ArmCommands {
     public static Command retractBrake(ArmSubsystem arm) {
         return new InstantCommand(arm::retractParkingBrake, arm);
     }
-
-    public static Command retractAndCalibrate(ArmSubsystem arm) {
-        return Commands.sequence(
-            new InstantCommand(arm::retractParkingBrake, arm),
-            new WaitCommand(0.5),
-            new ArmCalibrationCommand(arm));
-    }
 }

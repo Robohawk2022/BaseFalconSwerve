@@ -2,9 +2,14 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmCommands;
 import frc.robot.subsystems.HandSubsystem;
@@ -35,6 +40,7 @@ public class Robot extends TimedRobot {
     public VisionSubsystem vision;
     public AutonomousCommand autonomousCommand;
     public RobotControlMapping mapping;
+    public boolean initRun;
 
     @Override
     public void robotInit() {
@@ -45,6 +51,7 @@ public class Robot extends TimedRobot {
         vision = new VisionSubsystem(true);
         hand = new HandSubsystem();
         arm = new ArmSubsystem();
+        initRun = false;
 
         // do any additional control mapping that needs to be done
         mapping = new RobotControlMapping(
@@ -61,22 +68,13 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledInit() { }
-
-    @Override
-    public void disabledPeriodic() { }
-
-    @Override
     public void autonomousInit() {
-        if (!arm.isCalibrated()) {
-            ArmCommands.retractAndCalibrate(arm).schedule();
+        if (!initRun) {
+            initCommand().schedule();
         }
         autonomousCommand = new AutonomousCommand(this);
         autonomousCommand.schedule();
     }
-
-    @Override
-    public void autonomousPeriodic() {}
 
     @Override
     public void teleopInit() {
@@ -84,21 +82,23 @@ public class Robot extends TimedRobot {
             autonomousCommand.cancel();
             autonomousCommand = null;
         }
-        if (!arm.isCalibrated()) {
-            ArmCommands.retractAndCalibrate(arm).schedule();
+        if (!initRun) {
+            initCommand().schedule();
         }
         swerveDrive.zeroGyro();
     }
 
-    @Override
-    public void teleopPeriodic() {}
+    private Command initCommand() {
 
-    @Override
-    public void testInit() {
-        CommandScheduler.getInstance().cancelAll();    
-    }
+        Command armInit = Commands.sequence(
+                ArmCommands.retractBrake(arm),
+                new WaitCommand(0.5),
+                new ArmCalibrationCommand(arm));
 
-    @Override
-    public void testPeriodic() {    
+        return Commands.sequence(
+                Commands.parallel(
+                        armInit,
+                        HandCommands.grab(hand)),
+                new InstantCommand(() -> initRun = true));
     }
 }

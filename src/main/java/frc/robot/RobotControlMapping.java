@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.commands.swerve.SwerveCommands;
@@ -10,10 +11,6 @@ import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmTeleopCommand;
-import frc.robot.commands.modes.BuzzAroundModeCommand;
-import frc.robot.commands.modes.ScoreModeCommand;
-import frc.robot.commands.modes.LoadingStationModeCommand;
-import frc.robot.commands.modes.PickupModeCommand;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
@@ -98,10 +95,8 @@ public class RobotControlMapping {
             .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
 
         // POV mapping
-        driver.povUp().onTrue(new BuzzAroundModeCommand(robot));
-        driver.povRight().onTrue(new PickupModeCommand(robot));
-        driver.povLeft().onTrue(new LoadingStationModeCommand(robot));
-        driver.povDown().onTrue(new ScoreModeCommand(robot));
+        driver.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.TRAVEL_POSITION));
+        driver.povDown().onTrue(new AutonomousCommand(robot));
     }
 
     private void mapOps() {
@@ -109,9 +104,8 @@ public class RobotControlMapping {
         // buttons
         ops.b().onTrue(HandCommands.grab(hand));
         ops.a().onTrue(HandCommands.release(hand));
-        driver.x().onTrue(AlignToWallCommand.grid(drive));
-        driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
-        ops.y().onTrue(SwerveCommands.scootForward(drive, 6.0));
+        ops.x().onTrue(AlignToWallCommand.grid(drive));
+        ops.y().onTrue(AlignToWallCommand.loadingStation(drive));
         ops.start().onTrue(new ArmCalibrationCommand(arm));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
