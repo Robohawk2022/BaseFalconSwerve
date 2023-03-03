@@ -15,6 +15,7 @@ public class ArmPresetCommand extends CommandBase {
     public static final double [] MIDDLE_POSITION = { 45, 13.6 };
     public static final double [] LOW_POSITION = { 2.0, 3.0 };
     public static final double [] BALANCE_POSITION = { 70.0, 3.0 };
+    public static final double [] MOUNT_POSITION = { 22.0, 10.0 };
     public static final double [] LOAD_POSITION = { 35.0, 9.0 };
 
     private final ArmSubsystem arm;

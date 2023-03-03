@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
-import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveFixedSpeedCommand;
 
 /**
@@ -21,7 +21,25 @@ public class AutonomousCommand extends SequentialCommandGroup {
     public static final String MOUNT_L = "Mount (Left)";
     public static final String MOUNT_R = "Mount (Right)";
 
-    public static final ChassisSpeeds BACKUP_SPEED = new ChassisSpeeds(Units.inchesToMeters(80), Units.inchesToMeters(0), -Units.degreesToRadians(-8));
+    public static final ChassisSpeeds BACKUP_SPEED = new ChassisSpeeds(
+        Units.inchesToMeters(70), 
+        Units.inchesToMeters(0), 
+        -Units.degreesToRadians(-8));
+
+    public static final ChassisSpeeds JUKE_LEFT = new ChassisSpeeds(
+        0, 
+        Units.inchesToMeters(48), 
+        0);
+    
+    public static final ChassisSpeeds JUKE_RIGHT = new ChassisSpeeds(
+        0, 
+        Units.inchesToMeters(48), 
+        0);
+
+    public static final ChassisSpeeds MOUNT_SPEED = new ChassisSpeeds(
+        Units.feetToMeters(-2.5), 
+        Units.inchesToMeters(0), 
+        -Units.degreesToRadians(0));
 
     public static Command generateProgram(Robot robot, String which) {
 
@@ -50,12 +68,12 @@ public class AutonomousCommand extends SequentialCommandGroup {
         }
 
         // if we're mounting, the question is left or right
-        ChassisSpeeds jukeSpeed = MOUNT_L.equals(which)
-                ? new ChassisSpeeds(0, Units.inchesToMeters(22), 0)
-                : new ChassisSpeeds(0, Units.inchesToMeters(-22), 0);
+        ChassisSpeeds jukeSpeed = MOUNT_L.equals(which) ? JUKE_LEFT : JUKE_RIGHT;         
         group.addCommands(
                 new SwerveFixedSpeedCommand(robot.swerveDrive, jukeSpeed, false, 1.0),
-                AlignToWallCommand.loadingStation(robot.swerveDrive));
+                robot.arm.toPreset(ArmPresetCommand.MOUNT_POSITION),
+                new SwerveFixedSpeedCommand(robot.swerveDrive, MOUNT_SPEED, false, 4),
+                SwerveCommands.turnWheels(robot.swerveDrive, 90));
         return group;
     }
 }
