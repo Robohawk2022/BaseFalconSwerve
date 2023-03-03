@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.arm.ArmPresetCommand;
@@ -96,7 +97,7 @@ public class RobotControlMapping {
 
         // POV mapping
         driver.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.TRAVEL_POSITION));
-        driver.povLeft().onTrue(new AutonomousCommand(robot));
+        driver.povLeft().onTrue(new ProxyCommand(() -> AutonomousCommand.generateProgram(robot, robot.program.getSelected())));
     }
 
     private void mapOps() {

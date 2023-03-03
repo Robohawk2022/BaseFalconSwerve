@@ -1,7 +1,7 @@
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -38,12 +38,21 @@ public class Robot extends TimedRobot {
     public HandSubsystem hand;
     public ArmSubsystem arm;
     public VisionSubsystem vision;
-    public AutonomousCommand autonomousCommand;
+    public Command autonomousCommand;
     public RobotControlMapping mapping;
     public boolean initRun;
 
+    public SendableChooser<AutonomousCommand.Program> program;
+
     @Override
     public void robotInit() {
+
+        program = new SendableChooser<>();
+        program.setDefaultOption("None", AutonomousCommand.Program.NONE);
+        program.addOption("Drop Only", AutonomousCommand.Program.DROP_ONLY);
+        program.addOption("Drop & Exit", AutonomousCommand.Program.DROP_EXIT);
+        program.addOption("Drop & Mount (L)", AutonomousCommand.Program.DROP_EXIT_MOUNT_L);
+        program.addOption("Drop & Mount (R)", AutonomousCommand.Program.DROP_EXIT_MOUNT_R);
 
         // create the swerve drive and establish the default control mapping
         // for driving in teleop mode
@@ -72,7 +81,7 @@ public class Robot extends TimedRobot {
         if (!initRun) {
             initCommand().schedule();
         }
-        autonomousCommand = new AutonomousCommand(this);
+        autonomousCommand = AutonomousCommand.generateProgram(this, program.getSelected());
         autonomousCommand.schedule();
     }
 
