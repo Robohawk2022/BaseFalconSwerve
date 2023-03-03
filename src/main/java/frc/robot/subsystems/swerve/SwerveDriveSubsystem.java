@@ -26,6 +26,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private SwerveDriveOdometry odometry;
     private boolean robotRelative;
     private boolean turbo;
+    private ChassisSpeeds lastSpeed;
 
     public SwerveDriveSubsystem() {
 
@@ -60,6 +61,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         kinematics = SwerveConfig.defaultKinematics;
         robotRelative = false;
         turbo = false;
+        lastSpeed = new ChassisSpeeds(0, 0, 0);
 
         SmartDashboard.putData("SwerveNavX", navx);
         SmartDashboard.putData("SwerveGyro", builder -> {
@@ -78,6 +80,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             builder.addDoubleProperty("Heading", () -> odometry.getPoseMeters().getRotation().getDegrees(), null);
             builder.addDoubleProperty("X", () -> Units.metersToFeet(odometry.getPoseMeters().getX()), null);
             builder.addDoubleProperty("Y", () -> Units.metersToFeet(odometry.getPoseMeters().getY()), null);
+        });
+        SmartDashboard.putData("SwerveSpeeds", builder -> {
+            builder.addDoubleProperty("vx", () -> lastSpeed.vxMetersPerSecond, null);
+            builder.addDoubleProperty("vy", () -> lastSpeed.vyMetersPerSecond, null);
+            builder.addDoubleProperty("vomega", () -> lastSpeed.omegaRadiansPerSecond, null);
         });
     }
 
@@ -149,6 +156,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     public void drive(ChassisSpeeds speeds) {
         SwerveModuleState [] moduleStates = kinematics.toSwerveModuleStates(speeds);
         setModuleStates(moduleStates);
+        lastSpeed = speeds;
     }
 
     /**
