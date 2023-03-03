@@ -35,7 +35,6 @@ public class ParkingOnThePlatformCommand extends CommandBase {
         double nowPitch = Math.abs(swerveDrive.getPitch());
 
         if (nowPitch - thenPitch < PITCH_THRESHOLD) {
-            swerveDrive.stop();
             retentionCounter -= 1;
         } else {
             swerveDrive.drive(new ChassisSpeeds(FORWARD_SPEED_FPS, 0, 0));
