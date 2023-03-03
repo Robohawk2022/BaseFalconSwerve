@@ -12,10 +12,6 @@ public class ArmCommands {
         return new InstantCommand(arm::clearLimits, arm);
     }
 
-    public static Command extendBrake(ArmSubsystem arm) {
-        return new InstantCommand(arm::extendParkingBrake, arm);
-    }
-
     public static Command retractBrake(ArmSubsystem arm) {
         return new InstantCommand(arm::retractParkingBrake, arm);
     }
