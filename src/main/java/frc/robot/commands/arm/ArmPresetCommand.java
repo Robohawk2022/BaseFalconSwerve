@@ -29,7 +29,7 @@ public class ArmPresetCommand extends CommandBase {
         this.arm = arm;
         this.targetAngle = preset[0];
         this.targetLength = preset[1];
-        this.rotateSpeed = makeRotatorSpeedController();
+        this.rotateSpeed = makePresetRotatorSpeedController();
         this.extendSpeed = makeExtenderSpeedController();
         addRequirements(arm);
     }

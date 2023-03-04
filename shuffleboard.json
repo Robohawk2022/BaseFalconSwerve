@@ -11,28 +11,15 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "7,0": {
+          "2,3": {
             "size": [
-              3,
+              2,
               1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/AutoProgram",
-              "_title": "AutoProgram",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "7,1": {
-            "size": [
-              3,
-              2
             ],
             "content": {
               "_type": "Field",
               "_source0": "network_table:///SmartDashboard/field",
-              "_title": "Odometry",
+              "_title": "field",
               "_glyph": 148,
               "_showGlyph": false,
               "Game/Game": "A2022_Rapid_React",
@@ -40,22 +27,112 @@
               "Visuals/Show Outside Circles": false
             }
           },
-          "3,0": {
+          "4,0": {
             "size": [
               2,
-              6
+              3
             ],
             "content": {
               "_type": "List Layout",
-              "_title": "Drive",
+              "_title": "Rotate Motor",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/Angle",
+                  "_title": "Current Angle",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/EffectiveMax",
+                  "_title": "Max Position",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/EffectiveMin",
+                  "_title": "Min Position",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/ArmRotator/LimitTripped",
+                  "_title": "Limit Tripped?",
+                  "_glyph": 148,
+                  "_showGlyph": false,
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                }
+              ]
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Extend Motor",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/Length",
+                  "_title": "Current Length",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/EffectiveMax",
+                  "_title": "Max Position",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/EffectiveMin",
+                  "_title": "Min Position",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/ArmExtender/LimitTripped",
+                  "_title": "Limit Tripped?",
+                  "_glyph": 148,
+                  "_showGlyph": false,
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                }
+              ]
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Swerve Drive",
               "_glyph": 149,
               "_showGlyph": false,
               "Layout/Label position": "BOTTOM",
               "_children": [
                 {
                   "_type": "Gyro",
-                  "_source0": "network_table:///SmartDashboard/SwerveNavX",
-                  "_title": "SwerveNavX",
+                  "_source0": "network_table:///SmartDashboard/NavX",
+                  "_title": "NavX Heading",
                   "_glyph": 148,
                   "_showGlyph": false,
                   "Visuals/Major tick spacing": 45.0,
@@ -66,44 +143,28 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/SwerveGyro/Pitch",
-                  "_title": "SwerveGyro/Pitch",
+                  "_title": "NavX Pitch",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSpeed/vx",
-                  "_title": "SwerveSpeed/vx",
+                  "_source0": "network_table:///SmartDashboard/SwerveOdometry/X",
+                  "_title": "Odometry X",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSpeed/vy",
-                  "_title": "SwerveSpeed/vy",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSpeed/vomega",
-                  "_title": "SwerveSpeed/vomega",
+                  "_source0": "network_table:///SmartDashboard/SwerveOdometry/Y",
+                  "_title": "Odometry Y",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/SwerveTeleop/Sniper",
-                  "_title": "SwerveTeleop/Sniper",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/SwerveTeleop/Turbo",
-                  "_title": "SwerveTeleop/Turbo",
+                  "_source0": "network_table:///SmartDashboard/SwerveGyro/Calibrated",
+                  "_title": "NavX Calibrated?",
                   "_glyph": 148,
                   "_showGlyph": false,
                   "Colors/Color when true": "#7CFC00FF",
@@ -112,9 +173,9 @@
               ]
             }
           },
-          "7,3": {
+          "6,0": {
             "size": [
-              1,
+              2,
               2
             ],
             "content": {
@@ -127,206 +188,299 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Hand/Claw",
-                  "_title": "Hand/Claw",
+                  "_title": "Claw Position",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Hand/Duck",
-                  "_title": "Hand/Duck",
+                  "_title": "Duck Position",
                   "_glyph": 148,
                   "_showGlyph": false
                 }
               ]
             }
           },
-          "8,3": {
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/AutoProgram",
+              "_title": "AutoProgram",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,1": {
             "size": [
               2,
               2
             ],
             "content": {
-              "_type": "List Layout",
-              "_title": "Command Status",
-              "_glyph": 149,
+              "_type": "Gyro",
+              "_source0": "network_table:///SmartDashboard/SwerveNavX",
+              "_title": "SwerveNavX",
+              "_glyph": 148,
               "_showGlyph": false,
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/AlignToWallCommand-GRID/Done",
-                  "_title": "AlignToWallCommand-GRID/Done",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/AlignToWallCommand-LOAD/Done",
-                  "_title": "AlignToWallCommand-LOAD/Done",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/AlignToAprilTagCommand/Done?",
-                  "_title": "AlignToAprilTagCommand/Done?",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                }
-              ]
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
             }
           },
-          "5,0": {
+          "9,0": {
             "size": [
-              2,
-              3
+              1,
+              1
             ],
             "content": {
-              "_type": "List Layout",
-              "_title": "Drive Motors",
-              "_glyph": 149,
-              "_showGlyph": false,
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/motor-0-v",
-                  "_title": "motor-0-v",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/motor-1-v",
-                  "_title": "motor-1-v",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/motor-2-v",
-                  "_title": "motor-2-v",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/motor-3-v",
-                  "_title": "motor-3-v",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                }
-              ]
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveGyro/Yaw",
+              "_title": "SwerveGyro/Yaw",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveGyro/X",
+              "_title": "SwerveGyro/X",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveGyro/Y",
+              "_title": "SwerveGyro/Y",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveOdometry/Heading",
+              "_title": "SwerveOdometry/Heading",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           },
           "5,3": {
             "size": [
-              2,
-              4
+              1,
+              1
             ],
             "content": {
-              "_type": "List Layout",
-              "_title": "Arm",
-              "_glyph": 149,
-              "_showGlyph": false,
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/ArmRotator/Angle",
-                  "_title": "ArmRotator/Angle",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/ArmExtender/Length",
-                  "_title": "ArmExtender/Length",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/ArmTeleop/ExtendOutput",
-                  "_title": "ArmTeleop/ExtendOutput",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/ArmTeleop/RotateOutput",
-                  "_title": "ArmTeleop/RotateOutput",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/ArmExtender/LimitTripped",
-                  "_title": "ArmExtender/LimitTripped",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/ArmRotator/LimitTripped",
-                  "_title": "ArmRotator/LimitTripped",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                }
-              ]
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDrift/Heading",
+              "_title": "SwerveDrift/Heading",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           },
-          "10,0": {
+          "6,3": {
             "size": [
-              7,
-              6
+              1,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Secondary",
-              "_title": "Secondary",
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDrift/X",
+              "_title": "SwerveDrift/X",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "_showGlyph": false
             }
           },
-          "12,6": {
+          "7,3": {
             "size": [
-              3,
-              2
+              1,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Processed",
-              "_title": "Processed",
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDrift/Y",
+              "_title": "SwerveDrift/Y",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveSpeed/vx",
+              "_title": "SwerveSpeed/vx",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveSpeed/vy",
+              "_title": "SwerveSpeed/vy",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveSpeed/vomega",
+              "_title": "SwerveSpeed/vomega",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmRotator/EncoderMin",
+              "_title": "ArmRotator/EncoderMin",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmRotator/EncoderPosition",
+              "_title": "ArmRotator/EncoderPosition",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmExtender/EncoderMax",
+              "_title": "ArmExtender/EncoderMax",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmExtender/EncoderPosition",
+              "_title": "ArmExtender/EncoderPosition",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/SwerveTeleop/Turbo",
+              "_title": "SwerveTeleop/Turbo",
               "_glyph": 148,
               "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/SwerveTeleop/Sniper",
+              "_title": "SwerveTeleop/Sniper",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveTeleop/px",
+              "_title": "SwerveTeleop/px",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveTeleop/py",
+              "_title": "SwerveTeleop/py",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveTeleop/pomega",
+              "_title": "SwerveTeleop/pomega",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }
@@ -342,14 +496,70 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "titleType": 0,
-        "tiles": {}
+        "tiles": {
+          "6,0": {
+            "size": [
+              4,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://Secondary",
+              "_title": "Secondary",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "4,4": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/AutoProgram",
+              "_title": "/SmartDashboard/AutoProgram",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,0": {
+            "size": [
+              5,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          }
+        }
       }
     }
   ],
   "windowGeometry": {
-    "x": -2568.0,
-    "y": -382.0,
-    "width": 2576.0,
-    "height": 1416.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 838.4000244140625
   }
 }

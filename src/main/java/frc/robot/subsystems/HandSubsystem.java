@@ -45,6 +45,7 @@ public class HandSubsystem extends SubsystemBase {
         pressure = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, PRESSURE_FORWARD, PRESSURE_REVERSE);
         position = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, POSITION_FORWARD, POSITION_REVERSE);
         duck = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, DUCK_QUACK, DUCK_UNQUACK);
+        
         SmartDashboard.putData("Hand", builder -> {
             builder.addStringProperty("Claw", this::getClawPositionString, null);
             builder.addStringProperty("Duck", this::getDuckPositionString, null);

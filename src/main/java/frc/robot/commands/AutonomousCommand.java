@@ -17,6 +17,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
     public static final String NONE = "None";
     public static final String DROP = "Drop";
+    public static final String DROP_CENTER_EXIT = "Drop & Center Exit";
     public static final String EXIT = "Drop & Exit";
     public static final String MOUNT_L = "Mount (Left)";
     public static final String MOUNT_R = "Mount (Right)";
@@ -52,11 +53,19 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         // all other commands include at least the drop
         group.addCommands(
-                robot.arm.toPreset(ArmPresetCommand.HIGH_POSITION),
-                robot.hand.releaseCommand()
+                robot.arm.toPreset(ArmPresetCommand.MIDDLE_POSITION),
+                robot.hand.releaseCommand(),
+                Commands.waitSeconds(1)
         );
         if (DROP.equals(which)) {
             return group;
+        }
+
+        if(which.equals(DROP_CENTER_EXIT)){
+            group.addCommands(Commands.parallel(
+                robot.arm.toPreset(ArmPresetCommand.TRAVEL_POSITION),
+                new SwerveFixedSpeedCommand(robot.swerveDrive, BACKUP_SPEED, false, 4)));
+                return group;
         }
 
         // if we're exiting the community area, we raise our arm and go

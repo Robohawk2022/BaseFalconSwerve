@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.HandCommands;
@@ -50,9 +51,10 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         program = new SendableChooser<>();
-        program.setDefaultOption(AutonomousCommand.NONE, AutonomousCommand.NONE);
-        program.addOption(AutonomousCommand.DROP, AutonomousCommand.DROP);
+        program.addOption(AutonomousCommand.NONE, AutonomousCommand.NONE);
+        program.setDefaultOption(AutonomousCommand.MOUNT_R, AutonomousCommand.MOUNT_R);
         program.addOption(AutonomousCommand.EXIT, AutonomousCommand.EXIT);
+        program.addOption(AutonomousCommand.DROP_CENTER_EXIT, AutonomousCommand.DROP_CENTER_EXIT);
         program.addOption(AutonomousCommand.MOUNT_L, AutonomousCommand.MOUNT_L);
         program.addOption(AutonomousCommand.MOUNT_R, AutonomousCommand.MOUNT_R);
         SmartDashboard.putData("AutoProgram", program);
@@ -71,6 +73,8 @@ public class Robot extends TimedRobot {
                 new CommandXboxController(DRIVE_PORT),
                 new CommandXboxController(OPS_PORT));
 
+        hand.grabCone();
+
         CameraServer.startAutomaticCapture();
     }
 
@@ -81,6 +85,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+
+        hand.grabCone();
+        
+ 
         autonomousCommand = AutonomousCommand.generateProgram(this, program.getSelected());
         if (!initRun) {
             autonomousCommand = initCommand().andThen(autonomousCommand);
