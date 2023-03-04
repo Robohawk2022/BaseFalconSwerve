@@ -11,7 +11,7 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
 public class SwerveTeleopCommand extends CommandBase {
 
-    public static final double TURBO_FACTOR = 3.0;
+    public static final double TURBO_FACTOR = 4.0;
     public static final double SNIPER_FACTOR = 0.4;
 
     public static final int YES = 0;

@@ -39,7 +39,6 @@ def main():
         video_secondary = CameraServer.startAutomaticCapture(camera_secondary['name'], camera_secondary['path'])
         video_secondary.setVideoMode(VideoMode.PixelFormat.kMJPEG, camera_secondary['width'], camera_secondary['height'], 30)
    
-
     # start NetworkTables
     ntinst = NetworkTableInstance.getDefault()
     if server:
@@ -231,7 +230,7 @@ def main():
         output_size = [320,240]
         output_img_small = cv2.resize(output_img, (output_size), interpolation=cv2.INTER_AREA)
         
-        output_stream.putFrame(output_img_small)
+        # output_stream.putFrame(output_img_small)
 
 
 main()

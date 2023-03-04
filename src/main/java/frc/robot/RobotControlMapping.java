@@ -112,8 +112,8 @@ public class RobotControlMapping {
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
         // bumpers (left and right are reversed b/c robot is facing driver)
-        ops.leftBumper().onTrue(SwerveCommands.scootRight(drive, 22.0));
-        ops.rightBumper().onTrue(SwerveCommands.scootLeft(drive, 22.0));
+        ops.leftBumper().onTrue(SwerveCommands.scootRight(drive, 24.0));
+        ops.rightBumper().onTrue(SwerveCommands.scootLeft(drive, 24.0));
 
         // dpad
         ops.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.HIGH_POSITION));

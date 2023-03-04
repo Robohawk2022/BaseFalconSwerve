@@ -28,16 +28,16 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
     public static final ChassisSpeeds JUKE_LEFT = new ChassisSpeeds(
         0, 
-        Units.inchesToMeters(48), 
+        Units.inchesToMeters(60), 
         0);
     
     public static final ChassisSpeeds JUKE_RIGHT = new ChassisSpeeds(
         0, 
-        Units.inchesToMeters(48), 
+        Units.inchesToMeters(60), 
         0);
 
     public static final ChassisSpeeds MOUNT_SPEED = new ChassisSpeeds(
-        Units.feetToMeters(-2.5), 
+        Units.feetToMeters(-3.0), 
         Units.inchesToMeters(0), 
         -Units.degreesToRadians(0));
 
@@ -71,7 +71,6 @@ public class AutonomousCommand extends SequentialCommandGroup {
         ChassisSpeeds jukeSpeed = MOUNT_L.equals(which) ? JUKE_LEFT : JUKE_RIGHT;         
         group.addCommands(
                 new SwerveFixedSpeedCommand(robot.swerveDrive, jukeSpeed, false, 1.0),
-                robot.arm.toPreset(ArmPresetCommand.MOUNT_POSITION),
                 new SwerveFixedSpeedCommand(robot.swerveDrive, MOUNT_SPEED, false, 4),
                 SwerveCommands.turnWheels(robot.swerveDrive, 90));
         return group;

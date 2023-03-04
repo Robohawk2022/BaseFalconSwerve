@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -70,7 +71,7 @@ public class Robot extends TimedRobot {
                 new CommandXboxController(DRIVE_PORT),
                 new CommandXboxController(OPS_PORT));
 
-        // CameraServer.startAutomaticCapture();
+        CameraServer.startAutomaticCapture();
     }
 
     @Override
@@ -80,10 +81,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        if (!initRun) {
-            initCommand().schedule();
-        }
         autonomousCommand = AutonomousCommand.generateProgram(this, program.getSelected());
+        if (!initRun) {
+            autonomousCommand = initCommand().andThen(autonomousCommand);
+        }
         autonomousCommand.schedule();
     }
 
