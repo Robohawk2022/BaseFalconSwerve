@@ -34,7 +34,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
     
     public static final ChassisSpeeds JUKE_RIGHT = new ChassisSpeeds(
         0, 
-        Units.inchesToMeters(60), 
+        Units.inchesToMeters(-60), 
         0);
 
     public static final ChassisSpeeds MOUNT_SPEED = new ChassisSpeeds(
@@ -43,6 +43,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
         -Units.degreesToRadians(0));
 
     public static Command generateProgram(Robot robot, String which) {
+
+        System.err.println("executing" + which);
 
         SequentialCommandGroup group = new SequentialCommandGroup();
 
