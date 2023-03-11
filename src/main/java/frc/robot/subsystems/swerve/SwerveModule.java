@@ -37,6 +37,11 @@ public class SwerveModule {
         this.angleMotor = createAngleMotor(moduleConstants.angleMotorID);
         this.driveMotor = createDriveMotor(moduleConstants.driveMotorID);
         this.lastAngle = getState().angle;
+
+        SmartDashboard.putData("SwerveModule" + moduleNumber, builder -> {  
+            builder.addDoubleProperty("LastAngle", () -> lastAngle.getDegrees(), null);
+            builder.addDoubleProperty("EncoderAngle", () -> SwerveUtils.falconToDegrees(angleMotor.getSelectedSensorPosition(), SwerveConfig.angleGearRatio), null);
+        });
     }
 
     /**
@@ -70,6 +75,13 @@ public class SwerveModule {
         angleMotor.set(ControlMode.Position, SwerveUtils.degreesToFalcon(angle.getDegrees(), angleGearRatio));
         lastAngle = angle;
     }
+
+    public void setSwerveDrivePid (double p, double i, double d){
+        angleMotor.config_kP(0, p);
+        angleMotor.config_kI(0,i);
+        angleMotor.config_kD(0,d);
+    }
+
 
     /**
      * Get the angle of the wheel, as determined by the position of the angle motor
