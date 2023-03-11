@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
                 new CommandXboxController(DRIVE_PORT),
                 new CommandXboxController(OPS_PORT));
 
-        hand.grabCone();
+        
 
         CameraServer.startAutomaticCapture();
     }
@@ -85,9 +85,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-
-        hand.grabCone();
-        
  
         autonomousCommand = AutonomousCommand.generateProgram(this, program.getSelected());
         if (!initRun) {

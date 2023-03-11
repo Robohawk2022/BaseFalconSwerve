@@ -12,6 +12,7 @@ import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
+import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmTeleopCommand;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
@@ -97,7 +98,7 @@ public class RobotControlMapping {
             .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
 
         // POV mapping
-        driver.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.TRAVEL_POSITION));
+        driver.povUp().onTrue(ArmCommands.safePreset(arm, ArmPresetCommand.TRAVEL_POSITION));
         driver.povLeft().onTrue(new AlignToAprilTagCommand(robot.swerveDrive, robot.vision));
     }
 
@@ -108,7 +109,7 @@ public class RobotControlMapping {
         ops.a().onTrue(HandCommands.release(hand));
         ops.x().onTrue(AlignToWallCommand.grid(drive));
         ops.y().onTrue(AlignToWallCommand.loadingStation(drive));
-        ops.start().onTrue(new ArmCalibrationCommand(arm));
+        ops.start().onTrue(ArmCommands.safeCalibrate(arm));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
         // bumpers (left and right are reversed b/c robot is facing driver)
@@ -116,9 +117,9 @@ public class RobotControlMapping {
         ops.rightBumper().onTrue(SwerveCommands.scootLeft(drive, 24.0));
 
         // dpad
-        ops.povUp().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.HIGH_POSITION));
-        ops.povLeft().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.MIDDLE_POSITION));
-        ops.povRight().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.MIDDLE_POSITION));
-        ops.povDown().onTrue(new ArmPresetCommand(arm, ArmPresetCommand.PICKUP_POSITION));
+        ops.povUp().onTrue(ArmCommands.safePreset(arm, ArmPresetCommand.HIGH_POSITION));
+        ops.povLeft().onTrue(ArmCommands.safePreset(arm, ArmPresetCommand.MIDDLE_POSITION));
+        ops.povRight().onTrue(ArmCommands.safePreset(arm, ArmPresetCommand.MIDDLE_POSITION));
+        ops.povDown().onTrue(ArmCommands.safePreset(arm, ArmPresetCommand.PICKUP_POSITION));
     }
 }
