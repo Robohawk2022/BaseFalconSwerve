@@ -1,6 +1,7 @@
 package frc.robot.commands.swerve;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoublePredicate;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -8,6 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
+
+import frc.robot.util.HalfBakedSpeedController;
 
 public class SwerveTeleopCommand extends CommandBase {
 
@@ -25,6 +28,12 @@ public class SwerveTeleopCommand extends CommandBase {
     private final BooleanSupplier turboSupplier;
     private final BooleanSupplier sniperSupplier;
     private int flipSign;
+
+    private Rotation2d dedicatedDirection;
+    private Rotation2d currentDirection;
+    double pomegamAdjusted;
+    
+    private HalfBakedSpeedController omegaSpeedModifer = new HalfBakedSpeedController(5, 10, 0.1, 0.4);
 
     public SwerveTeleopCommand(SwerveDriveSubsystem swerveDrive,
                                DoubleSupplier pxSupplier,
@@ -53,12 +62,31 @@ public class SwerveTeleopCommand extends CommandBase {
         });
     }
 
+    public void initialize(){
+
+        dedicatedDirection = swerveDrive.getYaw();
+
+    }
+
     @Override
     public void execute() {
+
 
         double px = pxSupplier.getAsDouble();
         double py = pySupplier.getAsDouble();
         double pomega = calculateRotation();
+
+        if(pomega != 0){
+
+            dedicatedDirection = swerveDrive.getYaw();
+
+        }
+
+        currentDirection = swerveDrive.getYaw();
+
+        double error = dedicatedDirection.getDegrees() - currentDirection.getDegrees();
+
+        pomegamAdjusted = omegaSpeedModifer.calculate(error);
 
         if (sniperSupplier.getAsBoolean()) {
             px *= SNIPER_FACTOR;
@@ -70,7 +98,15 @@ public class SwerveTeleopCommand extends CommandBase {
             pomega *= MathUtil.clamp(TURBO_FACTOR, 0.0, 2.0);
         }
 
+        if (pomega != 0){
+
         swerveDrive.drive(px, py, pomega);
+
+        } else {
+        
+        swerveDrive.drive(px, py,pomegamAdjusted);
+
+        }
     }
 
     /**
