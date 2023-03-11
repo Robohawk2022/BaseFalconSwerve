@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AutonomusSubystem extends SubsystemBase{
     
-    public static final int CHANNEL_A = 5;
-    public static final int CHANNEL_B = 6;
-    public static final int CHANNEL_C = 7;
-    public static final int CHANNEL_D = 8;
+    public static final int CHANNEL_A = 6;
+    public static final int CHANNEL_B = 7;
+    public static final int CHANNEL_C = 8;
+    public static final int CHANNEL_D = 9;
 
     public static final String NONE = "None";
     public static final String DROP = "Drop";
@@ -42,16 +42,20 @@ public class AutonomusSubystem extends SubsystemBase{
         SmartDashboard.putData("AutonomusSubystem", builder -> {
             builder.addDoubleProperty("HardwareValue", this::getValue, null);
             builder.addStringProperty("ProgramName", this::getProgramName, null);
+            builder.addBooleanProperty("Channel6", inputs[0]::get, null);
+            builder.addBooleanProperty("Channel7", inputs[1]::get, null);
+            builder.addBooleanProperty("Channel8", inputs[2]::get, null);
+            builder.addBooleanProperty("Channel9", inputs[3]::get, null);
 
         });
     }
 
     public int getValue() {
         int value = 0;
-        if (inputs[0].get()) { value += 1; }
-        if (inputs[1].get()) { value += 2; }
-        if (inputs[2].get()) { value += 4; }
-        if (inputs[3].get()) { value += 8; }
+        if (!inputs[0].get()) { value += 1; }
+        if (!inputs[1].get()) { value += 2; }
+        if (!inputs[2].get()) { value += 4; }
+        if (!inputs[3].get()) { value += 8; }
         return value;
     }
 
