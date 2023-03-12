@@ -3,6 +3,7 @@ package frc.robot.commands.swerve;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
+import frc.robot.subsystems.swerve.SwerveUtils;
 import frc.robot.util.HalfBakedSpeedController;
 import edu.wpi.first.math.geometry.Pose2d;
 
@@ -53,9 +54,9 @@ public class OdometryCommand extends CommandBase {
 
         robotPose = drive.getPose();
 
-        errorX = targetX - robotPose.getX();
-        errorY = targetY - robotPose.getY();
-        errorOmega = targetOmega - robotPose.getRotation().getDegrees();
+        errorX = robotPose.getX() - targetX;
+        errorY = robotPose.getY() - targetY;
+        errorOmega = SwerveUtils.angleError(robotPose.getRotation().getDegrees(), targetOmega);
 
         speedX = swerveSpeedCalculator.calculate(errorX);
         speedY = swerveSpeedCalculator.calculate(errorY);

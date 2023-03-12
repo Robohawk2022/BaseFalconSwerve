@@ -1,7 +1,6 @@
 package frc.robot.commands.swerve;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoublePredicate;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -9,7 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
-
+import frc.robot.subsystems.swerve.SwerveUtils;
 import frc.robot.util.HalfBakedSpeedController;
 
 public class SwerveTeleopCommand extends CommandBase {
@@ -63,28 +62,23 @@ public class SwerveTeleopCommand extends CommandBase {
     }
 
     public void initialize(){
-
         dedicatedDirection = swerveDrive.getYaw();
-
     }
 
     @Override
     public void execute() {
 
-
         double px = pxSupplier.getAsDouble();
         double py = pySupplier.getAsDouble();
         double pomega = calculateRotation();
 
-        if(pomega != 0){
-
+        if (pomega != 0) {
             dedicatedDirection = swerveDrive.getYaw();
-
         }
 
         currentDirection = swerveDrive.getYaw();
 
-        double error = currentDirection.getDegrees() - dedicatedDirection.getDegrees();
+        double error = SwerveUtils.angleError(currentDirection.getDegrees(), dedicatedDirection.getDegrees());
 
         pomegamAdjusted = omegaSpeedModifer.calculate(error);
 

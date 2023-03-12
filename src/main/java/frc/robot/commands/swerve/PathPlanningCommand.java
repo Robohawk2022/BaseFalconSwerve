@@ -1,4 +1,4 @@
-package frc.robot.scratch;
+package frc.robot.commands.swerve;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NewPathPlanningCommand {
+public class PathPlanningCommand {
 
     public Command loadPath(SwerveDriveSubsystem drive, double maxSpeed) {
 
