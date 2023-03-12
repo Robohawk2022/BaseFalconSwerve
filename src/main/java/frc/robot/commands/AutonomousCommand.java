@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
+import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveFixedSpeedCommand;
@@ -50,8 +51,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         // all other commands include at least the drop
         group.addCommands(
-                robot.arm.toPreset(ArmPresetCommand.MIDDLE_POSITION),
-                robot.hand.releaseCommand(),
+                ArmCommands.safePreset(robot.arm, ArmPresetCommand.MIDDLE_POSITION),
+                HandCommands.release(robot.hand),
                 Commands.waitSeconds(1)
         );
         if (DROP.equals(which)) {
@@ -60,14 +61,14 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         if(which.equals(DROP_CENTER_EXIT)){
             group.addCommands(Commands.parallel(
-                robot.arm.toPreset(ArmPresetCommand.TRAVEL_POSITION),
+                ArmCommands.safePreset(robot.arm, ArmPresetCommand.TRAVEL_POSITION),
                 new SwerveFixedSpeedCommand(robot.swerveDrive, BACKUP_SPEED, false, 4)));
                 return group;
         }
 
         // if we're exiting the community area, we raise our arm and go
         group.addCommands(Commands.parallel(
-                robot.arm.toPreset(ArmPresetCommand.TRAVEL_POSITION),
+                ArmCommands.safePreset(robot.arm, ArmPresetCommand.TRAVEL_POSITION),
                 new SwerveFixedSpeedCommand(robot.swerveDrive, BACKUP_SPEED, false, 3.0)));
         if (EXIT.equals(which)) {
             return group;

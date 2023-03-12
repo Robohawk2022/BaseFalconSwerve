@@ -78,10 +78,6 @@ public class ArmSubsystem extends SubsystemBase {
         });
     }
 
-    public Command toPreset(double [] preset) {
-        return new ArmPresetCommand(this, preset);
-    }
-
     public boolean isCalibrated() {
         return rotateMin != Double.NEGATIVE_INFINITY;
     }

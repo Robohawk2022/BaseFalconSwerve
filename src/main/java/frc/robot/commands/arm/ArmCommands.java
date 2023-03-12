@@ -19,13 +19,11 @@ public class ArmCommands {
     public static Command safePreset(ArmSubsystem arm, double [] preset) {
         return Commands.race(
             new WaitCommand(2.0),
-            new ArmPresetCommand(arm, preset)
-        );
+            new ArmPresetCommand(arm, preset));
     }
     public static Command safeCalibrate(ArmSubsystem arm) {
         return Commands.race(
             new WaitCommand(2.0),
-            new ArmCalibrationCommand(arm)
-        );
+            new ArmCalibrationCommand(arm));
     }
 }

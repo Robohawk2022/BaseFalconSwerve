@@ -61,14 +61,6 @@ public class HandSubsystem extends SubsystemBase {
         });
     }
 
-    public Command grabCommand() {
-        return HandCommands.grab(this);
-    }
-
-    public Command releaseCommand() {
-        return HandCommands.release(this);
-    }
-
     private String getDuckPositionString() {
         Value val = duck.get();
         if (val == QUACK) return "Extended";
@@ -83,10 +75,6 @@ public class HandSubsystem extends SubsystemBase {
         return "Off";
     }
 
-    private boolean isClosed() {
-        return pressure.get() != OFF && position.get() == CLOSED;
-    }
-
     public void grabCone() {
         pressureValue = HI;
         positionValue = CLOSED;
@@ -95,7 +83,6 @@ public class HandSubsystem extends SubsystemBase {
     public void release() {
         pressureValue = HI;
         positionValue = OPEN;
-
     }
 
     public void quack() {
