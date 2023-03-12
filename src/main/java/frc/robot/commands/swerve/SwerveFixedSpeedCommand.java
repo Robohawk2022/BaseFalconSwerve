@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
+import frc.robot.subsystems.swerve.SwerveUtils;
 import frc.robot.util.HalfBakedSpeedController;
 
 /**
@@ -47,7 +48,7 @@ public class SwerveFixedSpeedCommand extends CommandBase {
     public void execute() {
 
         currentDirection = drive.getYaw();
-        double error = currentDirection.getDegrees() - dedicatedDirection.getDegrees();
+        double error = SwerveUtils.angleError(currentDirection.getDegrees(), dedicatedDirection.getDegrees());
         speeds.omegaRadiansPerSecond = omegaSpeedController.calculate(error);
 
         double timeElapsed = Timer.getFPGATimestamp() - startTime;
