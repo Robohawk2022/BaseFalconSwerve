@@ -1,21 +1,31 @@
-package frc.robot.scratch;
+package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.hal.PowerDistributionFaults;
 import edu.wpi.first.hal.PowerDistributionStickyFaults;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class NewPowerSubsystem extends SubsystemBase {
+public class PowerLoggingSubsystem extends SubsystemBase {
 
     public static final String [] NO_FAULTS = new String[0];
 
+    public static final Map<String,TalonFX> talons = new HashMap<>();
+    public static final Map<String,CANSparkMax> sparks = new HashMap<>();
+
     private final PowerDistribution pd;
 
-    public NewPowerSubsystem() {
+    public PowerLoggingSubsystem() {
+
+        DataLogManager.start();
 
         // TODO this may not be the correct CAN ID for the power hub
         pd = new PowerDistribution(7, PowerDistribution.ModuleType.kRev);
@@ -23,15 +33,36 @@ public class NewPowerSubsystem extends SubsystemBase {
         SmartDashboard.putData("PowerDistribution", builder -> {
             builder.addStringArrayProperty("CurrentFaults", this::getFaults, null);
             builder.addStringArrayProperty("CurrentStickyFaults", this::getStickyFaults, null);
-            builder.addDoubleProperty("InputVoltage", pd::getVoltage, null);
+            builder.addDoubleProperty("Voltage", pd::getVoltage, null);
             builder.addDoubleProperty("Temperature", this::getTemperatureF, null);
-            builder.addDoubleProperty("TotalPowerWatts", pd::getTotalPower, null);
             builder.addDoubleProperty("TotalCurrentAmps", pd::getTotalCurrent, null);
         });
-    }
-
-    public void clearStickyFaults() {
-        pd.clearStickyFaults();
+        SmartDashboard.putData("PowerChannels", builder -> {
+            builder.addDoubleProperty("Channel0", () -> pd.getCurrent(0), null);
+            builder.addDoubleProperty("Channel1", () -> pd.getCurrent(1), null);
+            builder.addDoubleProperty("Channel2", () -> pd.getCurrent(2), null);
+            builder.addDoubleProperty("Channel3", () -> pd.getCurrent(3), null);
+            builder.addDoubleProperty("Channel4", () -> pd.getCurrent(4), null);
+            builder.addDoubleProperty("Channel13", () -> pd.getCurrent(13), null);
+            builder.addDoubleProperty("Channel14", () -> pd.getCurrent(14), null);
+            builder.addDoubleProperty("Channel15", () -> pd.getCurrent(15), null);
+            builder.addDoubleProperty("Channel16", () -> pd.getCurrent(16), null);
+            builder.addDoubleProperty("Channel17", () -> pd.getCurrent(17), null);
+            builder.addDoubleProperty("Channel18", () -> pd.getCurrent(18), null);
+            builder.addDoubleProperty("Channel19", () -> pd.getCurrent(19), null);
+        });
+        SmartDashboard.putData("TalonCurrent", builder -> {
+            for (String key : talons.keySet()) {
+                TalonFX talon = talons.get(key);
+                builder.addDoubleProperty(key, talon::getOutputCurrent, null);
+            }
+        });
+        SmartDashboard.putData("SparkCurrent", builder -> {
+            for (String key : sparks.keySet()) {
+                CANSparkMax spark = sparks.get(key);
+                builder.addDoubleProperty(key, spark::getOutputCurrent, null);
+            }
+        });
     }
 
     public double getTemperatureF() {
@@ -123,5 +154,13 @@ public class NewPowerSubsystem extends SubsystemBase {
         }
 
         return list.toArray(new String[list.size()]);
+    }
+
+    public static void addTalon(String name, TalonFX talon) {
+        talons.put(name, talon);
+    }
+
+    public static void addSpark(String name, CANSparkMax spark) {
+        sparks.put(name, spark);
     }
 }
