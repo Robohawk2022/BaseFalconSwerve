@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmCommands;
-import frc.robot.subsystems.AutonomusSubystem;
+import frc.robot.subsystems.AutonomousSubystem;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.PowerLoggingSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
     public static final int DRIVE_PORT = 0;
     public static final int OPS_PORT = 1;
 
-    public AutonomusSubystem auto;
+    public AutonomousSubystem auto;
     public SwerveDriveSubsystem swerveDrive;
     public HandSubsystem hand;
     public ArmSubsystem arm;
@@ -49,7 +48,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 
-        auto = new AutonomusSubystem();
+        auto = new AutonomousSubystem();
         swerveDrive = new SwerveDriveSubsystem();
         vision = new VisionSubsystem(true);
         hand = new HandSubsystem();
@@ -80,7 +79,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
  
-        autonomousCommand = AutonomousCommand.generateProgram(this, auto.getProgramName());
+        autonomousCommand = auto.createCommand(this);
         if (!initRun) {
             autonomousCommand = initCommand().andThen(autonomousCommand);
         }

@@ -15,11 +15,11 @@ import java.util.Map;
 
 public class PathPlanningCommand {
 
-    public static Command loadPath(SwerveDriveSubsystem drive, double maxSpeed) {
+    public static Command loadPath(SwerveDriveSubsystem drive, String name, double maxSpeed) {
 
         double maxAccel = 0.75 * maxSpeed;
         PathConstraints constraints = new PathConstraints(maxSpeed, maxAccel);
-        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("TestAutomatedPath", constraints);
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(name, constraints);
 
         Map<String,Command> events = new HashMap<>();
 
