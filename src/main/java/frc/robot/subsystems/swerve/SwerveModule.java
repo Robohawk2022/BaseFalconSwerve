@@ -23,13 +23,13 @@ public class SwerveModule {
             driveKV,
             driveKA);
 
-    public int moduleNumber;
-    private Rotation2d angleOffset;
+    public final int moduleNumber;
+    private final Rotation2d angleOffset;
     private Rotation2d lastAngle;
 
-    private TalonFX angleMotor;
-    private TalonFX driveMotor;
-    private CANCoder angleEncoder;
+    private final TalonFX angleMotor;
+    private final TalonFX driveMotor;
+    private final CANCoder angleEncoder;
 
     public SwerveModule(int moduleNumber, ModuleConfig moduleConstants) {
 

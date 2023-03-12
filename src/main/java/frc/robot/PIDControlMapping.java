@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.commands.swerve.SwerveCommands;
-import frc.robot.commands.swerve.SwerveTeleopCommand;
 
 import frc.robot.commands.swerve.SwerveTeleopCommand;
 

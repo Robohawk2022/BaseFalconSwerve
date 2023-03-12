@@ -1,11 +1,7 @@
 package frc.robot;
 
-import com.revrobotics.CANSparkMax.IdleMode;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.arm.ArmTeleopCommand;

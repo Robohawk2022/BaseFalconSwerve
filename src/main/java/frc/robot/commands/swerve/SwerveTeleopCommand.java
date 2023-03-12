@@ -32,7 +32,7 @@ public class SwerveTeleopCommand extends CommandBase {
     private Rotation2d currentDirection;
     double pomegamAdjusted;
     
-    private HalfBakedSpeedController omegaSpeedModifer = new HalfBakedSpeedController(1, 5, 0.1, 0.4);
+    private final HalfBakedSpeedController omegaSpeedModifer = new HalfBakedSpeedController(1, 5, 0.1, 0.4);
 
     public SwerveTeleopCommand(SwerveDriveSubsystem swerveDrive,
                                DoubleSupplier pxSupplier,

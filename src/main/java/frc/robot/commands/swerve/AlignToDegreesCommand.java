@@ -13,11 +13,11 @@ public class AlignToDegreesCommand extends CommandBase {
     public static final ChassisSpeeds NEG = new ChassisSpeeds(0, 0, -SPEED);
 
     private double currentDirection;
-    private SwerveDriveSubsystem drive;
+    private final SwerveDriveSubsystem drive;
     private double directionInitial;
     private boolean done;
-    private double wantedDirection;
-    private double toleration = 1;
+    private final double wantedDirection;
+    private final double toleration = 1;
     private double directionDisposition;
 
     public AlignToDegreesCommand(SwerveDriveSubsystem drive, double wantedDirection) {
