@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
 
         // this has to go after all the other subsystems, since they register
         // motors with it
-        power = new PowerLoggingSubsystem();
+        // power = new PowerLoggingSubsystem();
 
         // flag that gets set when we calibrate (either in auto or teleop),
         // so we don't run calibration multiple times

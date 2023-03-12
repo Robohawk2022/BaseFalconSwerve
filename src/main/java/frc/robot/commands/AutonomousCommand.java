@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
+import frc.robot.commands.swerve.AlignToWallCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveFixedSpeedCommand;
+import frc.robot.commands.swerve.AlignToWallCommand.Wall;
+
 import static frc.robot.subsystems.AutonomusSubystem.*;
 
 /**
@@ -19,22 +22,22 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
     
     public static final ChassisSpeeds BACKUP_SPEED = new ChassisSpeeds(
-        Units.inchesToMeters(70), 
+        Units.inchesToMeters(-70), 
         Units.inchesToMeters(0), 
         -Units.degreesToRadians(-8));
 
     public static final ChassisSpeeds JUKE_LEFT = new ChassisSpeeds(
         0, 
-        Units.inchesToMeters(60), 
+        Units.inchesToMeters(-70), 
         0);
     
     public static final ChassisSpeeds JUKE_RIGHT = new ChassisSpeeds(
         0, 
-        Units.inchesToMeters(-60), 
+        Units.inchesToMeters(70), 
         0);
 
     public static final ChassisSpeeds MOUNT_SPEED = new ChassisSpeeds(
-        Units.feetToMeters(-3.0), 
+        Units.feetToMeters(3.05), 
         Units.inchesToMeters(0), 
         -Units.degreesToRadians(0));
 

@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class PathPlanningCommand {
 
-    public Command loadPath(SwerveDriveSubsystem drive, double maxSpeed) {
+    public static Command loadPath(SwerveDriveSubsystem drive, double maxSpeed) {
 
         double maxAccel = 0.75 * maxSpeed;
         PathConstraints constraints = new PathConstraints(maxSpeed, maxAccel);

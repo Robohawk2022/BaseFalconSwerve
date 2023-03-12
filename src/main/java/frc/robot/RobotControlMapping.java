@@ -8,6 +8,7 @@ import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.commands.swerve.PathPlanningCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
@@ -86,8 +87,9 @@ public class RobotControlMapping {
         // buttons
         driver.start().onTrue(SwerveCommands.zeroGyro(drive));
         driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
-        driver.x().onTrue(AlignToWallCommand.grid(drive));
-        driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
+        driver.x().onTrue(PathPlanningCommand.loadPath(robot.swerveDrive, 2.5));
+        // driver.x().onTrue(AlignToWallCommand.grid(drive));
+        // driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
         driver.b().onTrue(HandCommands.grab(hand));
         driver.a().onTrue(HandCommands.release(hand));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
