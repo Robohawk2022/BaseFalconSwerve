@@ -1,9 +1,7 @@
 package frc.robot.commands.swerve;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 import frc.robot.util.HalfBakedSpeedController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,47 +10,46 @@ public class OdometryCommand extends CommandBase {
 
     private final SwerveDriveSubsystem drive;
 
-    private double deltaX;
-    private double deltaY;
-    private double deltaOmega;
-
+    private final HalfBakedSpeedController omegaSpeedCalculator;
+    private final HalfBakedSpeedController swerveSpeedCalculator;
+    private final double deltaX;
+    private final double deltaY;
+    private final double deltaOmega;
     private double targetX;
     private double targetY;
     private double targetOmega;
-
     private double errorX;
     private double errorY;
     private double errorOmega;
-
     private double speedX;
     private double speedY;
-    
     private double speedOmega;
-    
-    Pose2d robotPose;
-    SwerveDriveOdometry robotOdometry;
+    private Pose2d robotPose;
+    private boolean done;
 
-    private HalfBakedSpeedController omegaSpeedCalculator = new HalfBakedSpeedController(3, 10, 0.1, 0.3);
-    private HalfBakedSpeedController swerveSpeedCalculator = new HalfBakedSpeedController(0.05, 0.5, 0.1, 1);
 
-    
+    public OdometryCommand(SwerveDriveSubsystem drive, double deltaX, double deltaY, double deltaOmega) {
 
-    public OdometryCommand(SwerveDriveSubsystem drive, double deltaX, double deltaY, double deltaOmega){
-
+        this.omegaSpeedCalculator = new HalfBakedSpeedController(3, 10, 0.1, 0.3);
+        this.swerveSpeedCalculator = new HalfBakedSpeedController(0.05, 0.5, 0.1, 1);
         this.drive = drive;
+        this.deltaX = deltaX;
+        this.deltaY = deltaY;
+        this.deltaOmega = deltaOmega;
+
+        addRequirements(drive);
 
     }
 
     public void initialize(){
-
         robotPose = drive.getPose();
         targetX = robotPose.getX() + deltaX;
         targetY = robotPose.getY() + deltaY;
         targetOmega = robotPose.getRotation().getDegrees() + deltaOmega;
-        
+        done = false;
     }
 
-    public void execute(){
+    public void execute() {
 
         robotPose = drive.getPose();
 
@@ -64,11 +61,12 @@ public class OdometryCommand extends CommandBase {
         speedY = swerveSpeedCalculator.calculate(errorY);
         speedOmega = omegaSpeedCalculator.calculate(errorOmega);
 
-        drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds((new ChassisSpeeds(speedX, deltaX, speedOmega)), drive.getYaw()));
-
-
-
-
+        if (speedX == 0 && speedY == 0 && speedOmega == 0) {
+            drive.stop();
+            done = true;
+        } else {
+            ChassisSpeeds speeds = new ChassisSpeeds(speedX, deltaX, speedOmega);
+            drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getYaw()));
+        }
     }
-    
 }
