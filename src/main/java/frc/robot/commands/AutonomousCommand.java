@@ -9,19 +9,14 @@ import frc.robot.Robot;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveFixedSpeedCommand;
+import static frc.robot.subsystems.AutonomusSubystem.*;
 
 /**
  * This is where all the logic for our autonomous program will go.
  */
 public class AutonomousCommand extends SequentialCommandGroup {
 
-    public static final String NONE = "None";
-    public static final String DROP = "Drop";
-    public static final String DROP_CENTER_EXIT = "Drop & Center Exit";
-    public static final String EXIT = "Drop & Exit";
-    public static final String MOUNT_L = "Mount (Left)";
-    public static final String MOUNT_R = "Mount (Right)";
-
+    
     public static final ChassisSpeeds BACKUP_SPEED = new ChassisSpeeds(
         Units.inchesToMeters(70), 
         Units.inchesToMeters(0), 

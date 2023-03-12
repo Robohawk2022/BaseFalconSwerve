@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.swing.text.Position;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -40,12 +42,19 @@ public class HandSubsystem extends SubsystemBase {
     private final DoubleSolenoid pressure;
     private final DoubleSolenoid position;
     private final DoubleSolenoid duck;
+    private Value pressureValue;
+    private Value positionValue;
+    private Value duckValue;
 
     public HandSubsystem() {
         pressure = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, PRESSURE_FORWARD, PRESSURE_REVERSE);
         position = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, POSITION_FORWARD, POSITION_REVERSE);
         duck = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, DUCK_QUACK, DUCK_UNQUACK);
         
+        pressureValue = HI;
+        positionValue = CLOSED;
+        duckValue = UNQUACK;
+
         SmartDashboard.putData("Hand", builder -> {
             builder.addStringProperty("Claw", this::getClawPositionString, null);
             builder.addStringProperty("Duck", this::getDuckPositionString, null);
@@ -79,29 +88,28 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public void grabCone() {
-        pressure.set(HI);
-        position.set(CLOSED);
-    }
-
-    public void grabCube() {
-        pressure.set(LO);
-        position.set(CLOSED);
+        pressureValue = HI;
+        positionValue = CLOSED;
     }
 
     public void release() {
-        pressure.set(HI);
-        position.set(OPEN);
+        pressureValue = HI;
+        positionValue = OPEN;
+
     }
 
     public void quack() {
-        duck.set(QUACK);
+        duckValue = QUACK;
     }
 
     public void unQuack() {
-        duck.set(UNQUACK);
+        duckValue = UNQUACK;
     }
 
-    public void turnOff() {
-        pressure.set(OFF);
+    @Override
+    public void periodic() {
+        position.set(positionValue);
+        pressure.set(pressureValue);
+        duck.set(duckValue);
     }
 }

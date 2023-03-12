@@ -84,6 +84,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         });
     }
 
+    public void setSwerveDrivePid (double p, double i, double d){
+        for(SwerveModule module : swerveModules){
+            module.setSwerveDrivePid(p, i, d);
+        }
+    }
+
     public void resetPose(Pose2d pose) {
         odometry.resetPosition(getYaw(), getModulePositions(), pose);
     }

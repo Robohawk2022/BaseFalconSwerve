@@ -4,6 +4,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.AutonomusSubystem;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
 
@@ -16,14 +17,16 @@ public class TestBench extends TimedRobot {
 
     public HandSubsystem hand;
     public ArmSubsystem arm;
+    public AutonomusSubystem auto;
 
     @Override
     public void robotInit() {
 
         //hand = new HandSubsystem();
-        arm = new ArmSubsystem();
+        // arm = new ArmSubsystem();
+        auto = new AutonomusSubystem();
 
-        TestBenchControlMapping.mapControls(this, new CommandXboxController(CONTROLLER_PORT));
+        // TestBenchControlMapping.mapControls(this, new CommandXboxController(CONTROLLER_PORT));
     }
 
     @Override
