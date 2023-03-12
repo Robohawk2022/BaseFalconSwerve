@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import javax.swing.text.Position;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -39,6 +40,7 @@ public class HandSubsystem extends SubsystemBase {
     public static final Value UNQUACK = Value.kReverse;
     public static final Value OFF = Value.kOff;
 
+    private final Compressor compressor;
     private final DoubleSolenoid pressure;
     private final DoubleSolenoid position;
     private final DoubleSolenoid duck;
@@ -47,6 +49,8 @@ public class HandSubsystem extends SubsystemBase {
     private Value duckValue;
 
     public HandSubsystem() {
+
+        compressor = new Compressor(REVPH_CAN_ID, PneumaticsModuleType.REVPH);
         pressure = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, PRESSURE_FORWARD, PRESSURE_REVERSE);
         position = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, POSITION_FORWARD, POSITION_REVERSE);
         duck = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, DUCK_QUACK, DUCK_UNQUACK);
@@ -54,6 +58,8 @@ public class HandSubsystem extends SubsystemBase {
         pressureValue = HI;
         positionValue = CLOSED;
         duckValue = UNQUACK;
+
+        PowerLoggingSubsystem.addItem("Compressor", compressor::getCurrent);
 
         SmartDashboard.putData("Hand", builder -> {
             builder.addStringProperty("Claw", this::getClawPositionString, null);
