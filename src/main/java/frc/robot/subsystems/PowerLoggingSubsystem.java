@@ -27,8 +27,7 @@ public class PowerLoggingSubsystem extends SubsystemBase {
 
         DataLogManager.start();
 
-        // TODO this may not be the correct CAN ID for the power hub
-        pd = new PowerDistribution(7, PowerDistribution.ModuleType.kRev);
+        pd = new PowerDistribution(3, PowerDistribution.ModuleType.kRev);
 
         SmartDashboard.putData("PowerDistribution", builder -> {
             builder.addStringArrayProperty("CurrentFaults", this::getFaults, null);
