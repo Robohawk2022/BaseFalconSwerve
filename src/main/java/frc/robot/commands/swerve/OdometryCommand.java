@@ -53,9 +53,9 @@ public class OdometryCommand extends CommandBase {
 
         robotPose = drive.getPose();
 
-        errorX = targetX - robotPose.getX();
-        errorY = targetY - robotPose.getY();
-        errorOmega = targetOmega - robotPose.getRotation().getDegrees();
+        errorX = robotPose.getX() - targetX;
+        errorY = robotPose.getY() - targetY;
+        errorOmega = robotPose.getRotation().getDegrees() - targetOmega;
 
         speedX = swerveSpeedCalculator.calculate(errorX);
         speedY = swerveSpeedCalculator.calculate(errorY);
