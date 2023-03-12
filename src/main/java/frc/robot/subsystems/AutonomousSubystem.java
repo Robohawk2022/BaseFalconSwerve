@@ -30,6 +30,8 @@ public class AutonomousSubystem extends SubsystemBase{
     public static final String JUKE_L = "Juke Left & Mount";
     public static final String JUKE_R = "Juke Right & Mouint";
 
+    // these correspond to PathPlanner files in the src/main/deploy directory,
+    // without the ".path" extension
     public static final Map<String,String> PATH_NAMES;
     static {
         PATH_NAMES = new HashMap<>();
