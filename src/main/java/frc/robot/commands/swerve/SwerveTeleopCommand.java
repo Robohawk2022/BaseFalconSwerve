@@ -33,7 +33,7 @@ public class SwerveTeleopCommand extends CommandBase {
     private Rotation2d currentDirection;
     double pomegamAdjusted;
     
-    private HalfBakedSpeedController omegaSpeedModifer = new HalfBakedSpeedController(5, 10, 0.1, 0.4);
+    private HalfBakedSpeedController omegaSpeedModifer = new HalfBakedSpeedController(1, 5, 0.1, 0.4);
 
     public SwerveTeleopCommand(SwerveDriveSubsystem swerveDrive,
                                DoubleSupplier pxSupplier,
@@ -84,7 +84,7 @@ public class SwerveTeleopCommand extends CommandBase {
 
         currentDirection = swerveDrive.getYaw();
 
-        double error = dedicatedDirection.getDegrees() - currentDirection.getDegrees();
+        double error = currentDirection.getDegrees() - dedicatedDirection.getDegrees();
 
         pomegamAdjusted = omegaSpeedModifer.calculate(error);
 

@@ -28,7 +28,7 @@ public class SwerveFixedSpeedCommand extends CommandBase {
             ChassisSpeeds speeds,
             boolean fieldRelative,
             double duration) {
-        this.omegaSpeedController = new HalfBakedSpeedController(5, 10, 0.1, 0.4);
+        this.omegaSpeedController = new HalfBakedSpeedController(1, 5, 0.1, 0.4);
         this.drive = drive;
         this.speeds = speeds;
         this.duration = duration;
@@ -47,7 +47,7 @@ public class SwerveFixedSpeedCommand extends CommandBase {
     public void execute() {
 
         currentDirection = drive.getYaw();
-        double error = dedicatedDirection.getDegrees() - currentDirection.getDegrees();
+        double error = currentDirection.getDegrees() - dedicatedDirection.getDegrees();
         speeds.omegaRadiansPerSecond = omegaSpeedController.calculate(error);
 
         double timeElapsed = Timer.getFPGATimestamp() - startTime;

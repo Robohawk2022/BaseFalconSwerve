@@ -19,12 +19,12 @@ public class AutonomusSubystem extends SubsystemBase{
     public static final String MOUNT_R = "Mount (Right)";
 
     public static final Object [][] programMapping = {
-        {NONE, 0},
-        {DROP, 1},
-        {DROP_CENTER_EXIT, 2},
-        {EXIT, 3},
-        {MOUNT_L, 4},
-        {MOUNT_R, 5},
+        {NONE, 7},
+        {DROP, 8},
+        {DROP_CENTER_EXIT, 9},
+        {EXIT, 10},
+        {MOUNT_L, 11},
+        {MOUNT_R, 12},
 
     };
 

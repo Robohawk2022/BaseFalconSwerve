@@ -65,8 +65,14 @@ public class OdometryCommand extends CommandBase {
             drive.stop();
             done = true;
         } else {
-            ChassisSpeeds speeds = new ChassisSpeeds(speedX, deltaX, speedOmega);
+            ChassisSpeeds speeds = new ChassisSpeeds(speedX, speedY, speedOmega);
             drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getYaw()));
         }
+    }
+
+    public boolean isFinished(){
+
+        return done;
+
     }
 }
