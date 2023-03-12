@@ -166,7 +166,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void extendAt(double percentOutput) {
-        if (percentOutput > 0 && getLength() > getEffectiveExtendMax()) {
+        if (percentOutput > 0 && getLength() > extendMax) { // getEffectiveExtendMax()
             percentOutput = 0;
         }
         if (percentOutput < 0 && getLength() < extendMin) {
@@ -180,7 +180,7 @@ public class ArmSubsystem extends SubsystemBase {
         if (percentOutput > 0 && getAngle() > rotateMax) {
             percentOutput = 0;
         }
-        if (percentOutput < 0 && getAngle() < getEffectiveRotateMin()) {
+        if (percentOutput < 0 && getAngle() < rotateMin) { // getEffectiveRotateMin()
             percentOutput = 0;
         }
         percentOutput = MathUtil.clamp(percentOutput, -ROTATOR_MAX_SPEED, ROTATOR_MAX_SPEED);
