@@ -26,7 +26,8 @@ public class AutonomousSubystem extends SubsystemBase{
     public static final String NONE = "None";
     public static final String DROP = "Drop";
     public static final String EXIT = "Drop & Exit";
-    public static final String MOUNT_C = "Center Mount";
+    public static final String MOUNT_ONLY = "Mount Only";
+    public static final String MOUNT_C = "Exit Center & Mount";
     public static final String JUKE_L = "Juke Left & Mount";
     public static final String JUKE_R = "Juke Right & Mouint";
 
@@ -48,6 +49,7 @@ public class AutonomousSubystem extends SubsystemBase{
         { MOUNT_C, 10 },
         { JUKE_L, 11 },
         { JUKE_R, 12 },
+        { MOUNT_ONLY, 13 },
     };
     
     private DigitalInput [] inputs;
