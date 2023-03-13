@@ -40,6 +40,7 @@ public class AutonomousSubystem extends SubsystemBase{
         PATH_NAMES.put(MOUNT_C, "exit-mount");
         PATH_NAMES.put(JUKE_L, "juke-left");
         PATH_NAMES.put(JUKE_R, "juke-right");
+        PATH_NAMES.put(MOUNT_ONLY, "mount-only");
     }
 
     public static final Object [][] programMapping = {

@@ -84,8 +84,8 @@ public class RobotControlMapping {
         // buttons
         driver.start().onTrue(SwerveCommands.zeroGyro(drive));
         driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
-        driver.x().onTrue(new ProxyCommand(() -> robot.auto.createCommand(robot)));
-        // driver.x().onTrue(AlignToWallCommand.grid(drive));
+        // driver.x().onTrue(new ProxyCommand(() -> robot.auto.createCommand(robot)));
+        driver.x().onTrue(AlignToWallCommand.grid(drive));
         driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
         driver.b().onTrue(HandCommands.grab(hand));
         driver.a().onTrue(HandCommands.release(hand));
