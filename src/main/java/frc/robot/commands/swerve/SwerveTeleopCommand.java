@@ -109,6 +109,7 @@ public class SwerveTeleopCommand extends CommandBase {
      */
     protected double calculateRotation() {
 
+        //TODO: remove the flip sign: Matthew don't like driving this way
         double pomega = pomegaSupplier.getAsDouble();
 
         // if the rotation has dropped to zero, I no longer care about sign-flipping
