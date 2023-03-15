@@ -113,24 +113,24 @@ public class SwerveTeleopCommand extends CommandBase {
         double pomega = pomegaSupplier.getAsDouble();
 
         // if the rotation has dropped to zero, I no longer care about sign-flipping
-        if (pomega == 0.0) {
-            flipSign = DONT_CARE;
-        }
+        // if (pomega == 0.0) {
+        //     flipSign = DONT_CARE;
+        // }
 
-        // if I don't care about sign-flipping, I'll do whatever the heading tells me
-        if (flipSign == DONT_CARE) {
-            Rotation2d heading = swerveDrive.getYaw();
-            if (Math.abs(heading.getDegrees()) < 90) {
-                flipSign = YES;
-            } else {
-                flipSign = NO;
-            }
-        }
+        // // if I don't care about sign-flipping, I'll do whatever the heading tells me
+        // if (flipSign == DONT_CARE) {
+        //     Rotation2d heading = swerveDrive.getYaw();
+        //     if (Math.abs(heading.getDegrees()) < 90) {
+        //         flipSign = YES;
+        //     } else {
+        //         flipSign = NO;
+        //     }
+        // }
 
-        // if I have an opinion, I'll honor it here
-        if (flipSign == YES) {
-            pomega = -pomega;
-        }
+        // // if I have an opinion, I'll honor it here
+        // if (flipSign == YES) {
+        //     pomega = -pomega;
+        // }
 
         return pomega;
     }
