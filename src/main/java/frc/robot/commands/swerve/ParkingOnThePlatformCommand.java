@@ -5,17 +5,25 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
+import frc.robot.util.HalfBakedSpeedController;
 
 public class ParkingOnThePlatformCommand extends CommandBase {
 
-    public static final double FORWARD_SPEED_FPS = Units.feetToMeters(2.2);
-    public static final double PITCH_THRESHOLD = -0.8;
-    public static final double PITCH_COUNT = 10;
-
     private final SwerveDriveSubsystem swerveDrive;
-    private double thenPitch;
+    
+    private final double TIME_COUNT = 1.0;
+    private final double SPEED = 0.5;
+
+
     private boolean done;
+    private double timeBalanced;
     private double retentionCounter;
+
+    private double thenPitch;
+    private double nowPitch;
+    private double deltaPitch;
+
+    private HalfBakedSpeedController speedReduction = new HalfBakedSpeedController(0.05, 0.1, 0.1, 0.5);
 
     public ParkingOnThePlatformCommand(SwerveDriveSubsystem swerveDrive) {
 
@@ -25,29 +33,46 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     }
 
     public void initialize() {
+
         thenPitch = Math.abs(swerveDrive.getPitch());
         done = false;
-        retentionCounter = PITCH_COUNT;
+
+
     }
 
     public void execute() {
 
-        double nowPitch = Math.abs(swerveDrive.getPitch());
+        nowPitch = Math.abs(swerveDrive.getPitch());
+        deltaPitch = nowPitch - thenPitch;
 
-        if (nowPitch - thenPitch < PITCH_THRESHOLD) {
-            retentionCounter -= 1;
-        } else {
-            swerveDrive.drive(new ChassisSpeeds(FORWARD_SPEED_FPS, 0, 0));
-            thenPitch = Math.abs(swerveDrive.getPitch());
-        }
+        double speed = SPEED - speedReduction.calculate(Math.abs(deltaPitch));
+       
+        if (Math.abs(deltaPitch) > 1){
 
-        if (retentionCounter == 0) {
+            swerveDrive.stop();
             done = true;
+
         }
+        else if (deltaPitch < 0){
+
+            swerveDrive.drive(speed, 0, 0);
+
+        } else {
+
+            swerveDrive.drive(-speed, 0, 0);
+
+        }
+                    
+    
+        
+
+        thenPitch = nowPitch;
     }
 
     public boolean isFinished() {
+
         return done;
+        
     }
 
 }
