@@ -29,17 +29,17 @@ public class MultiJoystickMapping {
 
     // left Y = forward/reverse
     public double getForwardReverse() {
-        return -getDriveAxis(XboxController.Axis.kLeftY.value);
+        return getDriveAxis(XboxController.Axis.kLeftY.value);
     }
 
     // left X = strafe left/right
     public double getStrafeLeftRight() {
-        return -getDriveAxis(XboxController.Axis.kLeftX.value);
+        return getDriveAxis(XboxController.Axis.kLeftX.value);
     }
 
     // right X = rotate left/right
     public double getRotateLeftRight() {
-        return getDriveAxis(XboxController.Axis.kRightX.value);
+        return -getDriveAxis(XboxController.Axis.kRightX.value);
     }
 
     private double getDriveAxis(int axis) {

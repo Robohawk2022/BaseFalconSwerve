@@ -24,7 +24,7 @@ public class SwerveUtils {
     }
 
     /**
-     * @param counts Falcon Position Counts
+     * @param positionCounts Falcon Position Counts
      * @param gearRatio Gear Ratio between Falcon and Mechanism
      * @return Degrees of Rotation of Mechanism
      */
@@ -47,9 +47,8 @@ public class SwerveUtils {
      * @return RPM of Mechanism
      */
     public static double falconToRPM(double velocityCounts, double gearRatio) {
-        double motorRPM = velocityCounts * (600.0 / 2048.0);        
-        double mechRPM = motorRPM / gearRatio;
-        return mechRPM;
+        double motorRPM = velocityCounts * (600.0 / 2048.0);
+        return motorRPM / gearRatio;
     }
 
     /**
@@ -59,8 +58,7 @@ public class SwerveUtils {
      */
     public static double RPMToFalcon(double RPM, double gearRatio) {
         double motorRPM = RPM * gearRatio;
-        double sensorCounts = motorRPM * (2048.0 / 600.0);
-        return sensorCounts;
+        return motorRPM * (2048.0 / 600.0);
     }
 
     /**
@@ -71,8 +69,7 @@ public class SwerveUtils {
      */
     public static double falconToMPS(double velocitycounts, double circumference, double gearRatio){
         double wheelRPM = falconToRPM(velocitycounts, gearRatio);
-        double wheelMPS = (wheelRPM * circumference) / 60;
-        return wheelMPS;
+        return (wheelRPM * circumference) / 60;
     }
 
     /**
@@ -83,8 +80,7 @@ public class SwerveUtils {
      */
     public static double MPSToFalcon(double velocity, double circumference, double gearRatio){
         double wheelRPM = ((velocity * 60) / circumference);
-        double wheelVelocity = RPMToFalcon(wheelRPM, gearRatio);
-        return wheelVelocity;
+        return RPMToFalcon(wheelRPM, gearRatio);
     }
 
     /**
@@ -121,38 +117,53 @@ public class SwerveUtils {
         double delta = targetAngle - currentAngle.getDegrees();
         if (Math.abs(delta) > 90){
             targetSpeed = -targetSpeed;
-            targetAngle = delta > 90 ? (targetAngle -= 180) : (targetAngle += 180);
+            if (delta > 90) {
+                targetAngle -= 180;
+            } else {
+                targetAngle += 180;
+            }
         }        
         return new SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle));
       }
 
     /**
-         * @param scopeReference Current Angle
-         * @param newAngle Target Angle
-         * @return Closest angle within scope
-         */
-        public static double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
-          double lowerBound;
-          double upperBound;
-          double lowerOffset = scopeReference % 360;
-          if (lowerOffset >= 0) {
-              lowerBound = scopeReference - lowerOffset;
-              upperBound = scopeReference + (360 - lowerOffset);
-          } else {
-              upperBound = scopeReference - lowerOffset;
-              lowerBound = scopeReference - (360 + lowerOffset);
-          }
-          while (newAngle < lowerBound) {
-              newAngle += 360;
-          }
-          while (newAngle > upperBound) {
-              newAngle -= 360;
-          }
-          if (newAngle - scopeReference > 180) {
-              newAngle -= 360;
-          } else if (newAngle - scopeReference < -180) {
-              newAngle += 360;
-          }
-          return newAngle;
-      }
+     * @param scopeReference Current Angle
+     * @param newAngle Target Angle
+     * @return Closest angle within scope
+     */
+    public static double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
+        double lowerBound;
+        double upperBound;
+        double lowerOffset = scopeReference % 360;
+        if (lowerOffset >= 0) {
+            lowerBound = scopeReference - lowerOffset;
+            upperBound = scopeReference + (360 - lowerOffset);
+        } else {
+            upperBound = scopeReference - lowerOffset;
+            lowerBound = scopeReference - (360 + lowerOffset);
+        }
+        while (newAngle < lowerBound) {
+            newAngle += 360;
+        }
+        while (newAngle > upperBound) {
+            newAngle -= 360;
+        }
+        if (newAngle - scopeReference > 180) {
+            newAngle -= 360;
+        } else if (newAngle - scopeReference < -180) {
+            newAngle += 360;
+        }
+        return newAngle;
+    }
+
+    public static double angleError(double current, double target) {
+        double error = target - current;
+        if (error < -180) {
+            error += 360;
+        }
+        if (error > 180) {
+            error -= 360;
+        }
+        return error;
+    }
 }

@@ -43,10 +43,10 @@ public class SwerveConfig {
     public static final double driveKA = (0.27 / 12);
 
     // swerve drive modules
-    public static final ModuleConfig frontLeft = new ModuleConfig(10, 11, 12, 300.146);
-    public static final ModuleConfig frontRight = new ModuleConfig(13, 14, 15, 379.512);
-    public static final ModuleConfig backLeft = new ModuleConfig(16, 17, 18, 114.609);
-    public static final ModuleConfig backRight = new ModuleConfig(19, 20, 21, 336.006);
+    public static final ModuleConfig frontLeft = new ModuleConfig(10, 11, 12, 484.541);
+    public static final ModuleConfig frontRight = new ModuleConfig(13, 14, 15, 208.740);
+    public static final ModuleConfig backLeft = new ModuleConfig(16, 17, 18, -80.947);
+    public static final ModuleConfig backRight = new ModuleConfig(19, 20, 21, -206.719);
 
     // swerve drive kinematics (same order as above)
     public static final SwerveDriveKinematics defaultKinematics = new SwerveDriveKinematics(
@@ -74,8 +74,8 @@ public class SwerveConfig {
         config.slot0.kI = 0.0;
         config.slot0.kD = 0.0;
         config.slot0.kF = 0.0;
-        config.openloopRamp = 0.25;
-        config.closedloopRamp = 0.25;
+        config.openloopRamp = 0.8;
+        config.closedloopRamp = 0.8;
         config.supplyCurrLimit = new SupplyCurrentLimitConfiguration(
                 true, 
                 35, 

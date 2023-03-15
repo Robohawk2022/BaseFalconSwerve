@@ -5,6 +5,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
+import frc.robot.subsystems.swerve.SwerveUtils;
 import frc.robot.util.HalfBakedSpeedController;
 
 public class AlignToWallCommand extends CommandBase {
@@ -57,9 +58,7 @@ public class AlignToWallCommand extends CommandBase {
     public void execute() {
 
         current = drive.getYaw().getDegrees();
-        error = wall == Wall.GRID
-                ? calculateGridError(current)
-                : calculateLoadingStationError(current);
+        error = SwerveUtils.angleError(current, wall == Wall.GRID ? 0 : 180);
         output = controller.calculate(error);
 
         if (output != 0.0) {
@@ -68,16 +67,6 @@ public class AlignToWallCommand extends CommandBase {
             drive.stop();
             done = true;
         }
-    }
-
-    private static double calculateLoadingStationError(double current) {
-        return current > 0
-                ? current - 180
-                : current + 180;
-    }
-
-    private static double calculateGridError(double current) {
-        return current;
     }
 
     @Override

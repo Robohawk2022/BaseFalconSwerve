@@ -8,10 +8,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.arm.ArmPresetCommand;
-import frc.robot.commands.arm.ArmCalibrationCommand;
+import frc.robot.subsystems.PowerLoggingSubsystem;
 
 import static frc.robot.subsystems.arm.ArmConfig.*;
 
@@ -60,6 +58,9 @@ public class ArmSubsystem extends SubsystemBase {
 
         clearLimits();
 
+        PowerLoggingSubsystem.addSpark("Rotator", rotateMotor);
+        PowerLoggingSubsystem.addSpark("Extender", extendMotor);
+
         SmartDashboard.putData("ArmRotator", builder -> {
             builder.addDoubleProperty("Angle", this::getAngleDelta, null);
             builder.addBooleanProperty("LimitTripped", this::rotateLimitTripped, null);
@@ -76,10 +77,6 @@ public class ArmSubsystem extends SubsystemBase {
             builder.addDoubleProperty("EncoderMax", () -> extendMax, null);
             builder.addDoubleProperty("EncoderPosition", this::getLength, null);
         });
-    }
-
-    public Command toPreset(double [] preset) {
-        return new ArmPresetCommand(this, preset);
     }
 
     public boolean isCalibrated() {
@@ -169,7 +166,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void extendAt(double percentOutput) {
-        if (percentOutput > 0 && getLength() > getEffectiveExtendMax()) {
+        if (percentOutput > 0 && getLength() > extendMax) { // getEffectiveExtendMax()
             percentOutput = 0;
         }
         if (percentOutput < 0 && getLength() < extendMin) {
@@ -183,7 +180,7 @@ public class ArmSubsystem extends SubsystemBase {
         if (percentOutput > 0 && getAngle() > rotateMax) {
             percentOutput = 0;
         }
-        if (percentOutput < 0 && getAngle() < getEffectiveRotateMin()) {
+        if (percentOutput < 0 && getAngle() < rotateMin) { // getEffectiveRotateMin()
             percentOutput = 0;
         }
         percentOutput = MathUtil.clamp(percentOutput, -ROTATOR_MAX_SPEED, ROTATOR_MAX_SPEED);

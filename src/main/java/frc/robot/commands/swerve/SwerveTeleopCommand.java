@@ -1,7 +1,6 @@
 package frc.robot.commands.swerve;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoublePredicate;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -9,7 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
-
+import frc.robot.subsystems.swerve.SwerveUtils;
 import frc.robot.util.HalfBakedSpeedController;
 
 public class SwerveTeleopCommand extends CommandBase {
@@ -33,7 +32,7 @@ public class SwerveTeleopCommand extends CommandBase {
     private Rotation2d currentDirection;
     double pomegamAdjusted;
     
-    private HalfBakedSpeedController omegaSpeedModifer = new HalfBakedSpeedController(5, 10, 0.1, 0.4);
+    private final HalfBakedSpeedController omegaSpeedModifer = new HalfBakedSpeedController(1, 5, 0.1, 0.4);
 
     public SwerveTeleopCommand(SwerveDriveSubsystem swerveDrive,
                                DoubleSupplier pxSupplier,
@@ -63,28 +62,23 @@ public class SwerveTeleopCommand extends CommandBase {
     }
 
     public void initialize(){
-
         dedicatedDirection = swerveDrive.getYaw();
-
     }
 
     @Override
     public void execute() {
 
-
         double px = pxSupplier.getAsDouble();
         double py = pySupplier.getAsDouble();
         double pomega = calculateRotation();
 
-        if(pomega != 0){
-
+        if (pomega != 0) {
             dedicatedDirection = swerveDrive.getYaw();
-
         }
 
         currentDirection = swerveDrive.getYaw();
 
-        double error = dedicatedDirection.getDegrees() - currentDirection.getDegrees();
+        double error = SwerveUtils.angleError(currentDirection.getDegrees(), dedicatedDirection.getDegrees());
 
         pomegamAdjusted = omegaSpeedModifer.calculate(error);
 
@@ -115,27 +109,28 @@ public class SwerveTeleopCommand extends CommandBase {
      */
     protected double calculateRotation() {
 
+        //TODO: remove the flip sign: Matthew don't like driving this way
         double pomega = pomegaSupplier.getAsDouble();
 
         // if the rotation has dropped to zero, I no longer care about sign-flipping
-        if (pomega == 0.0) {
-            flipSign = DONT_CARE;
-        }
+        // if (pomega == 0.0) {
+        //     flipSign = DONT_CARE;
+        // }
 
-        // if I don't care about sign-flipping, I'll do whatever the heading tells me
-        if (flipSign == DONT_CARE) {
-            Rotation2d heading = swerveDrive.getYaw();
-            if (Math.abs(heading.getDegrees()) < 90) {
-                flipSign = YES;
-            } else {
-                flipSign = NO;
-            }
-        }
+        // // if I don't care about sign-flipping, I'll do whatever the heading tells me
+        // if (flipSign == DONT_CARE) {
+        //     Rotation2d heading = swerveDrive.getYaw();
+        //     if (Math.abs(heading.getDegrees()) < 90) {
+        //         flipSign = YES;
+        //     } else {
+        //         flipSign = NO;
+        //     }
+        // }
 
-        // if I have an opinion, I'll honor it here
-        if (flipSign == YES) {
-            pomega = -pomega;
-        }
+        // // if I have an opinion, I'll honor it here
+        // if (flipSign == YES) {
+        //     pomega = -pomega;
+        // }
 
         return pomega;
     }

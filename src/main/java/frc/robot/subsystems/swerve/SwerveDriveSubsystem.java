@@ -23,7 +23,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private final AHRS navx;
     private final Field2d field;
     private SwerveDriveKinematics kinematics;
-    private SwerveDriveOdometry odometry;
+    private final SwerveDriveOdometry odometry;
     private ChassisSpeeds lastSpeed;
 
     public SwerveDriveSubsystem() {
@@ -62,7 +62,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putData("SwerveNavX", navx);
         SmartDashboard.putData("SwerveGyro", builder -> {
             builder.addBooleanProperty("Calibrated", navx::isMagnetometerCalibrated, null);
-            builder.addDoubleProperty("Pitch", () -> getPitch(), null);
+            builder.addDoubleProperty("Pitch", this::getPitch, null);
             builder.addDoubleProperty("Yaw", () -> getYaw().getDegrees(), null);
             builder.addDoubleProperty("X", () -> Units.metersToFeet(navx.getDisplacementX()), null);
             builder.addDoubleProperty("Y", () -> Units.metersToFeet(navx.getDisplacementY()), null);

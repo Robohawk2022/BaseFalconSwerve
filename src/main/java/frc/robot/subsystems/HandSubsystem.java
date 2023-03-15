@@ -1,14 +1,11 @@
 package frc.robot.subsystems;
 
-import javax.swing.text.Position;
-
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.HandCommands;
 
 /**
  * Represents the pneumatics for the hand. There are three double solenoids that
@@ -39,6 +36,7 @@ public class HandSubsystem extends SubsystemBase {
     public static final Value UNQUACK = Value.kReverse;
     public static final Value OFF = Value.kOff;
 
+    private final Compressor compressor;
     private final DoubleSolenoid pressure;
     private final DoubleSolenoid position;
     private final DoubleSolenoid duck;
@@ -47,6 +45,8 @@ public class HandSubsystem extends SubsystemBase {
     private Value duckValue;
 
     public HandSubsystem() {
+
+        compressor = new Compressor(REVPH_CAN_ID, PneumaticsModuleType.REVPH);
         pressure = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, PRESSURE_FORWARD, PRESSURE_REVERSE);
         position = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, POSITION_FORWARD, POSITION_REVERSE);
         duck = new DoubleSolenoid(REVPH_CAN_ID, PneumaticsModuleType.REVPH, DUCK_QUACK, DUCK_UNQUACK);
@@ -55,18 +55,12 @@ public class HandSubsystem extends SubsystemBase {
         positionValue = CLOSED;
         duckValue = UNQUACK;
 
+        PowerLoggingSubsystem.addItem("Compressor", compressor::getCurrent);
+
         SmartDashboard.putData("Hand", builder -> {
             builder.addStringProperty("Claw", this::getClawPositionString, null);
             builder.addStringProperty("Duck", this::getDuckPositionString, null);
         });
-    }
-
-    public Command grabCommand() {
-        return HandCommands.grab(this);
-    }
-
-    public Command releaseCommand() {
-        return HandCommands.release(this);
     }
 
     private String getDuckPositionString() {
@@ -83,10 +77,6 @@ public class HandSubsystem extends SubsystemBase {
         return "Off";
     }
 
-    private boolean isClosed() {
-        return pressure.get() != OFF && position.get() == CLOSED;
-    }
-
     public void grabCone() {
         pressureValue = HI;
         positionValue = CLOSED;
@@ -95,7 +85,6 @@ public class HandSubsystem extends SubsystemBase {
     public void release() {
         pressureValue = HI;
         positionValue = OPEN;
-
     }
 
     public void quack() {

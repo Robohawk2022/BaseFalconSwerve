@@ -15,7 +15,7 @@ public class SwerveCommands {
     }
 
     public static Command zeroGyro(SwerveDriveSubsystem drive) {
-        return new InstantCommand(() -> drive.zeroGyro(), drive);
+        return new InstantCommand(drive::zeroGyro, drive);
     }
 
     public static Command turnWheels(SwerveDriveSubsystem drive, double degrees) {

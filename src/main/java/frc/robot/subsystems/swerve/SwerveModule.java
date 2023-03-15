@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import frc.robot.subsystems.PowerLoggingSubsystem;
 
 import static frc.robot.subsystems.swerve.SwerveConfig.*;
 
@@ -22,21 +23,25 @@ public class SwerveModule {
             driveKV,
             driveKA);
 
-    public int moduleNumber;
-    private Rotation2d angleOffset;
+    public final int moduleNumber;
+    private final Rotation2d angleOffset;
     private Rotation2d lastAngle;
 
-    private TalonFX angleMotor;
-    private TalonFX driveMotor;
-    private CANCoder angleEncoder;
+    private final TalonFX angleMotor;
+    private final TalonFX driveMotor;
+    private final CANCoder angleEncoder;
 
     public SwerveModule(int moduleNumber, ModuleConfig moduleConstants) {
+
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
         this.angleEncoder = createAngleEncoder(moduleConstants.cancoderID);
         this.angleMotor = createAngleMotor(moduleConstants.angleMotorID);
         this.driveMotor = createDriveMotor(moduleConstants.driveMotorID);
         this.lastAngle = getState().angle;
+
+        PowerLoggingSubsystem.addTalon("Angle"+moduleNumber, angleMotor);
+        PowerLoggingSubsystem.addTalon("Drive"+moduleNumber, driveMotor);
 
         SmartDashboard.putData("SwerveModule" + moduleNumber, builder -> {  
             builder.addDoubleProperty("LastAngle", () -> lastAngle.getDegrees(), null);

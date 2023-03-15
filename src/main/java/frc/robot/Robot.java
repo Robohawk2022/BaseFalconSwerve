@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmCommands;
-import frc.robot.subsystems.AutonomusSubystem;
+import frc.robot.subsystems.AutonomousSubystem;
 import frc.robot.subsystems.HandSubsystem;
+import frc.robot.subsystems.PowerLoggingSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
@@ -35,11 +35,12 @@ public class Robot extends TimedRobot {
     public static final int DRIVE_PORT = 0;
     public static final int OPS_PORT = 1;
 
-    public AutonomusSubystem auto;
+    public AutonomousSubystem auto;
     public SwerveDriveSubsystem swerveDrive;
     public HandSubsystem hand;
     public ArmSubsystem arm;
     public VisionSubsystem vision;
+    public PowerLoggingSubsystem power;
     public Command autonomousCommand;
     public RobotControlMapping mapping;
     public boolean initRun;
@@ -47,14 +48,18 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 
-        auto = new AutonomusSubystem();
-
-        // create the swerve drive and establish the default control mapping
-        // for driving in teleop mode
+        auto = new AutonomousSubystem();
         swerveDrive = new SwerveDriveSubsystem();
         vision = new VisionSubsystem(true);
         hand = new HandSubsystem();
         arm = new ArmSubsystem();
+
+        // this has to go after all the other subsystems, since they register
+        // motors with it
+        // power = new PowerLoggingSubsystem();
+
+        // flag that gets set when we calibrate (either in auto or teleop),
+        // so we don't run calibration multiple times
         initRun = false;
 
         // do any additional control mapping that needs to be done
@@ -62,8 +67,6 @@ public class Robot extends TimedRobot {
                 this,
                 new CommandXboxController(DRIVE_PORT),
                 new CommandXboxController(OPS_PORT));
-
-        
 
         CameraServer.startAutomaticCapture();
     }
@@ -76,7 +79,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
  
-        autonomousCommand = AutonomousCommand.generateProgram(this, auto.getProgramName());
+        autonomousCommand = auto.createCommand(this);
         if (!initRun) {
             autonomousCommand = initCommand().andThen(autonomousCommand);
         }
