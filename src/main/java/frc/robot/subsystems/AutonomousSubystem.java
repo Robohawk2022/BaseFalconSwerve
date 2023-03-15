@@ -24,6 +24,7 @@ public class AutonomousSubystem extends SubsystemBase{
     public static final int CHANNEL_D = 9;
 
     public static final String NONE = "None";
+    public static final String DROP = "Drop";
     public static final String CENTER_EXIT = "Start Center, Exit";
     public static final String CENTER_MOUNT = "Start Center, Exit & Mount";
     public static final String LEFT_EXIT = "Start Left, Exit";
@@ -49,13 +50,14 @@ public class AutonomousSubystem extends SubsystemBase{
 
     public static final Object [][] programMapping = {
         { NONE, 7 },
-        { LEFT_EXIT, 8 },
-        { LEFT_MOUNT, 9 },
-        { CENTER_EXIT, 10 },
-        { CENTER_MOUNT, 11 },
-        { MOUNT_ONLY, 12 },
-        { RIGHT_EXIT, 13 },
-        { RIGHT_MOUNT, 14 },
+        { DROP, 8 },
+        { LEFT_EXIT, 9 },
+        { LEFT_MOUNT, 10 },
+        { CENTER_EXIT, 11 },
+        { CENTER_MOUNT, 12 },
+        { MOUNT_ONLY, 13 },
+        { RIGHT_EXIT, 14 },
+        { RIGHT_MOUNT, 15 },
     };
     
     private DigitalInput [] inputs;
