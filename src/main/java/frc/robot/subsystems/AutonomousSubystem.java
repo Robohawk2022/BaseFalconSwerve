@@ -131,9 +131,13 @@ public class AutonomousSubystem extends SubsystemBase{
                 robot.swerveDrive,
                 PATH_NAMES.get(which),
                 1.5));
-        moves.addCommands(new ParkingOnThePlatformCommand(robot.swerveDrive));
-        moves.addCommands(new AlignToDegreesCommand(robot.swerveDrive, 90));
         group.addCommands(moves);
+
+        SequentialCommandGroup balance = new SequentialCommandGroup();
+        balance.addCommands(new ParkingOnThePlatformCommand(robot.swerveDrive));
+        balance.addCommands(new AlignToDegreesCommand(robot.swerveDrive, 90));
+        group.addCommands(balance);
+        
         return group;
     }
 }
