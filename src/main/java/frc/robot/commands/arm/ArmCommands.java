@@ -23,7 +23,7 @@ public class ArmCommands {
     }
     public static Command safeCalibrate(ArmSubsystem arm) {
         return Commands.race(
-            new WaitCommand(5.0),
+            new WaitCommand(7.0),
             new ArmCalibrationCommand(arm));
     }
 }
