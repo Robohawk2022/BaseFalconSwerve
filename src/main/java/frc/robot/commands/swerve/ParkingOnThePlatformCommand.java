@@ -24,7 +24,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     private double nowPitch;
     private double deltaPitch;
 
-    private HalfBakedSpeedController speedReduction = new HalfBakedSpeedController(0.1, DELTA_THRESHOLD, 0.1, 0.5);
+    private HalfBakedSpeedController speedReduction = new HalfBakedSpeedController(0.1, DELTA_THRESHOLD, 0.1, SPEED);
 
     public ParkingOnThePlatformCommand(SwerveDriveSubsystem swerveDrive) {
 
@@ -54,7 +54,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
             done = true;
 
         }
-        else if (deltaPitch < 0){
+        else if (swerveDrive.getPitch() > 0){
 
             swerveDrive.drive(speed, 0, 0);
 

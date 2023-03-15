@@ -133,11 +133,15 @@ public class AutonomousSubystem extends SubsystemBase{
                 1.5));
         group.addCommands(moves);
 
-        SequentialCommandGroup balance = new SequentialCommandGroup();
-        balance.addCommands(new ParkingOnThePlatformCommand(robot.swerveDrive));
-        balance.addCommands(new AlignToDegreesCommand(robot.swerveDrive, 90));
-        group.addCommands(balance);
-        
+        if (which.contains("Mount")) {
+            SequentialCommandGroup balance = new SequentialCommandGroup();
+            balance.addCommands(new ParkingOnThePlatformCommand(robot.swerveDrive));
+            balance.addCommands(new AlignToDegreesCommand(robot.swerveDrive, 90));
+            group.addCommands(balance);
+        } else {
+            group.addCommands(ArmCommands.safePreset(arm, ArmPresetCommand.PICKUP_POSITION));
+        }
+
         return group;
     }
 }

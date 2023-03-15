@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmCommands;
+import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.subsystems.AutonomousSubystem;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.PowerLoggingSubsystem;
@@ -95,7 +96,6 @@ public class Robot extends TimedRobot {
         if (!initRun) {
             initCommand().schedule();
         }
-        swerveDrive.zeroGyro();
     }
 
     private Command initCommand() {
@@ -107,6 +107,7 @@ public class Robot extends TimedRobot {
 
         return Commands.sequence(
                 Commands.parallel(
+                        SwerveCommands.zeroGyro(swerveDrive),
                         armInit,
                         HandCommands.grab(hand)),
                 new InstantCommand(() -> initRun = true));
