@@ -9,19 +9,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swerve.SwerveConfig;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PathPlanningCommand {
 
-    public static Command loadPath(SwerveDriveSubsystem drive, String name, double maxSpeed) {
+    public static Command loadPath(SwerveDriveSubsystem drive, String name, double maxSpeed, Map<String,Command> events) {
 
         double maxAccel = 0.75 * maxSpeed;
         PathConstraints constraints = new PathConstraints(maxSpeed, maxAccel);
         List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(name, constraints);
-
-        Map<String,Command> events = new HashMap<>();
 
         SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
                 drive::getPose,

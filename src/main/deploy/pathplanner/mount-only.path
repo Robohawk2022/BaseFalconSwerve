@@ -39,7 +39,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "SecondEvent"
+          "Park"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
