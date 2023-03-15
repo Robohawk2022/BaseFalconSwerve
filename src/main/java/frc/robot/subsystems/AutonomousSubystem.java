@@ -24,32 +24,38 @@ public class AutonomousSubystem extends SubsystemBase{
     public static final int CHANNEL_D = 9;
 
     public static final String NONE = "None";
-    public static final String DROP = "Drop";
-    public static final String EXIT = "Drop & Exit";
-    public static final String MOUNT_ONLY = "Mount Only";
-    public static final String MOUNT_C = "Exit Center & Mount";
-    public static final String JUKE_L = "Juke Left & Mount";
-    public static final String JUKE_R = "Juke Right & Mouint";
+    public static final String CENTER_EXIT = "Start Center, Exit";
+    public static final String CENTER_MOUNT = "Start Center, Exit & Mount";
+    public static final String LEFT_EXIT = "Start Left, Exit";
+    public static final String LEFT_MOUNT = "Start Left, Exit & Mount";
+    public static final String RIGHT_EXIT = "Start Right, Exit";
+    public static final String RIGHT_MOUNT = "Start Right, Exit & Mount";
+    public static final String MOUNT_ONLY = "Start Center, Mount Only";
 
     // these correspond to PathPlanner files in the src/main/deploy directory,
     // without the ".path" extension
     public static final Map<String,String> PATH_NAMES;
     static {
         PATH_NAMES = new HashMap<>();
-        PATH_NAMES.put(EXIT, "exit-and-turn");
-        PATH_NAMES.put(MOUNT_C, "exit-mount");
-        PATH_NAMES.put(JUKE_L, "juke-left");
-        PATH_NAMES.put(JUKE_R, "juke-right");
+        PATH_NAMES.put(CENTER_EXIT, "exit-and-turn-from-center");
+        PATH_NAMES.put(CENTER_MOUNT, "mount-from-center");
+        PATH_NAMES.put(LEFT_MOUNT, "mount-from-left");
+        PATH_NAMES.put(RIGHT_MOUNT, "mount-from-right");
+        PATH_NAMES.put(LEFT_EXIT, "exit-and-turn-from-left");
+        PATH_NAMES.put(RIGHT_EXIT, "exit-and-turn-from-right");
+        PATH_NAMES.put(CENTER_EXIT, "exit-and-turn-from-center");
+        PATH_NAMES.put(MOUNT_ONLY, "mount-only");
     }
 
     public static final Object [][] programMapping = {
         { NONE, 7 },
-        { DROP, 8 },
-        { EXIT, 9 },
-        { MOUNT_C, 10 },
-        { JUKE_L, 11 },
-        { JUKE_R, 12 },
-        { MOUNT_ONLY, 13 },
+        { LEFT_EXIT, 8 },
+        { LEFT_MOUNT, 9 },
+        { CENTER_EXIT, 10 },
+        { CENTER_MOUNT, 11 },
+        { MOUNT_ONLY, 12 },
+        { RIGHT_EXIT, 13 },
+        { RIGHT_MOUNT, 14 },
     };
     
     private DigitalInput [] inputs;
