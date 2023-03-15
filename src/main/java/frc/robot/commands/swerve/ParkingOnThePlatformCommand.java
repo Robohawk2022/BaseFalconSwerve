@@ -13,6 +13,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     
     private final double TIME_COUNT = 1.0;
     private final double SPEED = 0.5;
+    private final double DELTA_THRESHOLD = 1;
 
 
     private boolean done;
@@ -23,7 +24,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     private double nowPitch;
     private double deltaPitch;
 
-    private HalfBakedSpeedController speedReduction = new HalfBakedSpeedController(0.05, 0.1, 0.1, 0.5);
+    private HalfBakedSpeedController speedReduction = new HalfBakedSpeedController(0.1, DELTA_THRESHOLD, 0.1, 0.5);
 
     public ParkingOnThePlatformCommand(SwerveDriveSubsystem swerveDrive) {
 
@@ -47,7 +48,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
 
         double speed = SPEED - speedReduction.calculate(Math.abs(deltaPitch));
        
-        if (Math.abs(deltaPitch) > 1){
+        if (Math.abs(deltaPitch) > DELTA_THRESHOLD){
 
             swerveDrive.stop();
             done = true;
@@ -72,7 +73,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     public boolean isFinished() {
 
         return done;
-        
+
     }
 
 }
