@@ -11,6 +11,8 @@ import frc.robot.Robot;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
+import frc.robot.commands.swerve.AlignToDegreesCommand;
+import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.PathPlanningCommand;
 
 import java.util.HashMap;
@@ -129,6 +131,8 @@ public class AutonomousSubystem extends SubsystemBase{
                 robot.swerveDrive,
                 PATH_NAMES.get(which),
                 1.5));
+        moves.addCommands(new ParkingOnThePlatformCommand(robot.swerveDrive));
+        moves.addCommands(new AlignToDegreesCommand(robot.swerveDrive, 90));
         group.addCommands(moves);
         return group;
     }
