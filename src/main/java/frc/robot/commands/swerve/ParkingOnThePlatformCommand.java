@@ -2,6 +2,7 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
@@ -12,9 +13,8 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     private final SwerveDriveSubsystem swerveDrive;
     
     private final double TIME_COUNT = 1.0;
-    private final double SPEED = 0.5;
-    private final double DELTA_THRESHOLD = 1;
-
+    private final double SPEED = 0.3;
+    private final double DELTA_THRESHOLD = 0.35;
 
     private boolean done;
     private double timeBalanced;
@@ -29,6 +29,12 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     public ParkingOnThePlatformCommand(SwerveDriveSubsystem swerveDrive) {
 
         this.swerveDrive = swerveDrive;
+
+        SmartDashboard.putData("ParkCommand", builder -> {
+            builder.addDoubleProperty("deltaPitch", () -> deltaPitch, null);
+            builder.addDoubleProperty("nowPitch", () -> nowPitch, null);
+            builder.addDoubleProperty("thenPitch", () -> thenPitch, null);
+        });
 
         addRequirements(swerveDrive);
     }
