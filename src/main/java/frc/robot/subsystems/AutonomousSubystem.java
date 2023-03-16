@@ -123,6 +123,15 @@ public class AutonomousSubystem extends SubsystemBase{
             return group;
         }
 
+        // depending on what we're doing, we may want to park the bot
+        // or lower the arm
+        Map<String,Command> events = new HashMap<>();
+        events.put("Lower", ArmCommands.safePreset(robot.arm, ArmPresetCommand.PICKUP_POSITION));
+        events.put("Park", Commands.sequence(
+                new ParkingOnThePlatformCommand(robot.swerveDrive),
+                new AlignToDegreesCommand(robot.swerveDrive, 90)
+        ));
+
         // otherwise, look up the appropriate movement path and make it happen
         // (don't forget to raise the arm while we're moving)
         ParallelCommandGroup moves = new ParallelCommandGroup();
@@ -130,17 +139,9 @@ public class AutonomousSubystem extends SubsystemBase{
         moves.addCommands(PathPlanningCommand.loadPath(
                 robot.swerveDrive,
                 PATH_NAMES.get(which),
-                1.5));
+                1.5,
+                events));
         group.addCommands(moves);
-
-        if (which.contains("Mount")) {
-            SequentialCommandGroup balance = new SequentialCommandGroup();
-            balance.addCommands(new ParkingOnThePlatformCommand(robot.swerveDrive));
-            balance.addCommands(new AlignToDegreesCommand(robot.swerveDrive, 90));
-            group.addCommands(balance);
-        } else {
-            group.addCommands(ArmCommands.safePreset(arm, ArmPresetCommand.PICKUP_POSITION));
-        }
 
         return group;
     }
