@@ -29,6 +29,6 @@ public class PathPlanningCommand {
                 drive::setModuleStates,
                 events,
                 drive);
-        return autoBuilder.followPathGroup(pathGroup);
+        return autoBuilder.fullAuto(pathGroup);
     }
 }

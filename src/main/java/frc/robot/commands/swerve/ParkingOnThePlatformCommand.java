@@ -62,11 +62,11 @@ public class ParkingOnThePlatformCommand extends CommandBase {
         }
         else if (swerveDrive.getPitch() > 0){
 
-            swerveDrive.drive(speed, 0, 0);
+            swerveDrive.drive(new ChassisSpeeds(speed, 0, 0));
 
         } else {
 
-            swerveDrive.drive(-speed, 0, 0);
+            swerveDrive.drive(new ChassisSpeeds(-speed, 0, 0));
 
         }
                     
