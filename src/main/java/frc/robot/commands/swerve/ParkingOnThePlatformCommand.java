@@ -14,7 +14,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
     
     private final double TIME_COUNT = 1.0;
     private final double SPEED = 0.3;
-    private final double DELTA_THRESHOLD = 0.35;
+    private final double DELTA_THRESHOLD = 0.325;
 
     private boolean done;
     private double timeBalanced;

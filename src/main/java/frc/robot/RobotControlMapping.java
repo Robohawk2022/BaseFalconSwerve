@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
 import frc.robot.commands.HandCommands;
@@ -85,6 +86,7 @@ public class RobotControlMapping {
         driver.start().onTrue(SwerveCommands.zeroGyro(drive));
         driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
         // driver.x().onTrue(new ProxyCommand(() -> robot.auto.createCommand(robot)));
+        // driver.y().onTrue(new ParkingOnThePlatformCommand(robot.swerveDrive));
         driver.x().onTrue(AlignToWallCommand.grid(drive));
         driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
         driver.b().onTrue(HandCommands.grab(hand));
@@ -107,6 +109,7 @@ public class RobotControlMapping {
         ops.b().onTrue(HandCommands.grab(hand));
         ops.a().onTrue(HandCommands.release(hand));
         ops.x().onTrue(AlignToWallCommand.grid(drive));
+        // ops.x().onTrue(new InstantCommand(arm::clearLimits, arm));
         ops.y().onTrue(AlignToWallCommand.loadingStation(drive));
         ops.start().onTrue(ArmCommands.safeCalibrate(arm));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
