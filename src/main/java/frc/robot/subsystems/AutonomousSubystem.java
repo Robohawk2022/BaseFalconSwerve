@@ -40,7 +40,6 @@ public class AutonomousSubystem extends SubsystemBase{
     public static final Map<String,String> PATH_NAMES;
     static {
         PATH_NAMES = new HashMap<>();
-        PATH_NAMES.put(CENTER_EXIT, "exit-and-turn-from-center");
         PATH_NAMES.put(CENTER_MOUNT, "mount-from-center");
         PATH_NAMES.put(LEFT_MOUNT, "mount-from-left");
         PATH_NAMES.put(RIGHT_MOUNT, "mount-from-right");
