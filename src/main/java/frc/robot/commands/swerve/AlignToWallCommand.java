@@ -10,7 +10,7 @@ import frc.robot.util.HalfBakedSpeedController;
 
 public class AlignToWallCommand extends CommandBase {
 
-    public static final double MAX_SPEED = Units.degreesToRadians(90);
+    public static final double MAX_SPEED = Units.degreesToRadians(120);
     public static final double MIN_SPEED = Units.degreesToRadians(10);
     public static final double MIN_THRESHOLD = 2;
     public static final double MAX_THRESHOLD = 30;
