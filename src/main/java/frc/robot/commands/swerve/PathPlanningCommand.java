@@ -3,6 +3,7 @@ package frc.robot.commands.swerve;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
@@ -32,22 +33,35 @@ public class PathPlanningCommand {
                 drive::setModuleStates,
                 events,
                 drive);
-        return wrapCommand(autoBuilder.fullAuto(pathGroup), pathGroup);
+        return wrapCommand(name, autoBuilder.fullAuto(pathGroup), pathGroup);
     }
 
-    public static Command wrapCommand(Command auto, List<PathPlannerTrajectory> path) {
+    public static Command wrapCommand(String name, Command auto, List<PathPlannerTrajectory> path) {
+        
         if (path.size() != 1) {
             return auto;
         }
-        try {
-            PathPlannerTrajectory t = path.get(0);
-            double time = t.getEndState().timeSeconds;
-            return Commands.race(
-                auto,
-                Commands.waitSeconds(time));
-        } catch (Exception e) {
-            DriverStation.reportWarning(e.getMessage(), e.getStackTrace());
+
+        PathPlannerTrajectory trajectory = path.get(0);
+        if (trajectory == null) {
+            DriverStation.reportWarning(name+" has no trajectory", false);
             return auto;
         }
+
+        PathPlannerState end = trajectory.getEndState();
+        if (end == null) {
+            DriverStation.reportWarning(name+" has no end state", false);
+            return auto;
+        }
+
+        double time = end.timeSeconds;
+        if (Double.isNaN(time) || time == 0) {
+            DriverStation.reportWarning(name+" has invalid end time", false);
+            return auto;
+        }
+
+        return Commands.race(
+            auto,
+            Commands.waitSeconds(time));
     }
 }
