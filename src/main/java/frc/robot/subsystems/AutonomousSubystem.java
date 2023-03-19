@@ -14,6 +14,7 @@ import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToDegreesCommand;
 import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.PathPlanningCommand;
+import frc.robot.commands.swerve.SwerveCommands;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class AutonomousSubystem extends SubsystemBase{
     
     public static final int CHANNEL_A = 6;
     public static final int CHANNEL_B = 7;
-    public static final int CHANNEL_C = 8;
+    public static final int CHANNEL_C = 5; //broken channel 8?
     public static final int CHANNEL_D = 9;
 
     public static final String NONE = "None";
@@ -50,15 +51,14 @@ public class AutonomousSubystem extends SubsystemBase{
     }
 
     public static final Object [][] programMapping = {
-        { NONE, 7 },
         { DROP, 8 },
-        { LEFT_EXIT, 9 },
-        { LEFT_MOUNT, 10 },
-        { CENTER_EXIT, 11 },
-        { CENTER_MOUNT, 12 },
-        { MOUNT_ONLY, 13 },
-        { RIGHT_EXIT, 14 },
-        { RIGHT_MOUNT, 15 },
+        { LEFT_EXIT, 0 },
+        { LEFT_MOUNT, 1 },
+        { CENTER_EXIT, 3},
+        { CENTER_MOUNT, 2 },
+        { MOUNT_ONLY, 10 },
+        { RIGHT_EXIT, 11 },
+        { RIGHT_MOUNT, 9 },
     };
     
     private DigitalInput [] inputs;
@@ -101,6 +101,18 @@ public class AutonomousSubystem extends SubsystemBase{
         return DROP;
     }
 
+    public static final String[] selectWhich = { 
+     NONE,
+     DROP,
+     LEFT_EXIT,
+     LEFT_MOUNT,
+     CENTER_EXIT,
+     CENTER_MOUNT,
+     MOUNT_ONLY,
+     RIGHT_EXIT,
+     RIGHT_MOUNT};
+
+
     public Command createCommand(Robot robot) {
 
         String which = getProgramName();
@@ -141,6 +153,7 @@ public class AutonomousSubystem extends SubsystemBase{
                 1.5,
                 events));
         group.addCommands(moves);
+        group.addCommands(SwerveCommands.turnWheels(robot.swerveDrive, 90));
 
         return group;
     }
