@@ -24,16 +24,16 @@
     },
     {
       "anchorPoint": {
-        "x": 5.899456719757624,
-        "y": 1.0104855618239879
+        "x": 5.9327793789755745,
+        "y": 0.8317403396881933
       },
       "prevControl": {
-        "x": 4.273547692394529,
-        "y": 0.6851500882488947
+        "x": 4.3068703516124796,
+        "y": 0.5064048661131001
       },
       "nextControl": {
-        "x": 6.911084019311886,
-        "y": 1.2129066327714466
+        "x": 6.944406678529837,
+        "y": 1.0341614106356523
       },
       "holonomicAngle": -179.46062388586762,
       "isReversal": false,
@@ -90,7 +90,9 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "Park"
+        ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
