@@ -43,7 +43,7 @@ public class SimpleParkCommand extends CommandBase {
     public void execute() {
         currentPitch = drive.getPitch();
         deltaPitch = currentPitch - startingPitch;
-        if (Math.abs(deltaPitch) > THRESHOLD) {
+        if (Math.abs(deltaPitch) < THRESHOLD) {
             drive.stop();
             done = true;
         } else if (startingPitch > 0) {
