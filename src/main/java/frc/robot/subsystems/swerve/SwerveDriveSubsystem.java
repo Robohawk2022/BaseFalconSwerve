@@ -25,6 +25,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private SwerveDriveKinematics kinematics;
     private final SwerveDriveOdometry odometry;
     private ChassisSpeeds lastSpeed;
+    private double pitchOffset;
 
     public SwerveDriveSubsystem() {
 
@@ -38,7 +39,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             new SwerveModule(3, SwerveConfig.backRight)
         };
 
-        navx = new AHRS(Port.kUSB);
+        navx = new AHRS(Port.kMXP);
         zeroGyro();
 
         /* By pausing init for a second before setting module offsets, we avoid a bug with
@@ -64,6 +65,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             builder.addBooleanProperty("Calibrated", navx::isMagnetometerCalibrated, null);
             builder.addDoubleProperty("Pitch", this::getPitch, null);
             builder.addDoubleProperty("Yaw", () -> getYaw().getDegrees(), null);
+            builder.addDoubleProperty("RawX", navx::getRawGyroX, null);
+            builder.addDoubleProperty("RawY", navx::getRawGyroY, null);
+            builder.addDoubleProperty("RawZ", navx::getRawGyroZ, null);
             builder.addDoubleProperty("X", () -> Units.metersToFeet(navx.getDisplacementX()), null);
             builder.addDoubleProperty("Y", () -> Units.metersToFeet(navx.getDisplacementY()), null);
         });
@@ -150,10 +154,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     public void zeroGyro() {
         navx.zeroYaw();
+        navx.calibrate();
+        pitchOffset = navx.getPitch();
     }
 
     public double getPitch() {
-        return navx.getPitch();
+        //return Math.toDegrees(navx.getPitch() - pitchOffset);
+        return navx.getPitch() - pitchOffset;
     }
 
     public Rotation2d getYaw() {
