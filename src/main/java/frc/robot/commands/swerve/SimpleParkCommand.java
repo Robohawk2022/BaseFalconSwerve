@@ -4,7 +4,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
-public class ParkCommand extends CommandBase {
+public class SimpleParkCommand extends CommandBase {
 
     public static final double THRESHOLD = 0.5;
     public static final double SPEED = 0.35;
@@ -17,7 +17,7 @@ public class ParkCommand extends CommandBase {
     private double currentPitch;
     private boolean done;
 
-    public ParkCommand(SwerveDriveSubsystem drive) {
+    public SimpleParkCommand(SwerveDriveSubsystem drive) {
 
         this.drive = drive;
 
