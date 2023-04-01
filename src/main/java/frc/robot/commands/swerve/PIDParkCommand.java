@@ -11,6 +11,8 @@ import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
  */
 public class PIDParkCommand extends CommandBase {
 
+    public static final double PITCH_TOLERANCE = 5;
+
     private final SwerveDriveSubsystem drive;
     private final PIDController controller;
     private double pitch;
@@ -46,7 +48,7 @@ public class PIDParkCommand extends CommandBase {
 
         pitch = drive.getPitch();
 
-        if (Math.abs(pitch) <= controller.getPositionTolerance()) {
+        if (Math.abs(pitch) <= PITCH_TOLERANCE) {
             power = 0;
             done = true;
             drive.stop();
