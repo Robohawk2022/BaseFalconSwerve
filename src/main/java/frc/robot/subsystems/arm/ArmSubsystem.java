@@ -166,7 +166,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void extendAt(double percentOutput) {
-        if (percentOutput > 0 && getLength() > extendMax) { // getEffectiveExtendMax()
+        if (percentOutput > 0 && getLength() > getEffectiveExtendMax()) { // getEffectiveExtendMax()
             percentOutput = 0;
         }
         if (percentOutput < 0 && getLength() < extendMin) {

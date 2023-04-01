@@ -12,11 +12,14 @@ import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToDegreesCommand;
+import frc.robot.commands.swerve.PIDParkCommand;
 import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.PathPlanningCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AutonomousSubystem extends SubsystemBase{
@@ -116,22 +119,21 @@ public class AutonomousSubystem extends SubsystemBase{
     public Command createCommand(Robot robot) {
 
         String which = getProgramName();
-        SequentialCommandGroup group = new SequentialCommandGroup();
+        List<Command> commands = new ArrayList<>();
 
         // not doing anything? we're done!
         if (NONE.equals(which)) {
-            return group;
+            return Commands.sequence();
         }
 
         // otherwise we're going to drop; make sure that happens
-        group.addCommands(
-                ArmCommands.safePreset(robot.arm, ArmPresetCommand.MIDDLE_POSITION),
-                HandCommands.release(robot.hand),
-                Commands.waitSeconds(1));
+        commands.add(ArmCommands.safePreset(robot.arm, ArmPresetCommand.MIDDLE_POSITION));
+        commands.add(HandCommands.release(robot.hand));
+        commands.add(Commands.waitSeconds(1));
 
         // not moving anywhere? we're done!
         if (DROP.equals(which)) {
-            return group;
+            return Commands.sequence(commands.toArray(i -> new Command[i]));
         }
 
         // depending on what we're doing, we may want to park the bot
@@ -142,19 +144,26 @@ public class AutonomousSubystem extends SubsystemBase{
         //         new ParkingOnThePlatformCommand(robot.swerveDrive),
         //         new AlignToDegreesCommand(robot.swerveDrive, 90)
         // ));
+        events.put("Park", new PIDParkCommand(robot.swerveDrive));
 
         // otherwise, look up the appropriate movement path and make it happen
         // (don't forget to raise the arm while we're moving)
         ParallelCommandGroup moves = new ParallelCommandGroup();
-        moves.addCommands(new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION));
-        moves.addCommands(PathPlanningCommand.loadPath(
+        moves.addCommands(
+            new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION),
+            PathPlanningCommand.loadPath(
                 robot.swerveDrive,
                 PATH_NAMES.get(which),
                 1.5,
-                events));
-        group.addCommands(moves);
-        group.addCommands(SwerveCommands.turnWheels(robot.swerveDrive, 90));
+                events),
+            Commands.runOnce(() -> SmartDashboard.putNumber("Step", 1)));
+        commands.add(moves);
 
-        return group;
+        // commands.add(Commands.runOnce(() -> SmartDashboard.putNumber("Step", 2)));
+        // commands.add(new PIDParkCommand(robot.swerveDrive));
+        // commands.add(Commands.runOnce(() -> SmartDashboard.putNumber("Step", 3)));
+        // commands.add(SwerveCommands.turnWheels(robot.swerveDrive, 90));
+     
+        return Commands.sequence(commands.toArray(i -> new Command[i]));
     }
 }

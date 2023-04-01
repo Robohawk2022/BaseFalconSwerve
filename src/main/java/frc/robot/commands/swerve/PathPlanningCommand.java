@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.swerve.SwerveConfig;
@@ -60,8 +61,9 @@ public class PathPlanningCommand {
             return auto;
         }
 
-        return Commands.race(
-            auto,
-            Commands.waitSeconds(time));
+        SmartDashboard.putNumber("Delay", time);
+
+        //return Commands.waitSeconds(time).deadlineWith(auto);
+        return auto.withTimeout(time);
     }
 }

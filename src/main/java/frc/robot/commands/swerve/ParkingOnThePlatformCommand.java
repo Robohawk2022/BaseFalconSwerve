@@ -43,6 +43,7 @@ public class ParkingOnThePlatformCommand extends CommandBase {
 
         thenPitch = Math.abs(swerveDrive.getPitch());
         done = false;
+        timeBalanced = 0;
 
 
     }
@@ -54,24 +55,34 @@ public class ParkingOnThePlatformCommand extends CommandBase {
 
         double speed = SPEED - speedReduction.calculate(Math.abs(deltaPitch));
        
-        if (Math.abs(deltaPitch) > DELTA_THRESHOLD){
+        if (
+            swerveDrive.getPitch() < 1 && swerveDrive.getPitch() > -1
+        ){
 
             swerveDrive.stop();
-            done = true;
+            timeBalanced += 0.02;
+
+            if (timeBalanced >= 2){
+
+                done = true;
+
+            }
 
         }
-        else if (swerveDrive.getPitch() > 0){
+        else{
+            
+            timeBalanced = 0;
+            if (swerveDrive.getPitch() > 0){
 
-            swerveDrive.drive(new ChassisSpeeds(speed, 0, 0));
 
-        } else {
+                swerveDrive.drive(new ChassisSpeeds(speed, 0, 0));
 
-            swerveDrive.drive(new ChassisSpeeds(-speed, 0, 0));
+            } else {
 
+                swerveDrive.drive(new ChassisSpeeds(-speed, 0, 0));
+
+            }
         }
-                    
-    
-        
 
         thenPitch = nowPitch;
     }

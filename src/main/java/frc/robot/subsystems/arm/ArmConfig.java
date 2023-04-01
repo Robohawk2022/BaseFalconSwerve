@@ -6,7 +6,7 @@ public class ArmConfig {
 
     // when the arm is at its lowest level, how far can it extend
     // before it violates the rules?
-    public static final double LIMIT_CRITICAL_LENGTH = 18.5;
+    public static final double LIMIT_CRITICAL_LENGTH = 17.5;
 
     // when the arm is at its maximum extend, how far down can it
     // rotate before it violates the rules?
