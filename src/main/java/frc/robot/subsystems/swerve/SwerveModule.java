@@ -43,10 +43,10 @@ public class SwerveModule {
         PowerLoggingSubsystem.addTalon("Angle"+moduleNumber, angleMotor);
         PowerLoggingSubsystem.addTalon("Drive"+moduleNumber, driveMotor);
 
-        SmartDashboard.putData("SwerveModule" + moduleNumber, builder -> {  
-            builder.addDoubleProperty("LastAngle", () -> lastAngle.getDegrees(), null);
-            builder.addDoubleProperty("EncoderAngle", () -> SwerveUtils.falconToDegrees(angleMotor.getSelectedSensorPosition(), SwerveConfig.angleGearRatio), null);
-        });
+        // SmartDashboard.putData("SwerveModule" + moduleNumber, builder -> {  
+        //     builder.addDoubleProperty("LastAngle", () -> lastAngle.getDegrees(), null);
+        //     builder.addDoubleProperty("EncoderAngle", () -> SwerveUtils.falconToDegrees(angleMotor.getSelectedSensorPosition(), SwerveConfig.angleGearRatio), null);
+        // });
     }
 
     /**

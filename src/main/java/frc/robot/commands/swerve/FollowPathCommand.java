@@ -24,6 +24,7 @@ public class FollowPathCommand extends CommandBase {
     private final PPHolonomicDriveController controller;
     private final Timer timer;
     private ChassisSpeeds targetSpeeds;
+    private boolean done;
 
     public FollowPathCommand(SwerveDriveSubsystem drive, String pathName, double maxSpeed) {
         
@@ -32,14 +33,15 @@ public class FollowPathCommand extends CommandBase {
         this.timer = new Timer();
         this.targetSpeeds = new ChassisSpeeds(0, 0, 0);
         this.controller = new PPHolonomicDriveController(
-            new PIDController(5, 0, 0),
-            new PIDController(5, 0, 0),
-            new PIDController(5, 0, 0));
+            new PIDController(1, 0, 0, 0.02),
+            new PIDController(1, 0, 0, 0.02),
+            new PIDController(1, 0, 0, 0.02));
 
         SmartDashboard.putData("SwervePathCommand", builder -> {
             builder.addDoubleProperty("DesiredX", () -> Units.metersToFeet(targetSpeeds.vxMetersPerSecond), null);
             builder.addDoubleProperty("DesiredY", () -> Units.metersToFeet(targetSpeeds.vyMetersPerSecond), null);
             builder.addDoubleProperty("DesiredOmega", () -> Units.radiansToDegrees(targetSpeeds.omegaRadiansPerSecond), null);
+            builder.addBooleanProperty("Done", () -> done, null);
             builder.addStringProperty("PathName", () -> pathName, null);
             builder.addDoubleProperty("TimeCurrent", timer::get, null);
             builder.addDoubleProperty("TimeTarget", trajectory::getTotalTimeSeconds, null);
@@ -63,6 +65,12 @@ public class FollowPathCommand extends CommandBase {
 
     @Override
     public void initialize() {
+
+        done = false;
+
+        PathPlannerTrajectory.PathPlannerState initialState = trajectory.getInitialState();
+        drive.resetPose(new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation));
+
         timer.reset();
         timer.start();
     }
@@ -72,9 +80,10 @@ public class FollowPathCommand extends CommandBase {
 
         double currentTime = this.timer.get();
         PathPlannerState desiredState = (PathPlannerState) trajectory.sample(currentTime);
-        Pose2d currentPose = drive.getPose();
 
-        targetSpeeds = this.controller.calculate(currentPose, desiredState);
+        // ChassisSpeeds computedSpeeds = this.controller.calculate(currentPose, desiredState);
+        // targetSpeeds = new ChassisSpeeds(-computedSpeeds.vxMetersPerSecond, -computedSpeeds.vyMetersPerSecond, computedSpeeds.omegaRadiansPerSecond);
+        targetSpeeds = controller.calculate(drive.getPose(), desiredState);
         drive.drive(targetSpeeds);
     }
 
@@ -86,6 +95,7 @@ public class FollowPathCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return this.timer.hasElapsed(trajectory.getTotalTimeSeconds());  
+        done = this.timer.hasElapsed(trajectory.getTotalTimeSeconds());  
+        return done;
     }
 }

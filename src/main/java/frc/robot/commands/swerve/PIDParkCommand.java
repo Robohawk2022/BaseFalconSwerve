@@ -2,6 +2,7 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -50,6 +51,12 @@ public class PIDParkCommand extends CommandBase {
 
     @Override
     public void execute() {
+
+        if (DriverStation.getMatchTime() < 0.5) {
+            drive.stop();
+            done = true;
+            return;
+        }
 
         pitch = drive.getPitch();
 

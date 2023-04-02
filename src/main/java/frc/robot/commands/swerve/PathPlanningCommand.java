@@ -10,16 +10,16 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.swerve.SwerveConfig;
 import frc.robot.subsystems.swerve.SwerveDriveSubsystem;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PathPlanningCommand {
 
-    public static Command loadPath(SwerveDriveSubsystem drive, String name, double maxSpeed, Map<String,Command> events) {
+    public static Command loadPath(SwerveDriveSubsystem drive, String name, double maxSpeed) {
 
         double maxAccel = 0.75 * maxSpeed;
         PathConstraints constraints = new PathConstraints(maxSpeed, maxAccel);
@@ -32,9 +32,10 @@ public class PathPlanningCommand {
                 new PIDConstants(5, 0, 0),
                 new PIDConstants(5, 0, 0),
                 drive::setModuleStates,
-                events,
+                new HashMap<>(),
                 drive);
-        return wrapCommand(name, autoBuilder.fullAuto(pathGroup), pathGroup);
+        return autoBuilder.fullAuto(pathGroup);
+        // return wrapCommand(name, autoBuilder.fullAuto(pathGroup), pathGroup);
     }
 
     public static Command wrapCommand(String name, Command auto, List<PathPlannerTrajectory> path) {

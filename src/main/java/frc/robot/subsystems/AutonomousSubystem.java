@@ -12,6 +12,8 @@ import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.FollowPathCommand;
 import frc.robot.commands.swerve.PIDParkCommand;
+import frc.robot.commands.swerve.PathPlanningCommand;
+import frc.robot.commands.swerve.SwerveCommands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,7 +126,7 @@ public class AutonomousSubystem extends SubsystemBase{
         // otherwise we're going to drop; make sure that happens
         commands.add(ArmCommands.safePreset(robot.arm, ArmPresetCommand.MIDDLE_POSITION));
         commands.add(HandCommands.release(robot.hand));
-        commands.add(Commands.waitSeconds(1));
+        commands.add(Commands.waitSeconds(0.6));
 
         // not moving anywhere? we're done!
         if (DROP.equals(which)) {
@@ -135,14 +137,14 @@ public class AutonomousSubystem extends SubsystemBase{
         // (don't forget to raise the arm while we're moving)
         ParallelCommandGroup moves = new ParallelCommandGroup();
         moves.addCommands(
-            new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION),
-            new FollowPathCommand(robot.swerveDrive, PATH_NAMES.get(which), 1.5),
-            Commands.runOnce(() -> SmartDashboard.putNumber("Step", 1)));
+            ArmCommands.safePreset(robot.arm,  ArmPresetCommand.TRAVEL_POSITION),
+            PathPlanningCommand.loadPath(robot.swerveDrive, PATH_NAMES.get(which), 2.25));
         commands.add(moves);
 
         if (which.toLowerCase().contains("mount")) {
             commands.add(new PIDParkCommand(robot.swerveDrive));
-        } else if (which.toLowerCase().contains("exit") {
+            commands.add(SwerveCommands.turnWheels(robot.swerveDrive, 90));
+        } else if (which.toLowerCase().contains("exit")) {
             commands.add(ArmCommands.safePreset(robot.arm, ArmPresetCommand.PICKUP_POSITION));
         }
      
