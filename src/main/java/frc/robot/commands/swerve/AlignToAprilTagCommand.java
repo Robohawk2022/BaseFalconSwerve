@@ -90,7 +90,7 @@ public class AlignToAprilTagCommand extends CommandBase {
            return;
        }
 
-       swerveDrive.drive(new ChassisSpeeds(outputX, outputY, 0.0));
+       swerveDrive.drive(new ChassisSpeeds(-outputX, -outputY, 0.0));
        done = false;
     }
 

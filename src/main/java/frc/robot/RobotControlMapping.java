@@ -88,7 +88,7 @@ public class RobotControlMapping {
         // driver.x().onTrue(new ProxyCommand(() -> robot.auto.createCommand(robot)));
         // driver.y().onTrue(new ParkingOnThePlatformCommand(robot.swerveDrive));
         driver.x().onTrue(AlignToWallCommand.grid(drive));
-        driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
+        driver.y().onTrue(AlignToWallCommand.loadingStation(drive)); 
         driver.b().onTrue(HandCommands.grab(hand));
         driver.a().onTrue(HandCommands.release(hand));
         driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));

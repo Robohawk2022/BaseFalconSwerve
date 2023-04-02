@@ -29,8 +29,8 @@ public class PathPlanningCommand {
                 drive::getPose,
                 drive::resetPose,
                 SwerveConfig.defaultKinematics,
-                new PIDConstants(5, 0, 0),
-                new PIDConstants(5, 0, 0),
+                new PIDConstants(4, 0, 0),
+                new PIDConstants(4, 0, 0),
                 drive::setModuleStates,
                 new HashMap<>(),
                 drive);

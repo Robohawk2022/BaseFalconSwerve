@@ -140,7 +140,7 @@ public class AutonomousSubystem extends SubsystemBase{
         ParallelCommandGroup moves = new ParallelCommandGroup();
         moves.addCommands(
             ArmCommands.safePreset(robot.arm,  ArmPresetCommand.TRAVEL_POSITION),
-            PathPlanningCommand.loadPath(robot.swerveDrive, PATH_NAMES.get(which), 1.75));
+            PathPlanningCommand.loadPath(robot.swerveDrive, PATH_NAMES.get(which), 1.35));
         commands.add(moves);
 
         if (which.toLowerCase().contains("mount")) {
