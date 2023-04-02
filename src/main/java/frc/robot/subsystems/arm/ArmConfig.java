@@ -78,6 +78,4 @@ public class ArmConfig {
             ROTATOR_MIN_THRESHOLD, ROTATOR_MAX_THRESHOLD,
             ROTATOR_MIN_SPEED, ROTATOR_MAX_SPEED * 2);
     }
-
-
 }
