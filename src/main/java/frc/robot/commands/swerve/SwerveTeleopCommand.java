@@ -72,7 +72,7 @@ public class SwerveTeleopCommand extends CommandBase {
         double py = pySupplier.getAsDouble();
         double pomega = calculateRotation();
 
-        if (pomega != 0) {
+        if ((px == 0 && py == 0) || pomega != 0) {
             dedicatedDirection = swerveDrive.getYaw();
         }
 
