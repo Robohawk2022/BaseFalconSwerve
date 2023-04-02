@@ -52,7 +52,8 @@ public class PIDParkCommand extends CommandBase {
     @Override
     public void execute() {
 
-        if (DriverStation.getMatchTime() < 0.5) {
+        double matchTime = DriverStation.getMatchTime();
+        if (matchTime > 0 && matchTime < 0.5) {
             drive.stop();
             done = true;
             return;
