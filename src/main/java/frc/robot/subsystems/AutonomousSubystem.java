@@ -5,17 +5,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
-import frc.robot.commands.swerve.AlignToDegreesCommand;
+import frc.robot.commands.swerve.FollowPathCommand;
 import frc.robot.commands.swerve.PIDParkCommand;
-import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
-import frc.robot.commands.swerve.PathPlanningCommand;
-import frc.robot.commands.swerve.SwerveCommands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,16 +101,15 @@ public class AutonomousSubystem extends SubsystemBase{
     }
 
     public static final String[] selectWhich = { 
-     NONE,
-     DROP,
-     LEFT_EXIT,
-     LEFT_MOUNT,
-     CENTER_EXIT,
-     CENTER_MOUNT,
-     MOUNT_ONLY,
-     RIGHT_EXIT,
-     RIGHT_MOUNT};
-
+        NONE,
+        DROP,
+        LEFT_EXIT,
+        LEFT_MOUNT,
+        CENTER_EXIT,
+        CENTER_MOUNT,
+        MOUNT_ONLY,
+        RIGHT_EXIT,
+        RIGHT_MOUNT};
 
     public Command createCommand(Robot robot) {
 
@@ -136,33 +131,20 @@ public class AutonomousSubystem extends SubsystemBase{
             return Commands.sequence(commands.toArray(i -> new Command[i]));
         }
 
-        // depending on what we're doing, we may want to park the bot
-        // or lower the arm
-        Map<String,Command> events = new HashMap<>();
-        // events.put("Lower", ArmCommands.safePreset(robot.arm, ArmPresetCommand.PICKUP_POSITION));
-        // events.put("Park", Commands.sequence(
-        //         new ParkingOnThePlatformCommand(robot.swerveDrive),
-        //         new AlignToDegreesCommand(robot.swerveDrive, 90)
-        // ));
-        events.put("Park", new PIDParkCommand(robot.swerveDrive));
-
         // otherwise, look up the appropriate movement path and make it happen
         // (don't forget to raise the arm while we're moving)
         ParallelCommandGroup moves = new ParallelCommandGroup();
         moves.addCommands(
             new ArmPresetCommand(robot.arm, ArmPresetCommand.TRAVEL_POSITION),
-            PathPlanningCommand.loadPath(
-                robot.swerveDrive,
-                PATH_NAMES.get(which),
-                1.5,
-                events),
+            new FollowPathCommand(robot.swerveDrive, PATH_NAMES.get(which), 1.5),
             Commands.runOnce(() -> SmartDashboard.putNumber("Step", 1)));
         commands.add(moves);
 
-        // commands.add(Commands.runOnce(() -> SmartDashboard.putNumber("Step", 2)));
-        // commands.add(new PIDParkCommand(robot.swerveDrive));
-        // commands.add(Commands.runOnce(() -> SmartDashboard.putNumber("Step", 3)));
-        // commands.add(SwerveCommands.turnWheels(robot.swerveDrive, 90));
+        if (which.toLowerCase().contains("mount")) {
+            commands.add(new PIDParkCommand(robot.swerveDrive));
+        } else if (which.toLowerCase().contains("exit") {
+            commands.add(ArmCommands.safePreset(robot.arm, ArmPresetCommand.PICKUP_POSITION));
+        }
      
         return Commands.sequence(commands.toArray(i -> new Command[i]));
     }
