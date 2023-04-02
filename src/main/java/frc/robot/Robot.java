@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -12,7 +11,7 @@ import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
 import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.swerve.SwerveCommands;
-import frc.robot.subsystems.AutonomousSubystem;
+import frc.robot.subsystems.AutonomousSubsystem;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.PowerLoggingSubsystem;
 import frc.robot.subsystems.arm.ArmSubsystem;
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
     public static final int DRIVE_PORT = 0;
     public static final int OPS_PORT = 1;
 
-    public AutonomousSubystem auto;
+    public AutonomousSubsystem auto;
     public SwerveDriveSubsystem swerveDrive;
     public HandSubsystem hand;
     public ArmSubsystem arm;
@@ -49,7 +48,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 
-        auto = new AutonomousSubystem();
+        auto = new AutonomousSubsystem();
         swerveDrive = new SwerveDriveSubsystem();
         vision = new VisionSubsystem(true);
         hand = new HandSubsystem();

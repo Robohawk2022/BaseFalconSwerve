@@ -11,7 +11,6 @@ import frc.robot.Robot;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCommands;
 import frc.robot.commands.arm.ArmPresetCommand;
-import frc.robot.commands.swerve.FollowPathCommand;
 import frc.robot.commands.swerve.PIDParkCommand;
 import frc.robot.commands.swerve.PathPlanningCommand;
 import frc.robot.commands.swerve.SwerveCommands;
@@ -21,11 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AutonomousSubystem extends SubsystemBase{
+public class AutonomousSubsystem extends SubsystemBase {
     
     public static final int CHANNEL_A = 6;
     public static final int CHANNEL_B = 7;
-    public static final int CHANNEL_C = 5; //broken channel 8?
+    public static final int CHANNEL_C = 8;
     public static final int CHANNEL_D = 9;
 
     public static final String NONE = "None";
@@ -52,27 +51,28 @@ public class AutonomousSubystem extends SubsystemBase{
         PATH_NAMES.put(MOUNT_ONLY, "mount-only");
     }
 
-    public static final Object [][] programMapping = {
-        { DROP, 8 },
-        { LEFT_EXIT, 0 },
-        { LEFT_MOUNT, 1 },
-        { CENTER_EXIT, 3},
-        { CENTER_MOUNT, 2 },
-        { MOUNT_ONLY, 10 },
-        { RIGHT_EXIT, 11 },
-        { RIGHT_MOUNT, 9 },
+    // these are different settings of the switches: 0 is down, 1 is up
+    public static final Object [][] PROGRAM_MAPPING = {
+        { DROP, 0 },          // 0 0 0 0
+        { MOUNT_ONLY, 1 },    // 0 0 0 1
+        { RIGHT_EXIT, 2 },    // 0 0 1 0
+        { RIGHT_MOUNT, 3 },   // 0 0 1 1
+        { CENTER_EXIT, 4 },   // 0 1 0 0
+        { CENTER_MOUNT, 5 },  // 0 1 0 1
+        { LEFT_EXIT, 8 },     // 1 0 0 0
+        { LEFT_MOUNT, 9 },    // 1 0 0 1
     };
     
-    private DigitalInput [] inputs;
+    private final DigitalInput [] inputs;
 
-    public AutonomousSubystem() {
+    public AutonomousSubsystem() {
         inputs = new DigitalInput[4];
         inputs[0] = new DigitalInput(CHANNEL_A);
         inputs[1] = new DigitalInput(CHANNEL_B);
         inputs[2] = new DigitalInput(CHANNEL_C);
         inputs[3] = new DigitalInput(CHANNEL_D);
 
-        SmartDashboard.putData("AutonomusSubystem", builder -> {
+        SmartDashboard.putData("AutonomousSubsystem", builder -> {
             builder.addDoubleProperty("HardwareValue", this::getValue, null);
             builder.addDoubleProperty("MatchTime", DriverStation::getMatchTime, null);
             builder.addStringProperty("ProgramName", this::getProgramName, null);
@@ -80,7 +80,6 @@ public class AutonomousSubystem extends SubsystemBase{
             builder.addBooleanProperty("Channel7", inputs[1]::get, null);
             builder.addBooleanProperty("Channel8", inputs[2]::get, null);
             builder.addBooleanProperty("Channel9", inputs[3]::get, null);
-
         });
     }
 
@@ -95,7 +94,7 @@ public class AutonomousSubystem extends SubsystemBase{
 
     public String getProgramName() {
         int current = getValue();
-        for (Object[] mapping:programMapping) {
+        for (Object[] mapping : PROGRAM_MAPPING) {
             int value = (Integer) mapping[1];
             if (current == value) {
                 return (String) mapping[0];
@@ -103,17 +102,6 @@ public class AutonomousSubystem extends SubsystemBase{
         }
         return DROP;
     }
-
-    public static final String[] selectWhich = { 
-        NONE,
-        DROP,
-        LEFT_EXIT,
-        LEFT_MOUNT,
-        CENTER_EXIT,
-        CENTER_MOUNT,
-        MOUNT_ONLY,
-        RIGHT_EXIT,
-        RIGHT_MOUNT};
 
     public Command createCommand(Robot robot) {
 
