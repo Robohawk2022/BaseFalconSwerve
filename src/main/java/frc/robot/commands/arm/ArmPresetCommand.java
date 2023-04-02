@@ -10,8 +10,8 @@ public class ArmPresetCommand extends CommandBase {
 
     // target position in (degrees, inches)
     public static final double [] TRAVEL_POSITION = { 60.0, 3.0 };
-    public static final double [] PICKUP_POSITION = { 2.0, 3.0 };
-    public static final double [] HIGH_POSITION = { 39.0, 25.0 };
+    public static final double [] PICKUP_POSITION = { 0.0, 1.0 };
+    public static final double [] HIGH_POSITION = { 40.0, 25.0 };
     public static final double [] MIDDLE_POSITION = { 39, 13.6 };
     public static final double [] LOW_POSITION = { 2.0, 3.0 };
     public static final double [] BALANCE_POSITION = { 70.0, 3.0 };

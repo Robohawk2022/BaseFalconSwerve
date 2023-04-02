@@ -64,7 +64,7 @@ public class ArmConfig {
     public static final double ROTATOR_RAMP_RATE = 0.3;
     public static final double ROTATOR_MIN_SPEED = 0.075;
     public static final double ROTATOR_MAX_SPEED = 0.65;
-    public static final double ROTATOR_MIN_THRESHOLD = 2;
+    public static final double ROTATOR_MIN_THRESHOLD = 1;
     public static final double ROTATOR_MAX_THRESHOLD = 15;
 
     public static HalfBakedSpeedController makeRotatorSpeedController() {
