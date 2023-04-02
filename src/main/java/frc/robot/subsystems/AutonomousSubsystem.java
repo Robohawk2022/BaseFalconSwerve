@@ -24,7 +24,7 @@ public class AutonomousSubsystem extends SubsystemBase {
     
     public static final int CHANNEL_A = 9;
     public static final int CHANNEL_B = 6;
-    public static final int CHANNEL_C = 5;
+    public static final int CHANNEL_C = 5; // this is labelled as "8" on the switch, just for fun
     public static final int CHANNEL_D = 7;
 
     public static final String NONE = "None";
