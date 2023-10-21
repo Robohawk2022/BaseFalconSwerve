@@ -482,6 +482,382 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Motor/Max Output",
+              "_title": "Motor/Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/AutonomusSubystem/HardwareValue",
+              "_title": "AutonomusSubystem/HardwareValue",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/AutonomusSubystem/ProgramName",
+              "_title": "AutonomusSubystem/ProgramName",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/AutonomusSubystem/Channel6",
+              "_title": "AutonomusSubystem/Channel6",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "11,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/AutonomusSubystem/Channel7",
+              "_title": "AutonomusSubystem/Channel7",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/AutonomusSubystem/Channel8",
+              "_title": "AutonomusSubystem/Channel8",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "10,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/AutonomusSubystem/Channel9",
+              "_title": "AutonomusSubystem/Channel9",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "11,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule0/LastAngle",
+              "_title": "SwerveModule0/LastAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule0/EncoderAngle",
+              "_title": "SwerveModule0/EncoderAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule1/LastAngle",
+              "_title": "SwerveModule1/LastAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule1/EncoderAngle",
+              "_title": "SwerveModule1/EncoderAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule2/LastAngle",
+              "_title": "SwerveModule2/LastAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule2/EncoderAngle",
+              "_title": "SwerveModule2/EncoderAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule3/LastAngle",
+              "_title": "SwerveModule3/LastAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveModule3/EncoderAngle",
+              "_title": "SwerveModule3/EncoderAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/RotateTarget",
+              "_title": "ArmTeleop/RotateTarget",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/RotateInput",
+              "_title": "ArmTeleop/RotateInput",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/RotateError",
+              "_title": "ArmTeleop/RotateError",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/RotateOutput",
+              "_title": "ArmTeleop/RotateOutput",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/ExtendTarget",
+              "_title": "ArmTeleop/ExtendTarget",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/ExtendInput",
+              "_title": "ArmTeleop/ExtendInput",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/ExtendError",
+              "_title": "ArmTeleop/ExtendError",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArmTeleop/ExtendOutput",
+              "_title": "ArmTeleop/ExtendOutput",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/PIDParkCommand/Done",
+              "_title": "PIDParkCommand/Done",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "9,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDParkCommand/Pitch",
+              "_title": "PIDParkCommand/Pitch",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDParkCommand/Power",
+              "_title": "PIDParkCommand/Power",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/AlignToAprilTagCommand/Done?",
+              "_title": "AlignToAprilTagCommand/Done?",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/AlignToAprilTagCommand/X-Distance",
+              "_title": "AlignToAprilTagCommand/X-Distance",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -557,9 +933,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 838.4000244140625
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1936.0,
+    "height": 1096.0
   }
 }

@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import java.util.function.BooleanSupplier;
@@ -10,11 +11,11 @@ public class MultiJoystickMapping {
 
     public static final double DEADBAND = 0.1;
 
-    private final CommandXboxController driver;
+    private final CommandJoystick driver;
     private final CommandXboxController ops;
     private final BooleanSupplier override;
 
-    public MultiJoystickMapping(CommandXboxController driver, CommandXboxController ops, BooleanSupplier override) {
+    public MultiJoystickMapping(CommandJoystick driver, CommandXboxController ops, BooleanSupplier override) {
         this.driver = driver;
         this.ops = ops;
         this.override = override;
@@ -29,17 +30,18 @@ public class MultiJoystickMapping {
 
     // left Y = forward/reverse
     public double getForwardReverse() {
-        return getDriveAxis(XboxController.Axis.kLeftY.value);
+        return -getDriveAxis(driver.getYChannel());
     }
 
     // left X = strafe left/right
     public double getStrafeLeftRight() {
-        return getDriveAxis(XboxController.Axis.kLeftX.value);
+        //return getDriveAxis(XboxController.Axis.kLeftX.value);
+        return 0;
     }
 
     // right X = rotate left/right
     public double getRotateLeftRight() {
-        return -getDriveAxis(XboxController.Axis.kRightX.value);
+        return -getDriveAxis(driver.getXChannel());
     }
 
     private double getDriveAxis(int axis) {

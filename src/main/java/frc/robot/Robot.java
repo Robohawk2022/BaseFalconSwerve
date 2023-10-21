@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.HandCommands;
 import frc.robot.commands.arm.ArmCalibrationCommand;
@@ -66,7 +67,7 @@ public class Robot extends TimedRobot {
         // do any additional control mapping that needs to be done
         mapping = new RobotControlMapping(
                 this,
-                new CommandXboxController(DRIVE_PORT),
+                new CommandJoystick(DRIVE_PORT),
                 new CommandXboxController(OPS_PORT));
 
         CameraServer.startAutomaticCapture();

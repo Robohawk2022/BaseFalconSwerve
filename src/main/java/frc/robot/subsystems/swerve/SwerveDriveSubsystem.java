@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swerve;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -109,9 +110,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // cheap trick: when we go into "orbit mode", we'll temporarily replace
     // the kinematics used to calculate wheel states
     public void setOrbitMode(boolean orbit) {
+        kinematics = SwerveConfig.defaultKinematics;
+        /* 
         kinematics = orbit
             ? SwerveConfig.orbitKinematics
             : SwerveConfig.defaultKinematics;
+        */
     }
 
     /**
@@ -129,7 +133,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         double vx = percentX * SwerveConfig.maxLinearSpeed;
         double vy = percentY * SwerveConfig.maxLinearSpeed;
         double vomega = percentOmega * SwerveConfig.maxAngularSpeed;
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, vomega, getYaw());
+        //ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, vomega, getYaw());
+        ChassisSpeeds speeds = new ChassisSpeeds(vx, vy, vomega);
         drive(speeds);
     }
 

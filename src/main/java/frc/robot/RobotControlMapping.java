@@ -4,9 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.commands.arm.ArmPresetCommand;
 import frc.robot.commands.swerve.AlignToAprilTagCommand;
 import frc.robot.commands.swerve.AlignToWallCommand;
+import frc.robot.commands.swerve.PIDParkCommand;
 import frc.robot.commands.swerve.ParkingOnThePlatformCommand;
 import frc.robot.commands.swerve.SwerveCommands;
 import frc.robot.commands.swerve.SwerveTeleopCommand;
@@ -31,10 +33,10 @@ public class RobotControlMapping {
     private final HandSubsystem hand;
     private final ArmSubsystem arm;
     private final VisionSubsystem vision;
-    private final CommandXboxController driver;
+    private final CommandJoystick driver;
     private final CommandXboxController ops;
 
-    public RobotControlMapping(Robot robot, CommandXboxController driver, CommandXboxController ops) {
+    public RobotControlMapping(Robot robot, CommandJoystick driver, CommandXboxController ops) {
 
         this.robot = robot;
         this.drive = robot.swerveDrive;
@@ -59,12 +61,13 @@ public class RobotControlMapping {
                 () -> ops.getRightTriggerAxis() > 0.5);
 
         // turbo if the driver wants it
-        BooleanSupplier turboSupplier = () -> driver.getLeftTriggerAxis() > 0.5;
+        BooleanSupplier turboSupplier = () -> false;
+        //driver.getLeftTriggerAxis() > 0.5;
 
         // sniper if the driver wants it OR ops has taken over
-        BooleanSupplier sniperSupplier = ()
-                -> driver.getHID().getLeftBumper()
-                || ops.getRightTriggerAxis() > 0.5;
+        BooleanSupplier sniperSupplier = () -> false;
+                //()-> driver.getHID().getLeftBumper()
+                //|| ops.getRightTriggerAxis() > 0.5;
 
         drive.setDefaultCommand(new SwerveTeleopCommand(
                 drive,
@@ -83,18 +86,19 @@ public class RobotControlMapping {
     private void mapDriver() {
 
         // buttons
-        driver.start().onTrue(SwerveCommands.zeroGyro(drive));
-        driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
+        driver.button(9).onTrue(SwerveCommands.zeroGyro(drive));
+        //driver.leftStick().onTrue(SwerveCommands.turnWheels(drive, 90));
         // driver.x().onTrue(new ProxyCommand(() -> robot.auto.createCommand(robot)));
-        // driver.y().onTrue(new ParkingOnThePlatformCommand(robot.swerveDrive));
-        driver.x().onTrue(AlignToWallCommand.grid(drive));
-        driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
-        driver.b().onTrue(HandCommands.grab(hand));
-        driver.a().onTrue(HandCommands.release(hand));
-        driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
+        driver.button(4).onTrue(new PIDParkCommand(robot.swerveDrive));
+        driver.button(5).onTrue(new AlignToAprilTagCommand(robot.swerveDrive, vision));
+        // driver.x().onTrue(AlignToWallCommand.grid(drive));
+        //driver.y().onTrue(AlignToWallCommand.loadingStation(drive));
+        driver.button(2).onTrue(HandCommands.grab(hand));
+        driver.button(3).onTrue(HandCommands.release(hand));
+        driver.button(8).onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
         // triggers
-        driver.rightTrigger(0.5)
+        driver.button(1)
             .onTrue(SwerveCommands.setOrbitMode(drive, true))
             .onFalse(SwerveCommands.setOrbitMode(robot.swerveDrive, false));
 
@@ -112,7 +116,7 @@ public class RobotControlMapping {
         // ops.x().onTrue(new InstantCommand(arm::clearLimits, arm));
         ops.y().onTrue(AlignToWallCommand.loadingStation(drive));
         ops.start().onTrue(ArmCommands.safeCalibrate(arm));
-        driver.back().onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
+        driver.button(8).onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
         // bumpers (left and right are reversed b/c robot is facing driver)
         ops.leftBumper().onTrue(SwerveCommands.scootRight(drive, 24.0));
