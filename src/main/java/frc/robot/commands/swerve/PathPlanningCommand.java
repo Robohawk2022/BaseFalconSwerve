@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class PathPlanningCommand {
 
-    public static Command loadPath(SwerveDriveSubsystem drive, String name, double maxSpeed) {
+    public static Command loadPath(SwerveDriveSubsystem drive, String name, double maxSpeed, Map<String,Command> events) {
 
         double maxAccel = 0.75 * maxSpeed;
         PathConstraints constraints = new PathConstraints(maxSpeed, maxAccel);
@@ -32,7 +32,7 @@ public class PathPlanningCommand {
                 new PIDConstants(4, 0, 0),
                 new PIDConstants(4, 0, 0),
                 drive::setModuleStates,
-                new HashMap<>(),
+                events,
                 drive);
         return autoBuilder.fullAuto(pathGroup);
         // return wrapCommand(name, autoBuilder.fullAuto(pathGroup), pathGroup);

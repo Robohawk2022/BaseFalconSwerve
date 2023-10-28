@@ -104,6 +104,14 @@ public class AutonomousSubsystem extends SubsystemBase {
     }
 
     public Command createCommand(Robot robot) {
+        Map<String,Command> events = new HashMap<>();
+        events.put("StartEvent", HandCommands.release(robot.hand));
+        events.put("MiddleEvent", HandCommands.grab(robot.hand));
+        events.put("EndEvent", HandCommands.release(robot.hand));
+        return PathPlanningCommand.loadPath(robot.swerveDrive, "TestPath", 0.75, events);
+    }
+
+    public Command createCommand2(Robot robot) {
 
         String which = getProgramName();
         List<Command> commands = new ArrayList<>();
@@ -128,7 +136,7 @@ public class AutonomousSubsystem extends SubsystemBase {
         ParallelCommandGroup moves = new ParallelCommandGroup();
         moves.addCommands(
             ArmCommands.safePreset(robot.arm,  ArmPresetCommand.TRAVEL_POSITION),
-            PathPlanningCommand.loadPath(robot.swerveDrive, PATH_NAMES.get(which), 1.35));
+            PathPlanningCommand.loadPath(robot.swerveDrive, PATH_NAMES.get(which), 1.35, new HashMap<>()));
         commands.add(moves);
 
         if (which.toLowerCase().contains("mount")) {

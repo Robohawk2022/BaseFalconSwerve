@@ -1,0 +1,101 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 6.22444639237423,
+        "y": 3.6711164401332717
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.187026431061445,
+        "y": 5.099776899986271
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.233299590622619,
+        "y": 4.821587975085131
+      },
+      "prevControl": {
+        "x": 6.232506784364878,
+        "y": 4.859327914281669
+      },
+      "nextControl": {
+        "x": 6.2578622490008655,
+        "y": 3.652332277809089
+      },
+      "holonomicAngle": -1.047875106577792,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.229032013117737,
+        "y": 2.5325020346085627
+      },
+      "prevControl": {
+        "x": 6.249023546019852,
+        "y": 4.918529131647947
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "EndEvent"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "StartEvent"
+      ]
+    },
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 0.1604891690340911,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 0.908418412642046,
+      "names": [
+        "MiddleEvent"
+      ]
+    }
+  ]
+}
