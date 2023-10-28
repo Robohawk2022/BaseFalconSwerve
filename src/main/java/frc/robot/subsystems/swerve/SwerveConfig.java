@@ -43,10 +43,10 @@ public class SwerveConfig {
     public static final double driveKA = (0.27 / 12);
 
     // swerve drive modules
-    public static final ModuleConfig frontLeft = new ModuleConfig(10, 11, 12, 660.586);
-    public static final ModuleConfig frontRight = new ModuleConfig(13, 14, 15, 1460.391);
-    public static final ModuleConfig backLeft = new ModuleConfig(16, 17, 18, 1850.010);
-    public static final ModuleConfig backRight = new ModuleConfig(19, 20, 21, 2853.633);
+    public static final ModuleConfig frontLeft = new ModuleConfig(10, 11, 12, 120.586);
+    public static final ModuleConfig frontRight = new ModuleConfig(13, 14, 15, -159.170);
+    public static final ModuleConfig backLeft = new ModuleConfig(16, 17, 18, 80.684);
+    public static final ModuleConfig backRight = new ModuleConfig(19, 20, 21, 155.039);
 
     // swerve drive kinematics (same order as above)
     public static final SwerveDriveKinematics defaultKinematics = new SwerveDriveKinematics(

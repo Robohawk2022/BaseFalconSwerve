@@ -108,7 +108,7 @@ public class AutonomousSubsystem extends SubsystemBase {
         events.put("StartEvent", HandCommands.release(robot.hand));
         events.put("MiddleEvent", HandCommands.grab(robot.hand));
         events.put("EndEvent", HandCommands.release(robot.hand));
-        return PathPlanningCommand.loadPath(robot.swerveDrive, "TestPath", 0.75, events);
+        return PathPlanningCommand.loadPath(robot.swerveDrive, "TestPath", 0.1, events);
     }
 
     public Command createCommand2(Robot robot) {
@@ -116,7 +116,7 @@ public class AutonomousSubsystem extends SubsystemBase {
         String which = getProgramName();
         List<Command> commands = new ArrayList<>();
 
-        // not doing anything? we're done!
+        // not doing anything? we're do\ne!
         if (NONE.equals(which)) {
             return Commands.sequence();
         }

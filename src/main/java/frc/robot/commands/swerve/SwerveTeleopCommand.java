@@ -68,8 +68,8 @@ public class SwerveTeleopCommand extends CommandBase {
     @Override
     public void execute() {
 
-        double px = pxSupplier.getAsDouble();
-        double py = pySupplier.getAsDouble();
+        double px = pxSupplier.getAsDouble() * 0.5;
+        double py = pySupplier.getAsDouble() * 0.5;
         double pomega = calculateRotation();
 
         if ((px == 0 && py == 0) || pomega != 0) {
@@ -92,15 +92,19 @@ public class SwerveTeleopCommand extends CommandBase {
             pomega *= MathUtil.clamp(TURBO_FACTOR, 0.0, 2.0);
         }
 
+        
         if (pomega != 0){
 
-        swerveDrive.drive(px, py, pomega);
-
+        
+        swerveDrive.drive(px, py, -pomega);
+        
         } else {
         
-        swerveDrive.drive(px, py,pomegamAdjusted);
+        swerveDrive.drive(px, py, pomegamAdjusted);
 
         }
+
+        
     }
 
     /**
